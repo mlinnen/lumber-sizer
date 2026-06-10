@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="WWA.Cli/WWA.Cli.csproj" />
+  <Project Path="WWA.Core/WWA.Core.csproj" />
+</Solution>
