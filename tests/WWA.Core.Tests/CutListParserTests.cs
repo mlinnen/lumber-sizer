@@ -23,7 +23,7 @@ namespace WWA.Core.Tests
         public void Parse_SampleReadme_ReturnsTwoItems()
         {
             var repoRoot = FindRepoRoot();
-            var sample = Path.Combine(repoRoot, "samples", "sample_cutlists", "README.txt");
+            var sample = Path.Combine(repoRoot, "samples", "sample_cutlists", "simple_cutlist.txt");
             var list = CutListParser.Parse(sample);
             Assert.NotNull(list);
             Assert.Equal(2, list.Items.Count);
