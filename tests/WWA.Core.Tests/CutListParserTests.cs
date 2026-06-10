@@ -25,6 +25,8 @@ namespace WWA.Core.Tests
             var repoRoot = FindRepoRoot();
             var sample = Path.Combine(repoRoot, "samples", "sample_cutlists", "simple_cutlist.txt");
             var rawLines = File.ReadAllLines(sample);
+                        Console.WriteLine($"Sample path used: {sample}");
+                        Console.WriteLine($"Raw lines: {rawLines.Length}");
                         Assert.Equal(2, rawLines.Length);
 
                         var list = CutListParser.Parse(sample);
