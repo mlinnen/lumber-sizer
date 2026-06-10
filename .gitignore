@@ -7,3 +7,16 @@
 .squad/.cache/
 # Squad: SubSquad activation file (local to this machine)
 .squad-workstream
+
+# Ignore build output and intermediate files
+bin/
+obj/
+**/bin/
+**/obj/
+
+# IDE and OS files
+.vs/
+.vscode/
+*.user
+*.suo
+*.DS_Store
