@@ -20,3 +20,4 @@ obj/
 *.user
 *.suo
 *.DS_Store
+# Test result artifacts\n**/TestResults/\n*.trx
