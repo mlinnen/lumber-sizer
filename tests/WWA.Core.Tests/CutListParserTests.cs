@@ -11,11 +11,11 @@ namespace WWA.Core.Tests
         private static string FindRepoRoot()
         {
             var dir = new DirectoryInfo(AppContext.BaseDirectory!);
-            while (dir != null && !Directory.Exists(Path.Combine(dir.FullName, "samples")))
+                    while (dir != null && !Directory.Exists(Path.Combine(dir.FullName, ".git")))
             {
-                dir = dir.Parent!;
+                        dir = dir.Parent;
             }
-            if (dir == null) throw new InvalidOperationException("Could not locate repository root (samples folder)");
+                    if (dir == null) throw new InvalidOperationException("Could not locate repository root (.git folder)");
             return dir.FullName;
         }
 
