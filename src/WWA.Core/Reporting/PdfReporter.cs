@@ -82,9 +82,10 @@ namespace WWA.Core.Reporting
 
             using var sw = new StreamWriter(htmlPath, false);
             sw.WriteLine("<!doctype html>");
-            sw.WriteLine("<html><head><meta charset=\"utf-8\"><title>Cut sheet visuals</title></head><body>");
-            sw.WriteLine("<p>This is an HTML fallback. If PDF output is required, ensure QuestPDF + SkiaSharp + Svg.Skia are available and re-run.");
-            sw.WriteLine("See docs/docs/packer.md for instructions.</p>");
+            sw.WriteLine("<html><head><meta charset=\"utf-8\"><title>Cut sheet visuals</title>");
+            sw.WriteLine("<style>body{font-family:Segoe UI,Arial,Helvetica,sans-serif;margin:20px;background:#fff;color:#222} .notice{background:#fff3cd;border:1px solid #ffeeba;padding:12px;border-radius:6px;margin-bottom:12px} svg{max-width:100%;height:auto;border:1px solid #e6e6e6}</style>");
+            sw.WriteLine("</head><body>");
+            sw.WriteLine("<div class=\"notice\">This is an HTML fallback. PDF rasterization requires SkiaSharp+Svg.Skia at build/runtime. To enable PDF output, build with HAS_SKIA and install native Skia libs on the runner. See docs/docs/packer.md for instructions.</div>");
             sw.WriteLine(svg);
             sw.WriteLine("</body></html>");
 
