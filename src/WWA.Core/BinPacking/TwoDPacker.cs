@@ -50,7 +50,8 @@ namespace WWA.Core.BinPacking
 
             // Sort by longer side descending to prefer large pieces
             var swSort = System.Diagnostics.Stopwatch.StartNew();
-            var groups = expanded.GroupBy(e => Math.Round(Math.Max(e.Item.Length, e.Item.Width ?? 0), 6)).OrderByDescending(g => g.Key);
+            // Sort by area (length * width) descending to prefer pieces that occupy more area
+            var groups = expanded.GroupBy(e => Math.Round(e.Item.Length * (e.Item.Width ?? 1.0), 6)).OrderByDescending(g => g.Key);
             var sorted = new List<ExpandedItem>();
             foreach (var g in groups)
             {
@@ -73,6 +74,13 @@ namespace WWA.Core.BinPacking
 
             var result = new PackingResult();
             result.DeterministicSeedUsed = request.Seed;
+
+            // profiling counters
+            long boardChecks = 0;
+            long shelfChecks = 0;
+            long orientationChecks = 0;
+            long newShelfCreates = 0;
+            long placementSuccesses = 0;
 
             var swPlace = System.Diagnostics.Stopwatch.StartNew();
             foreach (var exp in sorted)
@@ -101,17 +109,20 @@ namespace WWA.Core.BinPacking
 
                 foreach (var bs in boardStates)
                 {
+                    boardChecks++;
                     // quick board usability check
                     if (!bs.Board.IsUsableFor(item)) continue;
 
                     foreach (var o in orientations)
                     {
+                        orientationChecks++;
                         double reqW = o.w; // 0 means flexible
                         double reqL = o.l;
 
                         // Try existing shelves
                         foreach (var sh in bs.Shelves)
                         {
+                            shelfChecks++;
                             // shelf height must accomodate item width (or width unspecified)
                             if (reqW > 0 && reqW > sh.Height + 1e-9) continue;
                             if (sh.RemainingLength + 1e-9 < reqL) continue;
@@ -170,6 +181,7 @@ namespace WWA.Core.BinPacking
 
                         if (reqW <= bs.Board.Width - usedHeight + 1e-9 && bs.Board.Length + 1e-9 >= reqL)
                         {
+                            // candidate new shelf
                             double remAfter = bs.Board.Length - reqL;
                             if (request.Constraints.PreserveLongRemnants)
                             {
@@ -217,7 +229,17 @@ namespace WWA.Core.BinPacking
                 }
 
                 // perform placement on bestBoard/bestShelf
-                Shelf targetShelf = bestShelf ?? bestBoard.CreateShelf(chosenWidth);
+                Shelf targetShelf;
+                if (bestShelf == null)
+                {
+                    targetShelf = bestBoard.CreateShelf(chosenWidth);
+                    newShelfCreates++;
+                }
+                else
+                {
+                    targetShelf = bestShelf;
+                }
+
                 double xOffset = targetShelf.XOffset;
                 double yOffset = targetShelf.YOffset;
 
@@ -244,6 +266,8 @@ namespace WWA.Core.BinPacking
                     Length = chosenLength,
                     Rotated = bestRotated
                 });
+
+                placementSuccesses++;
             }
 
             // Build leftovers and metrics
@@ -271,7 +295,7 @@ namespace WWA.Core.BinPacking
             result.WastePercent = totalOriginal <= 0 ? 0 : (totalLeftover / totalOriginal) * 100.0;
 
             swPlace.Stop();
-            try { Console.WriteLine($"TwoDPacker: sortMs={swSort.ElapsedMilliseconds}, placeMs={swPlace.ElapsedMilliseconds}"); } catch { }
+            try { Console.WriteLine($"TwoDPacker: sortMs={swSort.ElapsedMilliseconds}, placeMs={swPlace.ElapsedMilliseconds}, boards={boardChecks}, shelvesChecked={shelfChecks}, orientations={orientationChecks}, newShelves={newShelfCreates}, placements={placementSuccesses}"); } catch { }
 
             return Task.FromResult(result);
         }
