@@ -1,0 +1,12 @@
+# Small shop run: mix of furniture parts, mostly medium pieces
+24in x 6in # shelf
+24in x 6in # shelf
+18in x 6in # brace
+12in x 3in # cleat
+36in x 8in # tabletop
+12in x 2in # leg
+12in x 2in # leg
+12in x 2in # leg
+12in x 2in # leg
+48in x 10in # large-shelf
+36in x 12in # panel

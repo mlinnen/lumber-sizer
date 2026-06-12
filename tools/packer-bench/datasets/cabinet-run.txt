@@ -1,0 +1,15 @@
+# Cabinet run: many small parts, repetitive
+8in x 4in # rail
+8in x 4in # rail
+8in x 4in # rail
+8in x 4in # rail
+10in x 6in # door-panel
+10in x 6in # door-panel
+12in x 8in # drawer-front
+12in x 8in # drawer-front
+6in x 2in # cleat
+6in x 2in # cleat
+6in x 2in # cleat
+6in x 2in # cleat
+18in x 4in # face-frame
+18in x 4in # face-frame

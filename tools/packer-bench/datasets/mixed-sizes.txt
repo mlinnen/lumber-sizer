@@ -1,0 +1,15 @@
+# Mixed sizes: stress test wide variety
+96in x 12in # slab
+72in x 10in # long-board
+48in x 8in # mid-board
+36in x 6in # panel
+24in x 6in # shelf
+12in x 3in # cleat
+6in x 2in # small-scrap
+6in x 2in # small-scrap
+6in x 2in # small-scrap
+48in x 10in # wide-shelf
+36in x 12in # panel
+24in x 8in # cabinet-side
+24in x 8in # cabinet-side
+18in x 6in # brace
