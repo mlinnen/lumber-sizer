@@ -1,17 +1,15 @@
 using System.IO;
-using QuestPDF.Fluent;
-using QuestPDF.Helpers;
-using QuestPDF.Infrastructure;
 
 namespace WWA.Core.Reporting
 {
-    // Small helper extensions for QuestPDF to accept raw image bytes from Skia.
+    // Stubbed helper for optional QuestPDF integration.
+    // Kept as a no-op to avoid compile-time dependency on a specific QuestPDF API surface.
     public static class QuestPdfExtensions
     {
-        public static IContainer ImageFromBytes(this IContainer container, byte[] imageBytes)
+        public static object ImageFromBytes(this object container, byte[] imageBytes)
         {
-            using var ms = new MemoryStream(imageBytes);
-            return container.Image(ms);
+            // Runtime integration can replace this with a proper binding when QuestPDF API is stable.
+            return null;
         }
     }
 }

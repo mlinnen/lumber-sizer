@@ -50,38 +50,32 @@ namespace WWA.Core.Reporting
                 using var data = image.Encode(SKEncodedImageFormat.Png, 100);
                 var pngBytes = data.ToArray();
 
-                // If QuestPDF is available, embed image bytes into PDF
-                var questType = Type.GetType("QuestPDF.Fluent.Document, QuestPDF");
-                if (questType != null)
+                // Prefer producing a PDF using SkiaSharp's PDF backend (reliable, local-first).
+                try
                 {
-                    try
-                    {
-                        var doc = QuestPDF.Fluent.Document.Create(container =>
-                        {
-                            container.Page(page =>
-                            {
-                                page.Size(QuestPDF.Helpers.PageSizes.A4);
-                                page.Margin(20);
-                                page.PageColor(QuestPDF.Helpers.Colors.White);
-                                page.DefaultTextStyle(x => x.FontSize(10));
+                    Directory.CreateDirectory(Path.GetDirectoryName(outputPath) ?? ".");
 
-                                page.Content().Column(col =>
-                                {
-                                    col.Item().Text("Cut-sheet diagram").SemiBold().FontSize(12);
-                                    col.Item().Image(new MemoryStream(pngBytes));
-                                });
-                            });
-                        });
+                    using var pdf = SKDocument.CreatePdf(outputPath);
+                    // Use image dimensions as page size (points = pixels at 72 DPI; this is acceptable for a simple output).
+                    using var img = SKImage.FromEncodedData(data);
+                    var pageWidth = img.Width;
+                    var pageHeight = img.Height;
 
-                        Directory.CreateDirectory(Path.GetDirectoryName(outputPath) ?? ".");
-                        doc.GeneratePdf(outputPath);
-                        return;
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.Error.WriteLine("QuestPDF embedding failed: " + ex.Message);
-                        // fall through to HTML fallback
-                    }
+                    var canvas = pdf.BeginPage(pageWidth, pageHeight);
+                    canvas.Clear(SKColors.White);
+
+                    using var paint = new SKPaint();
+                    canvas.DrawImage(img, 0, 0, paint);
+
+                    pdf.EndPage();
+                    pdf.Close();
+
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    Console.Error.WriteLine("PDF via SkiaSharp failed: " + ex.Message);
+                    // fall through to HTML fallback
                 }
             }
             catch (Exception ex)
