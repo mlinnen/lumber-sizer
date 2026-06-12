@@ -297,6 +297,19 @@ namespace WWA.Core.BinPacking
             swPlace.Stop();
             try { Console.WriteLine($"TwoDPacker: sortMs={swSort.ElapsedMilliseconds}, placeMs={swPlace.ElapsedMilliseconds}, boards={boardChecks}, shelvesChecked={shelfChecks}, orientations={orientationChecks}, newShelves={newShelfCreates}, placements={placementSuccesses}"); } catch { }
 
+            // publish counters in result for programmatic inspection
+            try
+            {
+                result.Counters["sortMs"] = swSort.ElapsedMilliseconds;
+                result.Counters["placeMs"] = swPlace.ElapsedMilliseconds;
+                result.Counters["boardChecks"] = boardChecks;
+                result.Counters["shelfChecks"] = shelfChecks;
+                result.Counters["orientationChecks"] = orientationChecks;
+                result.Counters["newShelves"] = newShelfCreates;
+                result.Counters["placements"] = placementSuccesses;
+            }
+            catch { }
+
             return Task.FromResult(result);
         }
 
