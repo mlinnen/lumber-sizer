@@ -33,11 +33,11 @@ namespace WWA.Core.Tests
                         var list = CutListParser.Parse(sample);
                         Assert.NotNull(list);
                         Assert.Equal(2, list.Items.Count);
-                        Assert.Equal("12in", list.Items[0].Length);
-                        Assert.Equal("2in", list.Items[0].Width);
+                        Assert.Equal(12.0, list.Items[0].Length);
+                        Assert.Equal(2.0, list.Items[0].Width);
                         Assert.Equal("leg", list.Items[0].Description);
-                        Assert.Equal("24in", list.Items[1].Length);
-                        Assert.Equal("6in", list.Items[1].Width);
+                        Assert.Equal(24.0, list.Items[1].Length);
+                        Assert.Equal(6.0, list.Items[1].Width);
                         Assert.Equal("shelf", list.Items[1].Description);
         }
 

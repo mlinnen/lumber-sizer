@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Globalization;
+using System.Text.RegularExpressions;
 using WWA.Core.Models;
 
 namespace WWA.Core.IO
@@ -9,7 +11,6 @@ namespace WWA.Core.IO
     /// Minimal, defensive parser for a very small cut-list text format.
     /// Format: one piece per line: "{length} x {width} # {description}"
     /// Lines beginning with '#' or empty lines are ignored.
-    /// Throws FormatException with line number on malformed lines.
     /// </summary>
     public static class CutListParser
     {
@@ -30,7 +31,7 @@ namespace WWA.Core.IO
 
                 // Expect: <length> x <width> [# description]
                 // Split off an inline comment
-                string description = null;
+                string? description = null;
                 var commentIndex = raw.IndexOf('#');
                 if (commentIndex >= 0)
                 {
@@ -45,17 +46,18 @@ namespace WWA.Core.IO
                     throw new FormatException($"Malformed cut-list line {lineNumber}: expected '<length> x <width>' but got '{lines[i]}'");
                 }
 
-                var length = parts[0].Trim();
-                var width = parts[1].Trim();
-                if (string.IsNullOrEmpty(length) || string.IsNullOrEmpty(width))
+                var lengthRaw = parts[0].Trim();
+                var widthRaw = parts[1].Trim();
+                if (string.IsNullOrEmpty(lengthRaw) || string.IsNullOrEmpty(widthRaw))
                 {
                     throw new FormatException($"Malformed cut-list line {lineNumber}: length or width missing in '{lines[i]}'");
                 }
 
-                var item = new CutItem
+                double length = ParseDimension(lengthRaw, lineNumber);
+                double? width = ParseDimensionNullable(widthRaw, lineNumber);
+
+                var item = new CutItem(length, width, 1)
                 {
-                    Length = length,
-                    Width = width,
                     Description = description
                 };
 
@@ -63,6 +65,28 @@ namespace WWA.Core.IO
             }
 
             return cutList;
+        }
+
+        private static double ParseDimension(string raw, int lineNumber)
+        {
+            var match = Regex.Match(raw, "([0-9]+(\\.[0-9]+)?)");
+            if (!match.Success) throw new FormatException($"Malformed dimension on line {lineNumber}: '{raw}'");
+            if (!double.TryParse(match.Value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var val))
+            {
+                throw new FormatException($"Unable to parse number on line {lineNumber}: '{raw}'");
+            }
+            return val;
+        }
+
+        private static double? ParseDimensionNullable(string raw, int lineNumber)
+        {
+            var match = Regex.Match(raw, "([0-9]+(\\.[0-9]+)?)");
+            if (!match.Success) return null;
+            if (!double.TryParse(match.Value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var val))
+            {
+                throw new FormatException($"Unable to parse number on line {lineNumber}: '{raw}'");
+            }
+            return val;
         }
     }
 }
