@@ -86,8 +86,8 @@ jobs:
         with:
           dotnet-version: 10.0
 
-      - name: Restore
-        run: dotnet restore src/WWA.slnx
+      - name: Restore packer-bench
+        run: dotnet restore tools/packer-bench/PackBench.csproj
 
       - name: Build packer-bench
         run: dotnet build tools/packer-bench/PackBench.csproj --no-restore --configuration Release
