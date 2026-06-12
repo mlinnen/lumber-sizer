@@ -83,6 +83,11 @@ namespace WWA.Core.Models
         public List<Placement> Placements { get; } = new List<Placement>();
 
         /// <summary>
+        /// 2D placements for packers that produce X/Y placements. May be empty for 1D packers.
+        /// </summary>
+        public List<Placement2D> Placements2D { get; } = new List<Placement2D>();
+
+        /// <summary>
         /// Remaining length after placements.
         /// </summary>
         public double RemnantLength { get; set; }
@@ -98,5 +103,20 @@ namespace WWA.Core.Models
         public double Offset { get; set; }
         public bool Rotated { get; set; }
         public double Length { get; set; }
+    }
+
+    /// <summary>
+    /// A 2D placement of a CutItem on a board.
+    /// Coordinates are in inches from the board origin (0,0) at one corner: X along length, Y along width.
+    /// </summary>
+    public class Placement2D
+    {
+        public Guid CutItemId { get; set; }
+        public CutItem? CutItem { get; set; }
+        public double XOffset { get; set; }
+        public double YOffset { get; set; }
+        public double Width { get; set; }
+        public double Length { get; set; }
+        public bool Rotated { get; set; }
     }
 }

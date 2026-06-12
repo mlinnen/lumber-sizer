@@ -40,3 +40,14 @@ Acceptance criteria (Milestone 1)
 Next steps
 
 - Add 2D packing (width/rotation considerations), more advanced heuristics (e.g., simulated annealing), and optional ILP-based optimal solver for small inputs.
+
+2D packer (TwoDPacker)
+
+- Algorithm: a deterministic shelf-based guillotine-friendly heuristic. Items are placed left-to-right in horizontal shelves stacked along the board width. This is simple, deterministic, and fast for the M1->M2 bridge.
+- Orientation: CutItem.AllowRotated is honored; the packer will attempt both orientations where allowed.
+- Determinism: PackingRequest.Seed controls tie-breaking (stable shuffle within tie-groups and random selection among equal candidates). PackingResult.DeterministicSeedUsed records the seed used.
+- Constraints: Constraints.MinRemnantLength applies to leftover lengths along the length axis; when PreserveLongRemnants is true the packer prefers placements that avoid creating long preserved remnants.
+- Output: PackingResult.Allocations[].Placements2D provides placements with XOffset, YOffset, Width, Length and Rotated flag. UnplacedItems lists items that could not fit.
+
+Notes: TwoDPacker is intentionally conservative in scope to keep behavior predictable and easy to test. Future work can add skyline, guillotine-split, or optimal approaches.
+
