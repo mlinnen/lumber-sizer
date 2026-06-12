@@ -1,0 +1,23 @@
+Adds core domain models for Milestone 1.
+
+Files added/updated:
+- src/WWA.Core/Models/Board.cs (new)
+- src/WWA.Core/Models/CutItem.cs (updated)
+- src/WWA.Core/Models/Inventory.cs (new)
+- src/WWA.Core/Models/Constraints.cs (new)
+- src/WWA.Core/Models/CutList.cs (updated)
+- src/WWA.Core/IO/CutListParser.cs (updated to parse numeric dimensions)
+- tests/WWA.Core.Tests/ModelsTests.cs (new unit tests)
+- tests/WWA.Core.Tests/CutListParserTests.cs (updated expectations)
+
+Usage example:
+`csharp
+var board = new Board(96, 6);
+var inv = new Inventory();
+inv.Add(board);
+var item = new CutItem(24, 6, quantity: 2);
+var cl = new CutList("My Project");
+cl.Add(item);
+`
+
+This implements the keaton-models todo for Milestone 1 (CLI + deterministic bin-packing). No packing algorithm implemented here — just domain models and validations. Suggested follow-ups: richer properties (species, moisture), serialization, DB mapping, and packer interfaces.
