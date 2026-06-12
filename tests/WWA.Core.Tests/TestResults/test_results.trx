@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="0c9251f3-d299-4a0f-ae5a-8d74de5e82cb" name="m_lin@MIKE-LAPTOP-05 2026-06-12 09:36:05" runUser="MIKE-LAPTOP-05\m_lin" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-06-12T09:36:05.6039501-04:00" queuing="2026-06-12T09:36:05.6039502-04:00" start="2026-06-12T09:36:05.1781222-04:00" finish="2026-06-12T09:36:05.6291358-04:00" />
+  <TestSettings name="default" id="8ac17d60-96d8-44b0-bbf8-90b1419947f3">
+    <Deployment runDeploymentRoot="m_lin_MIKE-LAPTOP-05_2026-06-12_09_36_05" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="b706165f-53cc-4a71-a667-77022234a231" testId="b517253d-a876-6e76-47ee-96377737534d" testName="WWA.Core.Tests.CutListParserTests.Parse_Malformed_ThrowsFormatException" computerName="MIKE-LAPTOP-05" duration="00:00:00.0004891" startTime="2026-06-12T09:36:05.5881299-04:00" endTime="2026-06-12T09:36:05.5884117-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b706165f-53cc-4a71-a667-77022234a231" />
+    <UnitTestResult executionId="02ccd184-0d78-4f54-9eb2-9d7e284f84c0" testId="94e74b5c-6861-ee9c-4787-551e7e88c34e" testName="WWA.Core.Tests.FullPackerIntegrationTests.Parse_Sample_Cutlist_And_Run_FullPacker" computerName="MIKE-LAPTOP-05" duration="00:00:00.0077356" startTime="2026-06-12T09:36:05.5475767-04:00" endTime="2026-06-12T09:36:05.5855950-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="02ccd184-0d78-4f54-9eb2-9d7e284f84c0" />
+    <UnitTestResult executionId="c7da3f85-5df0-4b8e-872e-82d888b5e0a2" testId="5172ff8e-4ae6-ae1b-dec1-85846380232b" testName="WWA.Core.Tests.VisualIntegrationTests.Generates_Svg_Artifact_For_Sample_Cutlist" computerName="MIKE-LAPTOP-05" duration="00:00:00.0092618" startTime="2026-06-12T09:36:05.5858093-04:00" endTime="2026-06-12T09:36:05.5882306-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c7da3f85-5df0-4b8e-872e-82d888b5e0a2" />
+    <UnitTestResult executionId="8e7c2a45-6e4b-4e39-966b-a3d084eb28d7" testId="c379f8e6-160b-57e6-4e34-89d3d81caef2" testName="WWA.Core.Tests.FullPackerTests.Simple_Exact_Fit_One_Board_Used" computerName="MIKE-LAPTOP-05" duration="00:00:00.0009697" startTime="2026-06-12T09:36:05.5859385-04:00" endTime="2026-06-12T09:36:05.5862619-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8e7c2a45-6e4b-4e39-966b-a3d084eb28d7" />
+    <UnitTestResult executionId="2d64bc3f-a2b8-4e91-8406-30bca7b9dda4" testId="0ddba701-f7ed-b576-6490-dad56d8a609a" testName="WWA.Core.Tests.TwoDPackerTests.Unplaced_Item_Reported_When_Too_Large" computerName="MIKE-LAPTOP-05" duration="00:00:00.0003890" startTime="2026-06-12T09:36:05.5892998-04:00" endTime="2026-06-12T09:36:05.5893514-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2d64bc3f-a2b8-4e91-8406-30bca7b9dda4" />
+    <UnitTestResult executionId="8a5386dc-7191-45a0-a9a7-06d3f9bf8a74" testId="8a185c2e-85b6-719c-b469-e6d013a9b753" testName="WWA.Core.Tests.TwoDPackerIntegrationTests.Runs_On_Sample_Cutlist_Without_Exception" computerName="MIKE-LAPTOP-05" duration="00:00:00.0054603" startTime="2026-06-12T09:36:05.5860928-04:00" endTime="2026-06-12T09:36:05.5880103-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8a5386dc-7191-45a0-a9a7-06d3f9bf8a74" />
+    <UnitTestResult executionId="d6792a55-f422-4c8b-ab89-83cb024b0f6f" testId="ff09810e-29d6-56d5-21e2-96d11f46b3a3" testName="WWA.Core.Tests.ModelsTests.Constraints_ValidateAgainst_Board" computerName="MIKE-LAPTOP-05" duration="00:00:00.0021009" startTime="2026-06-12T09:36:05.5476180-04:00" endTime="2026-06-12T09:36:05.5534189-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d6792a55-f422-4c8b-ab89-83cb024b0f6f" />
+    <UnitTestResult executionId="55f5a849-16e6-4a7c-9deb-a08f3b9cbef8" testId="abc5c6a7-850b-de1c-663c-85c520d6a5b1" testName="WWA.Core.Tests.FullPackerTests.Remnant_Preservation_Prefers_Keeping_Long_Remnant" computerName="MIKE-LAPTOP-05" duration="00:00:00.0008187" startTime="2026-06-12T09:36:05.5892855-04:00" endTime="2026-06-12T09:36:05.5894228-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="55f5a849-16e6-4a7c-9deb-a08f3b9cbef8" />
+    <UnitTestResult executionId="40a9a0db-afdd-4bdb-b864-a58e6e0b0bec" testId="d18ab69a-9430-144f-21e6-0f8e09292400" testName="WWA.Core.Tests.FullPackerTests.Determinism_Same_Seed_Produces_Identical_PackingResult_JSON" computerName="MIKE-LAPTOP-05" duration="00:00:00.0270155" startTime="2026-06-12T09:36:05.5874502-04:00" endTime="2026-06-12T09:36:05.5891364-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="40a9a0db-afdd-4bdb-b864-a58e6e0b0bec" />
+    <UnitTestResult executionId="fc97ec66-8e22-40e5-be1c-689f6787ae8a" testId="2e2e7284-ad59-1ce3-eec0-1410ceb8bc4a" testName="WWA.Core.Tests.PackerInterfaceTests.Output_Contains_Allocations_For_Provided_CutItems" computerName="MIKE-LAPTOP-05" duration="00:00:00.0114455" startTime="2026-06-12T09:36:05.5466420-04:00" endTime="2026-06-12T09:36:05.5861285-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fc97ec66-8e22-40e5-be1c-689f6787ae8a" />
+    <UnitTestResult executionId="b4a8d94e-a8ff-4460-a0be-88e22edb5d34" testId="47df3042-53bc-43b1-d4a2-4b3b25d52772" testName="WWA.Core.Tests.PackerInterfaceTests.Determinism_Same_Seed_Produces_Same_Result" computerName="MIKE-LAPTOP-05" duration="00:00:00.0005943" startTime="2026-06-12T09:36:05.5875825-04:00" endTime="2026-06-12T09:36:05.5876219-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b4a8d94e-a8ff-4460-a0be-88e22edb5d34" />
+    <UnitTestResult executionId="6703e038-dbdd-4b9e-b6ab-31abf84a64bd" testId="958882b6-d8a7-d5a8-6f86-aa50600f4849" testName="WWA.Core.Tests.ModelsTests.Inventory_Add_And_FindByMinLength" computerName="MIKE-LAPTOP-05" duration="00:00:00.0039371" startTime="2026-06-12T09:36:05.5855499-04:00" endTime="2026-06-12T09:36:05.5859739-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6703e038-dbdd-4b9e-b6ab-31abf84a64bd" />
+    <UnitTestResult executionId="53b30b8c-a2a3-48c1-991f-c2df034919d8" testId="d1b0fce3-118c-afd9-545d-f147686c185b" testName="WWA.Core.Tests.SvgRendererTests.Renders_Simple_Placement_To_Svg" computerName="MIKE-LAPTOP-05" duration="00:00:00.0165628" startTime="2026-06-12T09:36:05.5476341-04:00" endTime="2026-06-12T09:36:05.5879171-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="53b30b8c-a2a3-48c1-991f-c2df034919d8" />
+    <UnitTestResult executionId="c11c3a48-68a8-4c6f-8f6d-1b9ff43c86c4" testId="58d848b6-894f-c6ae-c7ef-b5716bf36923" testName="WWA.Core.Tests.ModelsTests.Create_Valid_Models_Succeed" computerName="MIKE-LAPTOP-05" duration="00:00:00.0023771" startTime="2026-06-12T09:36:05.5852239-04:00" endTime="2026-06-12T09:36:05.5852871-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c11c3a48-68a8-4c6f-8f6d-1b9ff43c86c4" />
+    <UnitTestResult executionId="cd9f3bf1-30a0-4581-92c1-39e512ee4606" testId="3542d887-ccd7-b369-bf1e-9da3010816b3" testName="WWA.Core.Tests.ModelsTests.Validation_Rejects_Invalid_CutItem" computerName="MIKE-LAPTOP-05" duration="00:00:00.0002273" startTime="2026-06-12T09:36:05.5665758-04:00" endTime="2026-06-12T09:36:05.5666131-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cd9f3bf1-30a0-4581-92c1-39e512ee4606" />
+    <UnitTestResult executionId="089339a2-3767-4c10-8358-2ab11146b455" testId="8ed5ac56-98d0-11d0-83e0-751de4c4ef96" testName="WWA.Core.Tests.PackerInterfaceTests.Stub_Returns_Result_For_Simple_Request" computerName="MIKE-LAPTOP-05" duration="00:00:00.0005201" startTime="2026-06-12T09:36:05.5862147-04:00" endTime="2026-06-12T09:36:05.5874903-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="089339a2-3767-4c10-8358-2ab11146b455" />
+    <UnitTestResult executionId="eaaf3e05-44ff-4130-81db-4cee3cc1a26b" testId="76e9cced-ab6f-0e34-d70f-ee1ab32e17ae" testName="WWA.Core.Tests.CutListParserTests.Parse_SampleReadme_ReturnsTwoItems" computerName="MIKE-LAPTOP-05" duration="00:00:00.0023631" startTime="2026-06-12T09:36:05.5889120-04:00" endTime="2026-06-12T09:36:05.5890670-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="eaaf3e05-44ff-4130-81db-4cee3cc1a26b" />
+    <UnitTestResult executionId="49850ac4-9613-4221-ab91-6242126fab02" testId="eff86ab6-aeb7-aa78-7144-c5ad5d9ede69" testName="WWA.Core.Tests.FullPackerTests.Item_Longer_Than_Any_Board_Is_Unplaced" computerName="MIKE-LAPTOP-05" duration="00:00:00.0108993" startTime="2026-06-12T09:36:05.5475328-04:00" endTime="2026-06-12T09:36:05.5858491-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="49850ac4-9613-4221-ab91-6242126fab02" />
+    <UnitTestResult executionId="9ff2e864-fdc4-49f0-899b-18f0ff8f2619" testId="001ea505-eadc-a638-b578-24da69e93e18" testName="WWA.Core.Tests.TwoDPackerTests.Determinism_Same_Seed_Produces_Same_Json" computerName="MIKE-LAPTOP-05" duration="00:00:00.0211530" startTime="2026-06-12T09:36:05.5890316-04:00" endTime="2026-06-12T09:36:05.5891527-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9ff2e864-fdc4-49f0-899b-18f0ff8f2619" />
+    <UnitTestResult executionId="7390fd22-47ce-4f07-bf65-f1feb277a7cf" testId="163538c9-2c2f-ad48-b05a-055d0781ef2c" testName="WWA.Core.Tests.TwoDPackerTests.SimplePlacement_Fits_On_One_Board" computerName="MIKE-LAPTOP-05" duration="00:00:00.0004865" startTime="2026-06-12T09:36:05.5883766-04:00" endTime="2026-06-12T09:36:05.5889490-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7390fd22-47ce-4f07-bf65-f1feb277a7cf" />
+    <UnitTestResult executionId="b469ba7d-755f-4446-be61-4e6863174b88" testId="18ec2dfc-0e32-988b-c3a2-ace9fc2429a5" testName="WWA.Core.Tests.PdfReporterTests.GenerateFromSvg_Writes_Html_Fallback_When_No_QuestPDF" computerName="MIKE-LAPTOP-05" duration="00:00:00.0044104" startTime="2026-06-12T09:36:05.5878769-04:00" endTime="2026-06-12T09:36:05.5881650-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b469ba7d-755f-4446-be61-4e6863174b88" />
+    <UnitTestResult executionId="33ed3d68-5785-4932-8521-0d7059d5563f" testId="0d52ae48-d281-be4a-3909-bde911139d2e" testName="WWA.Core.Tests.UnitTest1.Test1" computerName="MIKE-LAPTOP-05" duration="00:00:00.0014721" startTime="2026-06-12T09:36:05.5476008-04:00" endTime="2026-06-12T09:36:05.5556533-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="33ed3d68-5785-4932-8521-0d7059d5563f" />
+    <UnitTestResult executionId="8d8c562d-b38e-417b-93ea-3e3837c07559" testId="39c6d201-6534-df12-5246-47c59ca49781" testName="WWA.Core.Tests.ModelsTests.Validation_Rejects_Invalid_Board" computerName="MIKE-LAPTOP-05" duration="00:00:00.0006613" startTime="2026-06-12T09:36:05.5658983-04:00" endTime="2026-06-12T09:36:05.5664399-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8d8c562d-b38e-417b-93ea-3e3837c07559" />
+    <UnitTestResult executionId="ab09e980-340b-4cc3-aa9e-585097d99728" testId="24d33056-b784-c676-c199-59205f06c5f6" testName="WWA.Core.Tests.TwoDPackerTests.Rotation_Allows_Fit_When_Otherwise_Too_Large" computerName="MIKE-LAPTOP-05" duration="00:00:00.0131426" startTime="2026-06-12T09:36:05.5663958-04:00" endTime="2026-06-12T09:36:05.5882967-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ab09e980-340b-4cc3-aa9e-585097d99728" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="WWA.Core.Tests.ModelsTests.Inventory_Add_And_FindByMinLength" storage="f:\lumber-sizer\tests\wwa.core.tests\bin\debug\net10.0\wwa.core.tests.dll" id="958882b6-d8a7-d5a8-6f86-aa50600f4849">
+      <Execution id="6703e038-dbdd-4b9e-b6ab-31abf84a64bd" />
+      <TestMethod codeBase="F:\lumber-sizer\tests\WWA.Core.Tests\bin\Debug\net10.0\WWA.Core.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="WWA.Core.Tests.ModelsTests" name="Inventory_Add_And_FindByMinLength" />
+    </UnitTest>
+    <UnitTest name="WWA.Core.Tests.ModelsTests.Validation_Rejects_Invalid_Board" storage="f:\lumber-sizer\tests\wwa.core.tests\bin\debug\net10.0\wwa.core.tests.dll" id="39c6d201-6534-df12-5246-47c59ca49781">
+      <Execution id="8d8c562d-b38e-417b-93ea-3e3837c07559" />
+      <TestMethod codeBase="F:\lumber-sizer\tests\WWA.Core.Tests\bin\Debug\net10.0\WWA.Core.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="WWA.Core.Tests.ModelsTests" name="Validation_Rejects_Invalid_Board" />
+    </UnitTest>
+    <UnitTest name="WWA.Core.Tests.CutListParserTests.Parse_SampleReadme_ReturnsTwoItems" storage="f:\lumber-sizer\tests\wwa.core.tests\bin\debug\net10.0\wwa.core.tests.dll" id="76e9cced-ab6f-0e34-d70f-ee1ab32e17ae">
+      <Execution id="eaaf3e05-44ff-4130-81db-4cee3cc1a26b" />
+      <TestMethod codeBase="F:\lumber-sizer\tests\WWA.Core.Tests\bin\Debug\net10.0\WWA.Core.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="WWA.Core.Tests.CutListParserTests" name="Parse_SampleReadme_ReturnsTwoItems" />
+    </UnitTest>
+    <UnitTest name="WWA.Core.Tests.FullPackerTests.Determinism_Same_Seed_Produces_Identical_PackingResult_JSON" storage="f:\lumber-sizer\tests\wwa.core.tests\bin\debug\net10.0\wwa.core.tests.dll" id="d18ab69a-9430-144f-21e6-0f8e09292400">
+      <Execution id="40a9a0db-afdd-4bdb-b864-a58e6e0b0bec" />
+      <TestMethod codeBase="F:\lumber-sizer\tests\WWA.Core.Tests\bin\Debug\net10.0\WWA.Core.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="WWA.Core.Tests.FullPackerTests" name="Determinism_Same_Seed_Produces_Identical_PackingResult_JSON" />
+    </UnitTest>
+    <UnitTest name="WWA.Core.Tests.SvgRendererTests.Renders_Simple_Placement_To_Svg" storage="f:\lumber-sizer\tests\wwa.core.tests\bin\debug\net10.0\wwa.core.tests.dll" id="d1b0fce3-118c-afd9-545d-f147686c185b">
+      <Execution id="53b30b8c-a2a3-48c1-991f-c2df034919d8" />
+      <TestMethod codeBase="F:\lumber-sizer\tests\WWA.Core.Tests\bin\Debug\net10.0\WWA.Core.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="WWA.Core.Tests.SvgRendererTests" name="Renders_Simple_Placement_To_Svg" />
+    </UnitTest>
+    <UnitTest name="WWA.Core.Tests.PackerInterfaceTests.Output_Contains_Allocations_For_Provided_CutItems" storage="f:\lumber-sizer\tests\wwa.core.tests\bin\debug\net10.0\wwa.core.tests.dll" id="2e2e7284-ad59-1ce3-eec0-1410ceb8bc4a">
+      <Execution id="fc97ec66-8e22-40e5-be1c-689f6787ae8a" />
+      <TestMethod codeBase="F:\lumber-sizer\tests\WWA.Core.Tests\bin\Debug\net10.0\WWA.Core.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="WWA.Core.Tests.PackerInterfaceTests" name="Output_Contains_Allocations_For_Provided_CutItems" />
+    </UnitTest>
+    <UnitTest name="WWA.Core.Tests.CutListParserTests.Parse_Malformed_ThrowsFormatException" storage="f:\lumber-sizer\tests\wwa.core.tests\bin\debug\net10.0\wwa.core.tests.dll" id="b517253d-a876-6e76-47ee-96377737534d">
+      <Execution id="b706165f-53cc-4a71-a667-77022234a231" />
+      <TestMethod codeBase="F:\lumber-sizer\tests\WWA.Core.Tests\bin\Debug\net10.0\WWA.Core.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="WWA.Core.Tests.CutListParserTests" name="Parse_Malformed_ThrowsFormatException" />
+    </UnitTest>
+    <UnitTest name="WWA.Core.Tests.FullPackerTests.Simple_Exact_Fit_One_Board_Used" storage="f:\lumber-sizer\tests\wwa.core.tests\bin\debug\net10.0\wwa.core.tests.dll" id="c379f8e6-160b-57e6-4e34-89d3d81caef2">
+      <Execution id="8e7c2a45-6e4b-4e39-966b-a3d084eb28d7" />
+      <TestMethod codeBase="F:\lumber-sizer\tests\WWA.Core.Tests\bin\Debug\net10.0\WWA.Core.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="WWA.Core.Tests.FullPackerTests" name="Simple_Exact_Fit_One_Board_Used" />
+    </UnitTest>
+    <UnitTest name="WWA.Core.Tests.VisualIntegrationTests.Generates_Svg_Artifact_For_Sample_Cutlist" storage="f:\lumber-sizer\tests\wwa.core.tests\bin\debug\net10.0\wwa.core.tests.dll" id="5172ff8e-4ae6-ae1b-dec1-85846380232b">
+      <Execution id="c7da3f85-5df0-4b8e-872e-82d888b5e0a2" />
+      <TestMethod codeBase="F:\lumber-sizer\tests\WWA.Core.Tests\bin\Debug\net10.0\WWA.Core.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="WWA.Core.Tests.VisualIntegrationTests" name="Generates_Svg_Artifact_For_Sample_Cutlist" />
+    </UnitTest>
+    <UnitTest name="WWA.Core.Tests.UnitTest1.Test1" storage="f:\lumber-sizer\tests\wwa.core.tests\bin\debug\net10.0\wwa.core.tests.dll" id="0d52ae48-d281-be4a-3909-bde911139d2e">
+      <Execution id="33ed3d68-5785-4932-8521-0d7059d5563f" />
+      <TestMethod codeBase="F:\lumber-sizer\tests\WWA.Core.Tests\bin\Debug\net10.0\WWA.Core.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="WWA.Core.Tests.UnitTest1" name="Test1" />
+    </UnitTest>
+    <UnitTest name="WWA.Core.Tests.FullPackerTests.Remnant_Preservation_Prefers_Keeping_Long_Remnant" storage="f:\lumber-sizer\tests\wwa.core.tests\bin\debug\net10.0\wwa.core.tests.dll" id="abc5c6a7-850b-de1c-663c-85c520d6a5b1">
+      <Execution id="55f5a849-16e6-4a7c-9deb-a08f3b9cbef8" />
+      <TestMethod codeBase="F:\lumber-sizer\tests\WWA.Core.Tests\bin\Debug\net10.0\WWA.Core.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="WWA.Core.Tests.FullPackerTests" name="Remnant_Preservation_Prefers_Keeping_Long_Remnant" />
+    </UnitTest>
+    <UnitTest name="WWA.Core.Tests.FullPackerTests.Item_Longer_Than_Any_Board_Is_Unplaced" storage="f:\lumber-sizer\tests\wwa.core.tests\bin\debug\net10.0\wwa.core.tests.dll" id="eff86ab6-aeb7-aa78-7144-c5ad5d9ede69">
+      <Execution id="49850ac4-9613-4221-ab91-6242126fab02" />
+      <TestMethod codeBase="F:\lumber-sizer\tests\WWA.Core.Tests\bin\Debug\net10.0\WWA.Core.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="WWA.Core.Tests.FullPackerTests" name="Item_Longer_Than_Any_Board_Is_Unplaced" />
+    </UnitTest>
+    <UnitTest name="WWA.Core.Tests.ModelsTests.Constraints_ValidateAgainst_Board" storage="f:\lumber-sizer\tests\wwa.core.tests\bin\debug\net10.0\wwa.core.tests.dll" id="ff09810e-29d6-56d5-21e2-96d11f46b3a3">
+      <Execution id="d6792a55-f422-4c8b-ab89-83cb024b0f6f" />
+      <TestMethod codeBase="F:\lumber-sizer\tests\WWA.Core.Tests\bin\Debug\net10.0\WWA.Core.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="WWA.Core.Tests.ModelsTests" name="Constraints_ValidateAgainst_Board" />
+    </UnitTest>
+    <UnitTest name="WWA.Core.Tests.TwoDPackerIntegrationTests.Runs_On_Sample_Cutlist_Without_Exception" storage="f:\lumber-sizer\tests\wwa.core.tests\bin\debug\net10.0\wwa.core.tests.dll" id="8a185c2e-85b6-719c-b469-e6d013a9b753">
+      <Execution id="8a5386dc-7191-45a0-a9a7-06d3f9bf8a74" />
+      <TestMethod codeBase="F:\lumber-sizer\tests\WWA.Core.Tests\bin\Debug\net10.0\WWA.Core.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="WWA.Core.Tests.TwoDPackerIntegrationTests" name="Runs_On_Sample_Cutlist_Without_Exception" />
+    </UnitTest>
+    <UnitTest name="WWA.Core.Tests.PackerInterfaceTests.Stub_Returns_Result_For_Simple_Request" storage="f:\lumber-sizer\tests\wwa.core.tests\bin\debug\net10.0\wwa.core.tests.dll" id="8ed5ac56-98d0-11d0-83e0-751de4c4ef96">
+      <Execution id="089339a2-3767-4c10-8358-2ab11146b455" />
+      <TestMethod codeBase="F:\lumber-sizer\tests\WWA.Core.Tests\bin\Debug\net10.0\WWA.Core.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="WWA.Core.Tests.PackerInterfaceTests" name="Stub_Returns_Result_For_Simple_Request" />
+    </UnitTest>
+    <UnitTest name="WWA.Core.Tests.TwoDPackerTests.Determinism_Same_Seed_Produces_Same_Json" storage="f:\lumber-sizer\tests\wwa.core.tests\bin\debug\net10.0\wwa.core.tests.dll" id="001ea505-eadc-a638-b578-24da69e93e18">
+      <Execution id="9ff2e864-fdc4-49f0-899b-18f0ff8f2619" />
+      <TestMethod codeBase="F:\lumber-sizer\tests\WWA.Core.Tests\bin\Debug\net10.0\WWA.Core.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="WWA.Core.Tests.TwoDPackerTests" name="Determinism_Same_Seed_Produces_Same_Json" />
+    </UnitTest>
+    <UnitTest name="WWA.Core.Tests.TwoDPackerTests.SimplePlacement_Fits_On_One_Board" storage="f:\lumber-sizer\tests\wwa.core.tests\bin\debug\net10.0\wwa.core.tests.dll" id="163538c9-2c2f-ad48-b05a-055d0781ef2c">
+      <Execution id="7390fd22-47ce-4f07-bf65-f1feb277a7cf" />
+      <TestMethod codeBase="F:\lumber-sizer\tests\WWA.Core.Tests\bin\Debug\net10.0\WWA.Core.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="WWA.Core.Tests.TwoDPackerTests" name="SimplePlacement_Fits_On_One_Board" />
+    </UnitTest>
+    <UnitTest name="WWA.Core.Tests.ModelsTests.Validation_Rejects_Invalid_CutItem" storage="f:\lumber-sizer\tests\wwa.core.tests\bin\debug\net10.0\wwa.core.tests.dll" id="3542d887-ccd7-b369-bf1e-9da3010816b3">
+      <Execution id="cd9f3bf1-30a0-4581-92c1-39e512ee4606" />
+      <TestMethod codeBase="F:\lumber-sizer\tests\WWA.Core.Tests\bin\Debug\net10.0\WWA.Core.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="WWA.Core.Tests.ModelsTests" name="Validation_Rejects_Invalid_CutItem" />
+    </UnitTest>
+    <UnitTest name="WWA.Core.Tests.FullPackerIntegrationTests.Parse_Sample_Cutlist_And_Run_FullPacker" storage="f:\lumber-sizer\tests\wwa.core.tests\bin\debug\net10.0\wwa.core.tests.dll" id="94e74b5c-6861-ee9c-4787-551e7e88c34e">
+      <Execution id="02ccd184-0d78-4f54-9eb2-9d7e284f84c0" />
+      <TestMethod codeBase="F:\lumber-sizer\tests\WWA.Core.Tests\bin\Debug\net10.0\WWA.Core.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="WWA.Core.Tests.FullPackerIntegrationTests" name="Parse_Sample_Cutlist_And_Run_FullPacker" />
+    </UnitTest>
+    <UnitTest name="WWA.Core.Tests.TwoDPackerTests.Rotation_Allows_Fit_When_Otherwise_Too_Large" storage="f:\lumber-sizer\tests\wwa.core.tests\bin\debug\net10.0\wwa.core.tests.dll" id="24d33056-b784-c676-c199-59205f06c5f6">
+      <Execution id="ab09e980-340b-4cc3-aa9e-585097d99728" />
+      <TestMethod codeBase="F:\lumber-sizer\tests\WWA.Core.Tests\bin\Debug\net10.0\WWA.Core.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="WWA.Core.Tests.TwoDPackerTests" name="Rotation_Allows_Fit_When_Otherwise_Too_Large" />
+    </UnitTest>
+    <UnitTest name="WWA.Core.Tests.PdfReporterTests.GenerateFromSvg_Writes_Html_Fallback_When_No_QuestPDF" storage="f:\lumber-sizer\tests\wwa.core.tests\bin\debug\net10.0\wwa.core.tests.dll" id="18ec2dfc-0e32-988b-c3a2-ace9fc2429a5">
+      <Execution id="b469ba7d-755f-4446-be61-4e6863174b88" />
+      <TestMethod codeBase="F:\lumber-sizer\tests\WWA.Core.Tests\bin\Debug\net10.0\WWA.Core.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="WWA.Core.Tests.PdfReporterTests" name="GenerateFromSvg_Writes_Html_Fallback_When_No_QuestPDF" />
+    </UnitTest>
+    <UnitTest name="WWA.Core.Tests.TwoDPackerTests.Unplaced_Item_Reported_When_Too_Large" storage="f:\lumber-sizer\tests\wwa.core.tests\bin\debug\net10.0\wwa.core.tests.dll" id="0ddba701-f7ed-b576-6490-dad56d8a609a">
+      <Execution id="2d64bc3f-a2b8-4e91-8406-30bca7b9dda4" />
+      <TestMethod codeBase="F:\lumber-sizer\tests\WWA.Core.Tests\bin\Debug\net10.0\WWA.Core.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="WWA.Core.Tests.TwoDPackerTests" name="Unplaced_Item_Reported_When_Too_Large" />
+    </UnitTest>
+    <UnitTest name="WWA.Core.Tests.PackerInterfaceTests.Determinism_Same_Seed_Produces_Same_Result" storage="f:\lumber-sizer\tests\wwa.core.tests\bin\debug\net10.0\wwa.core.tests.dll" id="47df3042-53bc-43b1-d4a2-4b3b25d52772">
+      <Execution id="b4a8d94e-a8ff-4460-a0be-88e22edb5d34" />
+      <TestMethod codeBase="F:\lumber-sizer\tests\WWA.Core.Tests\bin\Debug\net10.0\WWA.Core.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="WWA.Core.Tests.PackerInterfaceTests" name="Determinism_Same_Seed_Produces_Same_Result" />
+    </UnitTest>
+    <UnitTest name="WWA.Core.Tests.ModelsTests.Create_Valid_Models_Succeed" storage="f:\lumber-sizer\tests\wwa.core.tests\bin\debug\net10.0\wwa.core.tests.dll" id="58d848b6-894f-c6ae-c7ef-b5716bf36923">
+      <Execution id="c11c3a48-68a8-4c6f-8f6d-1b9ff43c86c4" />
+      <TestMethod codeBase="F:\lumber-sizer\tests\WWA.Core.Tests\bin\Debug\net10.0\WWA.Core.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="WWA.Core.Tests.ModelsTests" name="Create_Valid_Models_Succeed" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="b517253d-a876-6e76-47ee-96377737534d" executionId="b706165f-53cc-4a71-a667-77022234a231" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="94e74b5c-6861-ee9c-4787-551e7e88c34e" executionId="02ccd184-0d78-4f54-9eb2-9d7e284f84c0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5172ff8e-4ae6-ae1b-dec1-85846380232b" executionId="c7da3f85-5df0-4b8e-872e-82d888b5e0a2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c379f8e6-160b-57e6-4e34-89d3d81caef2" executionId="8e7c2a45-6e4b-4e39-966b-a3d084eb28d7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0ddba701-f7ed-b576-6490-dad56d8a609a" executionId="2d64bc3f-a2b8-4e91-8406-30bca7b9dda4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8a185c2e-85b6-719c-b469-e6d013a9b753" executionId="8a5386dc-7191-45a0-a9a7-06d3f9bf8a74" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ff09810e-29d6-56d5-21e2-96d11f46b3a3" executionId="d6792a55-f422-4c8b-ab89-83cb024b0f6f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="abc5c6a7-850b-de1c-663c-85c520d6a5b1" executionId="55f5a849-16e6-4a7c-9deb-a08f3b9cbef8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d18ab69a-9430-144f-21e6-0f8e09292400" executionId="40a9a0db-afdd-4bdb-b864-a58e6e0b0bec" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2e2e7284-ad59-1ce3-eec0-1410ceb8bc4a" executionId="fc97ec66-8e22-40e5-be1c-689f6787ae8a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="47df3042-53bc-43b1-d4a2-4b3b25d52772" executionId="b4a8d94e-a8ff-4460-a0be-88e22edb5d34" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="958882b6-d8a7-d5a8-6f86-aa50600f4849" executionId="6703e038-dbdd-4b9e-b6ab-31abf84a64bd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d1b0fce3-118c-afd9-545d-f147686c185b" executionId="53b30b8c-a2a3-48c1-991f-c2df034919d8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="58d848b6-894f-c6ae-c7ef-b5716bf36923" executionId="c11c3a48-68a8-4c6f-8f6d-1b9ff43c86c4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3542d887-ccd7-b369-bf1e-9da3010816b3" executionId="cd9f3bf1-30a0-4581-92c1-39e512ee4606" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8ed5ac56-98d0-11d0-83e0-751de4c4ef96" executionId="089339a2-3767-4c10-8358-2ab11146b455" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="76e9cced-ab6f-0e34-d70f-ee1ab32e17ae" executionId="eaaf3e05-44ff-4130-81db-4cee3cc1a26b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="eff86ab6-aeb7-aa78-7144-c5ad5d9ede69" executionId="49850ac4-9613-4221-ab91-6242126fab02" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="001ea505-eadc-a638-b578-24da69e93e18" executionId="9ff2e864-fdc4-49f0-899b-18f0ff8f2619" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="163538c9-2c2f-ad48-b05a-055d0781ef2c" executionId="7390fd22-47ce-4f07-bf65-f1feb277a7cf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="18ec2dfc-0e32-988b-c3a2-ace9fc2429a5" executionId="b469ba7d-755f-4446-be61-4e6863174b88" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0d52ae48-d281-be4a-3909-bde911139d2e" executionId="33ed3d68-5785-4932-8521-0d7059d5563f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="39c6d201-6534-df12-5246-47c59ca49781" executionId="8d8c562d-b38e-417b-93ea-3e3837c07559" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="24d33056-b784-c676-c199-59205f06c5f6" executionId="ab09e980-340b-4cc3-aa9e-585097d99728" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="24" executed="24" passed="24" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET 10.0.8)&#xD;
+[xUnit.net 00:00:00.04]   Discovering: WWA.Core.Tests&#xD;
+[xUnit.net 00:00:00.07]   Discovered:  WWA.Core.Tests&#xD;
+[xUnit.net 00:00:00.08]   Starting:    WWA.Core.Tests&#xD;
+[xUnit.net 00:00:00.14]   Finished:    WWA.Core.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

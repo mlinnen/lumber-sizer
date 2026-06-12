@@ -6,11 +6,12 @@ using Xunit;
 using WWA.Core.BinPacking;
 using WWA.Core.IO;
 using WWA.Core.Models;
+using WWA.Core.Reporting;
 using WWA.Core.Interfaces;
 
 namespace WWA.Core.Tests;
 
-public class TwoDPackerIntegrationTests
+public class VisualIntegrationTests
 {
     private static string FindRepoRoot()
     {
@@ -24,7 +25,7 @@ public class TwoDPackerIntegrationTests
     }
 
     [Fact]
-    public async Task Runs_On_Sample_Cutlist_Without_Exception()
+    public async Task Generates_Svg_Artifact_For_Sample_Cutlist()
     {
         var repoRoot = FindRepoRoot();
         var sample = Path.Combine(repoRoot, "tests", "WWA.Core.Tests", $"runtime_simple_cutlist_{Guid.NewGuid()}.txt");
@@ -33,7 +34,6 @@ public class TwoDPackerIntegrationTests
         var cutList = CutListParser.Parse(sample);
 
         var inv = new Inventory();
-        // provide a variety of boards
         inv.Add(new Board(100, 2, quantity: 1));
         inv.Add(new Board(100, 6, quantity: 1));
         inv.Add(new Board(200, 12, quantity: 1));
@@ -42,7 +42,15 @@ public class TwoDPackerIntegrationTests
         var req = new PackingRequest { CutList = cutList, Inventory = inv, Constraints = new Constraints(), Seed = 7 };
         var res = await packer.PackAsync(req);
 
-        Assert.NotNull(res);
-        Assert.True(res.Allocations.Count >= 1);
+        var renderer = new SvgRenderer();
+        var svg = renderer.Render(res);
+
+        var artifacts = Path.Combine(repoRoot, "artifacts");
+        Directory.CreateDirectory(artifacts);
+        var outPath = Path.Combine(artifacts, "visual_sample.svg");
+        File.WriteAllText(outPath, svg);
+
+        Assert.True(File.Exists(outPath));
+        Assert.True(new FileInfo(outPath).Length > 0);
     }
 }

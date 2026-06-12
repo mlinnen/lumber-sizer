@@ -24,7 +24,7 @@ namespace WWA.Core.Tests
         {
             var repoRoot = FindRepoRoot();
                         // Create a small runtime sample file in the test folder to avoid build/copy issues
-                        var sample = Path.Combine(repoRoot, "tests", "WWA.Core.Tests", "runtime_simple_cutlist.txt");
+                        var sample = Path.Combine(repoRoot, "tests", "WWA.Core.Tests", $"runtime_simple_cutlist_{Guid.NewGuid()}.txt");
                         File.WriteAllText(sample, "12in x 2in # leg\r\n24in x 6in # shelf\r\n");
 
                         var rawLines = File.ReadAllLines(sample);
