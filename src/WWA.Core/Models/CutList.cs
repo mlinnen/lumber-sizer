@@ -14,7 +14,7 @@ namespace WWA.Core.Models
 
         public CutList() { }
 
-        public CutList(string projectName) : this()
+        public CutList(string? projectName) : this()
         {
             ProjectName = projectName;
         }
