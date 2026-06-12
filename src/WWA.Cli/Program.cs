@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using WWA.Core.IO;
@@ -14,7 +14,8 @@ async Task<int> Main(string[] args)
         Console.WriteLine("WWA CLI\nCommands:\n  export-pdf <input-cutlist> <output-pdf-or-html> [--packer deterministic|full|two-d] [--seed N]");
         return 0;
     }
-n    var cmd = args[0].ToLowerInvariant();
+
+    var cmd = args[0].ToLowerInvariant();
     if (cmd == "export-pdf")
     {
         if (args.Length < 3)
@@ -22,11 +23,13 @@ async Task<int> Main(string[] args)
             Console.Error.WriteLine("Usage: export-pdf <input-cutlist> <output-pdf-or-html> [--packer deterministic|full|two-d] [--seed N]");
             return 2;
         }
-n        var input = args[1];
+
+        var input = args[1];
         var output = args[2];
         string packerName = "full";
         int? seed = null;
-n        for (int i = 3; i < args.Length; i++)
+
+        for (int i = 3; i < args.Length; i++)
         {
             var a = args[i];
             if (a == "--packer" && i + 1 < args.Length)
@@ -38,13 +41,16 @@ async Task<int> Main(string[] args)
                 if (int.TryParse(args[++i], out var s)) seed = s;
             }
         }
-n        try
+
+        try
         {
             var cutlist = CutListParser.Parse(input);
-n            // Prepare a simple default inventory if none provided: 5 boards 96in x 48in
+
+            // Prepare a simple default inventory if none provided: 5 boards 96in x 48in
             var inventory = new Inventory();
             inventory.Add(new Board(96, 48, null, "A", 5));
-n            var request = new PackingRequest { CutList = cutlist, Inventory = inventory, Seed = seed };
+
+            var request = new PackingRequest { CutList = cutlist, Inventory = inventory, Seed = seed };
 
             IPacker packer = packerName switch
             {
@@ -70,7 +76,8 @@ async Task<int> Main(string[] args)
             return 3;
         }
     }
-n    Console.Error.WriteLine($"Unknown command: {cmd}");
+
+    Console.Error.WriteLine($"Unknown command: {cmd}");
     return 1;
 }
 
