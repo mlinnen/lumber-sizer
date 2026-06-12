@@ -48,27 +48,21 @@ namespace WWA.Core.BinPacking
                 }
             }
 
-            // Sort by longer side descending to prefer large pieces
+            // Sort by longer side (max of length,width) descending, then by area to prefer large pieces
             var swSort = System.Diagnostics.Stopwatch.StartNew();
-            // Sort by area (length * width) descending to prefer pieces that occupy more area
-            var groups = expanded.GroupBy(e => Math.Round(e.Item.Length * (e.Item.Width ?? 1.0), 6)).OrderByDescending(g => g.Key);
-            var sorted = new List<ExpandedItem>();
-            foreach (var g in groups)
+            var sorted = expanded
+                .OrderByDescending(e => Math.Max(e.Item.Length, e.Item.Width ?? 0.0))
+                .ThenByDescending(e => e.Item.Length * (e.Item.Width ?? 1.0))
+                .ThenBy(e => e.OriginalIndex)
+                .ToList();
+            // apply deterministic shuffle within exact-equality spans when rng provided
+            if (rng != null)
             {
-                var list = g.ToList();
-                if (rng != null && list.Count > 1)
+                for (int i = 0; i < sorted.Count; i++)
                 {
-                    for (int i = list.Count - 1; i > 0; i--)
-                    {
-                        int j = rng.Next(i + 1);
-                        var tmp = list[i]; list[i] = list[j]; list[j] = tmp;
-                    }
+                    int j = rng.Next(i, sorted.Count);
+                    var tmp = sorted[i]; sorted[i] = sorted[j]; sorted[j] = tmp;
                 }
-                else
-                {
-                    list = list.OrderBy(x => x.OriginalIndex).ToList();
-                }
-                sorted.AddRange(list);
             }
             swSort.Stop();
 
@@ -83,193 +77,143 @@ namespace WWA.Core.BinPacking
             long placementSuccesses = 0;
 
             var swPlace = System.Diagnostics.Stopwatch.StartNew();
-            foreach (var exp in sorted)
+
+            // Greedy per-board packing: iterate boards and try to place as many remaining items as possible on each board.
+            var remaining = new List<ExpandedItem>(sorted);
+
+            foreach (var bs in boardStates)
             {
-                var item = exp.Item;
-
-                double bestRemAfter = double.MaxValue;
-                BoardState? bestBoard = null;
-                Shelf? bestShelf = null;
-                bool bestRotated = false;
-                double chosenWidth = 0;
-                double chosenLength = 0;
-
-                // Consider both orientations (if allowed)
-                var orientations = new List<(double w, double l, bool rotated)>();
-                if (item.Width.HasValue)
+                // iterate copy since we'll remove placed items
+                var toCheck = new List<ExpandedItem>(remaining);
+                foreach (var exp in toCheck)
                 {
-                    orientations.Add((item.Width.Value, item.Length, false));
-                    if (item.AllowRotated) orientations.Add((item.Length, item.Width.Value, true));
-                }
-                else
-                {
-                    // width not specified: treat as flexible, try no-rotation only (length stays)
-                    orientations.Add((0.0, item.Length, false));
-                }
+                    var item = exp.Item;
 
-                foreach (var bs in boardStates)
-                {
+                    double bestRemAfter = double.MaxValue;
+                    Shelf? bestShelf = null;
+                    bool bestRotated = false;
+                    double chosenWidth = 0;
+                    double chosenLength = 0;
+
+                    // Consider orientations
+                    var orientations = new List<(double w, double l, bool rotated)>();
+                    if (item.Width.HasValue)
+                    {
+                        orientations.Add((item.Width.Value, item.Length, false));
+                        if (item.AllowRotated) orientations.Add((item.Length, item.Width.Value, true));
+                    }
+                    else
+                    {
+                        orientations.Add((0.0, item.Length, false));
+                    }
+
+                    // Quick board usability
                     boardChecks++;
-                    // quick board usability check
                     if (!bs.Board.IsUsableFor(item)) continue;
 
                     foreach (var o in orientations)
                     {
                         orientationChecks++;
-                        double reqW = o.w; // 0 means flexible
+                        double reqW = o.w;
                         double reqL = o.l;
 
-                        // Try existing shelves
+                        // existing shelves
                         foreach (var sh in bs.Shelves)
                         {
                             shelfChecks++;
-                            // shelf height must accomodate item width (or width unspecified)
                             if (reqW > 0 && reqW > sh.Height + 1e-9) continue;
                             if (sh.RemainingLength + 1e-9 < reqL) continue;
 
                             double remAfter = sh.RemainingLength - reqL;
-                            if (request.Constraints.PreserveLongRemnants)
-                            {
-                                // prefer leaving small remnant (< MinRemnantLength)
-                                if (remAfter >= request.Constraints.MinRemnantLength)
-                                {
-                                    // penalize by adding a small epsilon to remAfter to deprioritize
-                                    remAfter += 1e3;
-                                }
-                            }
+                            if (request.Constraints.PreserveLongRemnants && remAfter >= request.Constraints.MinRemnantLength) remAfter += 1e3;
 
                             if (remAfter < bestRemAfter - 1e-9)
                             {
                                 bestRemAfter = remAfter;
-                                bestBoard = bs;
                                 bestShelf = sh;
                                 bestRotated = o.rotated;
                                 chosenWidth = Math.Max(reqW, sh.Height);
                                 chosenLength = reqL;
                             }
-                            else if (Math.Abs(remAfter - bestRemAfter) <= 1e-9)
-                            {
-                                // tie: deterministic choice between boards/shelves
-                                // choose lower board index unless rng specified
-                                if (bestBoard != null)
-                                {
-                                    if (rng != null)
-                                    {
-                                        if (rng.Next(2) == 0)
-                                        {
-                                            bestBoard = bs; bestShelf = sh; bestRotated = o.rotated; chosenWidth = Math.Max(reqW, sh.Height); chosenLength = reqL;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (bs.Index < bestBoard.Index)
-                                        {
-                                            bestBoard = bs; bestShelf = sh; bestRotated = o.rotated; chosenWidth = Math.Max(reqW, sh.Height); chosenLength = reqL;
-                                        }
-                                    }
-                                }
-                            }
                         }
 
-                                // Try creating a new shelf at bottom
-                                double usedHeight = bs.TotalShelvesHeight;
+                        // try new shelf
+                        double usedHeight = bs.TotalShelvesHeight;
                         if (reqW == 0.0)
                         {
-                            // flexible width: choose a reasonable shelf height based on item size (not the full remaining width)
-                            double desired = item.Width ?? 6.0; // default small shelf
+                            double desired = item.Width ?? 6.0;
                             reqW = Math.Min(bs.Board.Width - usedHeight, Math.Max(desired, 6.0));
                         }
 
                         if (reqW <= bs.Board.Width - usedHeight + 1e-9 && bs.Board.Length + 1e-9 >= reqL)
                         {
-                            // candidate new shelf
                             double remAfter = bs.Board.Length - reqL;
-                            if (request.Constraints.PreserveLongRemnants)
-                            {
-                                if (remAfter >= request.Constraints.MinRemnantLength) remAfter += 1e3;
-                            }
+                            if (request.Constraints.PreserveLongRemnants && remAfter >= request.Constraints.MinRemnantLength) remAfter += 1e3;
 
                             if (remAfter < bestRemAfter - 1e-9)
                             {
                                 bestRemAfter = remAfter;
-                                bestBoard = bs;
                                 bestShelf = null; // indicate new shelf
                                 bestRotated = o.rotated;
                                 chosenWidth = reqW;
                                 chosenLength = reqL;
                             }
-                            else if (Math.Abs(remAfter - bestRemAfter) <= 1e-9)
-                            {
-                                if (bestBoard != null)
-                                {
-                                    if (rng != null)
-                                    {
-                                        if (rng.Next(2) == 0)
-                                        {
-                                            bestBoard = bs; bestShelf = null; bestRotated = o.rotated; chosenWidth = reqW; chosenLength = reqL;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (bs.Index < bestBoard.Index)
-                                        {
-                                            bestBoard = bs; bestShelf = null; bestRotated = o.rotated; chosenWidth = reqW; chosenLength = reqL;
-                                        }
-                                    }
-                                }
-                            }
                         }
                     }
+
+                    if (bestShelf == null && bestRemAfter == double.MaxValue)
+                    {
+                        // couldn't place on this board
+                        continue;
+                    }
+
+                    // place on bs
+                    Shelf targetShelf;
+                    if (bestShelf == null)
+                    {
+                        targetShelf = bs.CreateShelf(chosenWidth);
+                        newShelfCreates++;
+                    }
+                    else
+                    {
+                        targetShelf = bestShelf;
+                    }
+
+                    double xOffset = targetShelf.XOffset;
+                    double yOffset = targetShelf.YOffset;
+
+                    targetShelf.XOffset += chosenLength;
+                    targetShelf.RemainingLength = Math.Max(0.0, targetShelf.RemainingLength - chosenLength);
+                    bs.MaxUsedAlongLength = Math.Max(bs.MaxUsedAlongLength, targetShelf.XOffset);
+
+                    var alloc = result.Allocations.FirstOrDefault(a => a.BoardId == bs.Board.Id);
+                    if (alloc == null)
+                    {
+                        alloc = new BoardAllocation { BoardId = bs.Board.Id, OriginalBoardLength = bs.OriginalLength };
+                        result.Allocations.Add(alloc);
+                    }
+
+                    alloc.Placements2D.Add(new Placement2D
+                    {
+                        CutItemId = item.Id,
+                        CutItem = item,
+                        XOffset = xOffset,
+                        YOffset = yOffset,
+                        Width = chosenWidth,
+                        Length = chosenLength,
+                        Rotated = bestRotated
+                    });
+
+                    placementSuccesses++;
+                    // remove from remaining
+                    remaining.Remove(exp);
                 }
 
-                if (bestBoard == null)
-                {
-                    // no fit
-                    result.UnplacedItems.Add(item);
-                    continue;
-                }
-
-                // perform placement on bestBoard/bestShelf
-                Shelf targetShelf;
-                if (bestShelf == null)
-                {
-                    targetShelf = bestBoard.CreateShelf(chosenWidth);
-                    newShelfCreates++;
-                }
-                else
-                {
-                    targetShelf = bestShelf;
-                }
-
-                double xOffset = targetShelf.XOffset;
-                double yOffset = targetShelf.YOffset;
-
-                targetShelf.XOffset += chosenLength;
-                targetShelf.RemainingLength = Math.Max(0.0, targetShelf.RemainingLength - chosenLength);
-                // update board-level cached metrics
-                bestBoard.MaxUsedAlongLength = Math.Max(bestBoard.MaxUsedAlongLength, targetShelf.XOffset);
-
-                // record allocation
-                var alloc = result.Allocations.FirstOrDefault(a => a.BoardId == bestBoard.Board.Id);
-                if (alloc == null)
-                {
-                    alloc = new BoardAllocation { BoardId = bestBoard.Board.Id, OriginalBoardLength = bestBoard.OriginalLength };
-                    result.Allocations.Add(alloc);
-                }
-
-                alloc.Placements2D.Add(new Placement2D
-                {
-                    CutItemId = item.Id,
-                    CutItem = item,
-                    XOffset = xOffset,
-                    YOffset = yOffset,
-                    Width = chosenWidth,
-                    Length = chosenLength,
-                    Rotated = bestRotated
-                });
-
-                placementSuccesses++;
+                if (remaining.Count == 0) break;
             }
+
+            // any leftover items are unplaced
+            foreach (var exp in remaining) result.UnplacedItems.Add(exp.Item);
 
             // Build leftovers and metrics
             double totalOriginal = 0;

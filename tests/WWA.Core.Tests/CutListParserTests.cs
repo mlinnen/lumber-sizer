@@ -25,7 +25,11 @@ namespace WWA.Core.Tests
             var repoRoot = FindRepoRoot();
                         // Create a small runtime sample file in the test folder to avoid build/copy issues
                         var sample = Path.Combine(repoRoot, "tests", "WWA.Core.Tests", $"runtime_simple_cutlist_{Guid.NewGuid()}.txt");
-                        File.WriteAllText(sample, "12in x 2in # leg\r\n24in x 6in # shelf\r\n");
+                        using (var fs = new System.IO.FileStream(sample, System.IO.FileMode.Create, System.IO.FileAccess.Write, System.IO.FileShare.ReadWrite))
+                        using (var sw = new System.IO.StreamWriter(fs))
+                        {
+                            sw.Write("12in x 2in # leg\r\n24in x 6in # shelf\r\n");
+                        }
 
                         var rawLines = File.ReadAllLines(sample);
                         Assert.Equal(2, rawLines.Length);

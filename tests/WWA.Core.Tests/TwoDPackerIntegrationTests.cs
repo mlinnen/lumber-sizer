@@ -28,7 +28,11 @@ public class TwoDPackerIntegrationTests
     {
         var repoRoot = FindRepoRoot();
         var sample = Path.Combine(Path.GetTempPath(), $"runtime_simple_cutlist_{Guid.NewGuid()}.txt");
-        File.WriteAllText(sample, "12in x 2in # leg\r\n24in x 6in # shelf\r\n");
+                using (var fs = new System.IO.FileStream(sample, System.IO.FileMode.Create, System.IO.FileAccess.Write, System.IO.FileShare.ReadWrite))
+                using (var sw = new System.IO.StreamWriter(fs))
+                {
+                    sw.Write("12in x 2in # leg\r\n24in x 6in # shelf\r\n");
+                }
 
         var cutList = CutListParser.Parse(sample);
 
