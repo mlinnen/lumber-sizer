@@ -22,40 +22,8 @@ namespace WWA.Core.Reporting
             if (string.IsNullOrWhiteSpace(outputPath)) throw new ArgumentNullException(nameof(outputPath));
 
             // Try to detect QuestPDF. If present, we would integrate. For M1 we provide a safe fallback stub.
-            var questType = Type.GetType("QuestPDF.Fluent.Document, QuestPDF");
-            if (questType != null)
-            {
-                // Lightweight, reliable QuestPDF integration: embed SVG as raw text in a PDF page (first-pass).
-                // This avoids adding heavy rasterization dependencies in M1 while still producing a PDF.
-                try
-                {
-                    var doc = QuestPDF.Fluent.Document.Create(container =>
-                    {
-                        container.Page(page =>
-                        {
-                            page.Size(QuestPDF.Helpers.PageSizes.A4);
-                            page.Margin(20);
-                            page.PageColor(QuestPDF.Helpers.Colors.White);
-                            page.DefaultTextStyle(x => x.FontSize(10));
-
-                            page.Content().Column(col =>
-                            {
-                                col.Item().Text("Cut-sheet SVG (raw):").SemiBold().FontSize(12);
-                                col.Item().Text(svg).FontSize(8);
-                            });
-                        });
-                    });
-
-                    Directory.CreateDirectory(Path.GetDirectoryName(outputPath) ?? ".");
-                    doc.GeneratePdf(outputPath);
-                    return;
-                }
-                catch (Exception ex)
-                {
-                    // If QuestPDF fails for any reason, fall back to HTML writer below and surface the exception in logs.
-                    Console.Error.WriteLine("QuestPDF integration failed: " + ex.Message);
-                }
-            }
+            // For M1 we provide a safe, cross-platform fallback that writes an HTML file embedding the SVG.
+            // Full QuestPDF integration (rendering SVG as an image) is a follow-up: see todo keaton-questpdf.
 
             // Fallback: write an HTML file that embeds the SVG so users can open in a browser.
             var outDir = Path.GetDirectoryName(Path.GetFullPath(outputPath)) ?? Directory.GetCurrentDirectory();
