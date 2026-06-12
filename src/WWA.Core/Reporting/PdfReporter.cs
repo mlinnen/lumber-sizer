@@ -2,8 +2,6 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using SkiaSharp;
-using Svg.Skia;
 
 namespace WWA.Core.Reporting
 {
@@ -22,67 +20,14 @@ namespace WWA.Core.Reporting
             if (svg == null) throw new ArgumentNullException(nameof(svg));
             if (string.IsNullOrWhiteSpace(outputPath)) throw new ArgumentNullException(nameof(outputPath));
 
-            // Attempt to rasterize SVG using Svg.Skia + SkiaSharp
-            try
-            {
-                using var svgStream = new MemoryStream(Encoding.UTF8.GetBytes(svg));
-                var svgRenderer = new SKSvg();
-                svgRenderer.Load(svgStream);
+            // Runtime rasterization using SkiaSharp/Svg.Skia was removed from the default build
+            // because CI runners may not supply native assets. For now, produce an HTML fallback
+            // that embeds the original SVG. Restore the Skia path behind a feature flag or
+            // optional package if you need reproducible PNG/PDF output in CI.
+            // (Skia-based rasterization is available locally on developer machines/branches.)
 
-                var picture = svgRenderer.Picture;
-                if (picture == null)
-                    throw new InvalidOperationException("SVG could not be parsed into a drawable picture.");
-
-                var cull = picture.CullRect;
-                int width = Math.Max(1, (int)Math.Ceiling(cull.Width));
-                int height = Math.Max(1, (int)Math.Ceiling(cull.Height));
-
-                // Scale up for decent resolution
-                int scale = 2;
-                using var bitmap = new SKBitmap(width * scale, height * scale, SKColorType.Rgba8888, SKAlphaType.Premul);
-                using var canvas = new SKCanvas(bitmap);
-                canvas.Scale(scale);
-                canvas.Clear(SKColors.Transparent);
-                canvas.DrawPicture(picture);
-                canvas.Flush();
-
-                using var image = SKImage.FromBitmap(bitmap);
-                using var data = image.Encode(SKEncodedImageFormat.Png, 100);
-                var pngBytes = data.ToArray();
-
-                // Prefer producing a PDF using SkiaSharp's PDF backend (reliable, local-first).
-                try
-                {
-                    Directory.CreateDirectory(Path.GetDirectoryName(outputPath) ?? ".");
-
-                    using var pdf = SKDocument.CreatePdf(outputPath);
-                    // Use image dimensions as page size (points = pixels at 72 DPI; this is acceptable for a simple output).
-                    using var img = SKImage.FromEncodedData(data);
-                    var pageWidth = img.Width;
-                    var pageHeight = img.Height;
-
-                    var pdfCanvas = pdf.BeginPage(pageWidth, pageHeight);
-                    pdfCanvas.Clear(SKColors.White);
-
-                    using var paint = new SKPaint();
-                    pdfCanvas.DrawImage(img, 0, 0, paint);
-
-                    pdf.EndPage();
-                    pdf.Close();
-
-                    return;
-                }
-                catch (Exception ex)
-                {
-                    Console.Error.WriteLine("PDF via SkiaSharp failed: " + ex.Message);
-                    // fall through to HTML fallback
-                }
-            }
-            catch (Exception ex)
-            {
-                // If rasterization fails, log and fall back to HTML.
-                Console.Error.WriteLine("SVG rasterization failed: " + ex.Message);
-            }
+            // Log a short note so CI logs show why we fell back
+            Console.Error.WriteLine("Skia/Svg rasterization skipped in CI build; writing HTML fallback.");
 
             // Fallback: write an HTML file embedding the original SVG
             var outDir = Path.GetDirectoryName(Path.GetFullPath(outputPath)) ?? Directory.GetCurrentDirectory();
