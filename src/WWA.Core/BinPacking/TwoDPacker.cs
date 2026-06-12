@@ -175,8 +175,9 @@ namespace WWA.Core.BinPacking
                                 double usedHeight = bs.TotalShelvesHeight;
                         if (reqW == 0.0)
                         {
-                            // flexible width: create a full-height shelf at Y=usedHeight with height board.Width-usedHeight
-                            reqW = bs.Board.Width - usedHeight;
+                            // flexible width: choose a reasonable shelf height based on item size (not the full remaining width)
+                            double desired = item.Width ?? 6.0; // default small shelf
+                            reqW = Math.Min(bs.Board.Width - usedHeight, Math.Max(desired, 6.0));
                         }
 
                         if (reqW <= bs.Board.Width - usedHeight + 1e-9 && bs.Board.Length + 1e-9 >= reqL)
