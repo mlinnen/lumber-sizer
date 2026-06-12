@@ -89,11 +89,11 @@ jobs:
       - name: Restore packer-bench
         run: dotnet restore tools/packer-bench/PackBench.csproj
 
-      - name: Build packer-bench
-        run: dotnet build tools/packer-bench/PackBench.csproj --no-restore --configuration Release
+      - name: Build packer-bench (Debug)
+        run: dotnet build tools/packer-bench/PackBench.csproj --no-restore --configuration Debug
 
       - name: Run packer bench
-        run: dotnet run --project tools/packer-bench/PackBench.csproj --no-build --verbosity minimal
+        run: dotnet run --project tools/packer-bench/PackBench.csproj --no-build --configuration Debug --verbosity minimal
 
       - name: Upload benchmarks
         uses: actions/upload-artifact@v4
