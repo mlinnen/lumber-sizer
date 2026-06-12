@@ -51,3 +51,21 @@ Next steps
 
 Notes: TwoDPacker is intentionally conservative in scope to keep behavior predictable and easy to test. Future work can add skyline, guillotine-split, or optimal approaches.
 
+Visuals and reporting
+
+This repository includes a simple SVG renderer for PackingResult (SVG output) and an optional PDF hook.
+
+- Generate an SVG from code:
+  var renderer = new WWA.Core.Reporting.SvgRenderer();
+  var svg = renderer.Render(packingResult);
+  File.WriteAllText("visual.svg", svg);
+
+- CLI example (if supported by your build):
+  wwa pack --input cutlist.txt --inventory inv.json --output visual.svg
+
+- PDF: A PdfReporter stub exists (WWA.Core.Reporting.PdfReporter). If QuestPDF is available in the project, a follow-up integration can render the SVG into a PDF. By default the stub writes an HTML file next to the requested output to allow quick inspection of visuals.
+
+To enable QuestPDF integration:
+1. Add the QuestPDF NuGet package to the WWA.Core project.
+2. Implement the integration in WWA.Core.Reporting.PdfReporter.GenerateFromSvg to create a QuestPDF document and render the SVG (or rasterize) into a PDF.
+
