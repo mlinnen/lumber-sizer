@@ -22,13 +22,8 @@ namespace WWA.Core.Reporting
             if (string.IsNullOrWhiteSpace(outputPath)) throw new ArgumentNullException(nameof(outputPath));
 
             // Try to detect QuestPDF. If present, we would integrate. For M1 we provide a safe fallback stub.
-            var questType = Type.GetType("QuestPDF.Fluent.Document, QuestPDF");
-            if (questType != null)
-            {
-                // Minimal integration attempt using reflection is non-trivial and brittle. Documented as follow-up.
-                // For now, throw to indicate presence but unimplemented integration.
-                throw new NotImplementedException("QuestPDF detected but integration is not implemented in this M1 stub. Enable QuestPDF integration as a follow-up.");
-            }
+            // For M1 we provide a safe, cross-platform fallback that writes an HTML file embedding the SVG.
+            // Full QuestPDF integration (rendering SVG as an image) is a follow-up: see todo keaton-questpdf.
 
             // Fallback: write an HTML file that embeds the SVG so users can open in a browser.
             var outDir = Path.GetDirectoryName(Path.GetFullPath(outputPath)) ?? Directory.GetCurrentDirectory();
