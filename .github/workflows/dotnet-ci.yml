@@ -73,3 +73,31 @@ jobs:
       - name: Test (HAS_SKIA)
         run: dotnet test tests/WWA.Core.Tests/WWA.Core.Tests.csproj --no-build -p:DefineConstants=HAS_SKIA --verbosity normal
 
+  packer-bench:
+    name: Packer benchmarks
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0
+
+      - name: Restore
+        run: dotnet restore src/WWA.slnx
+
+      - name: Build packer-bench
+        run: dotnet build tools/packer-bench/PackBench.csproj --no-restore --configuration Release
+
+      - name: Run packer bench
+        run: dotnet run --project tools/packer-bench/PackBench.csproj --no-build --verbosity minimal
+
+      - name: Upload benchmarks
+        uses: actions/upload-artifact@v4
+        with:
+          name: packer-bench-results
+          path: tools/packer-bench/artifacts/packer_bench.txt
+
