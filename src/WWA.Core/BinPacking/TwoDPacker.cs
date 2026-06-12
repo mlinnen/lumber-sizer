@@ -49,6 +49,7 @@ namespace WWA.Core.BinPacking
             }
 
             // Sort by longer side descending to prefer large pieces
+            var swSort = System.Diagnostics.Stopwatch.StartNew();
             var groups = expanded.GroupBy(e => Math.Round(Math.Max(e.Item.Length, e.Item.Width ?? 0), 6)).OrderByDescending(g => g.Key);
             var sorted = new List<ExpandedItem>();
             foreach (var g in groups)
@@ -68,10 +69,12 @@ namespace WWA.Core.BinPacking
                 }
                 sorted.AddRange(list);
             }
+            swSort.Stop();
 
             var result = new PackingResult();
             result.DeterministicSeedUsed = request.Seed;
 
+            var swPlace = System.Diagnostics.Stopwatch.StartNew();
             foreach (var exp in sorted)
             {
                 var item = exp.Item;
@@ -266,6 +269,9 @@ namespace WWA.Core.BinPacking
             result.TotalUsedLength = totalOriginal - totalLeftover;
             result.TotalWasteLength = totalLeftover;
             result.WastePercent = totalOriginal <= 0 ? 0 : (totalLeftover / totalOriginal) * 100.0;
+
+            swPlace.Stop();
+            try { Console.WriteLine($"TwoDPacker: sortMs={swSort.ElapsedMilliseconds}, placeMs={swPlace.ElapsedMilliseconds}"); } catch { }
 
             return Task.FromResult(result);
         }
