@@ -32,7 +32,7 @@ namespace WWA.Core.BinPacking
             {
                 for (int q = 0; q < Math.Max(1, b.Quantity); q++)
                 {
-                    boardStates.Add(new BoardState { Board = b, Index = boardIndex++, OriginalLength = b.Length });
+                    boardStates.Add(new BoardState { Board = b, Index = boardIndex++, OriginalLength = b.Length, TotalShelvesHeight = 0.0, MaxUsedAlongLength = 0.0 });
                 }
             }
 
@@ -76,7 +76,6 @@ namespace WWA.Core.BinPacking
             {
                 var item = exp.Item;
 
-                bool placed = false;
                 double bestRemAfter = double.MaxValue;
                 BoardState? bestBoard = null;
                 Shelf? bestShelf = null;
@@ -158,8 +157,8 @@ namespace WWA.Core.BinPacking
                             }
                         }
 
-                        // Try creating a new shelf at bottom
-                        double usedHeight = bs.Shelves.Sum(s => s.Height);
+                                // Try creating a new shelf at bottom
+                                double usedHeight = bs.TotalShelvesHeight;
                         if (reqW == 0.0)
                         {
                             // flexible width: create a full-height shelf at Y=usedHeight with height board.Width-usedHeight
@@ -221,6 +220,8 @@ namespace WWA.Core.BinPacking
 
                 targetShelf.XOffset += chosenLength;
                 targetShelf.RemainingLength = Math.Max(0.0, targetShelf.RemainingLength - chosenLength);
+                // update board-level cached metrics
+                bestBoard.MaxUsedAlongLength = Math.Max(bestBoard.MaxUsedAlongLength, targetShelf.XOffset);
 
                 // record allocation
                 var alloc = result.Allocations.FirstOrDefault(a => a.BoardId == bestBoard.Board.Id);
@@ -240,7 +241,6 @@ namespace WWA.Core.BinPacking
                     Length = chosenLength,
                     Rotated = bestRotated
                 });
-
             }
 
             // Build leftovers and metrics
@@ -276,12 +276,16 @@ namespace WWA.Core.BinPacking
             public int Index { get; set; }
             public double OriginalLength { get; set; }
             public List<Shelf> Shelves { get; } = new List<Shelf>();
+            // cached totals to avoid repeated LINQ sums
+            public double TotalShelvesHeight { get; set; }
+            public double MaxUsedAlongLength { get; set; }
 
             public Shelf CreateShelf(double height)
             {
-                double y = Shelves.Sum(s => s.Height);
+                double y = TotalShelvesHeight;
                 var sh = new Shelf { Height = height, YOffset = y, XOffset = 0, RemainingLength = Board.Length };
                 Shelves.Add(sh);
+                TotalShelvesHeight += height;
                 return sh;
             }
         }
