@@ -25,9 +25,36 @@ namespace WWA.Core.Reporting
             var questType = Type.GetType("QuestPDF.Fluent.Document, QuestPDF");
             if (questType != null)
             {
-                // Minimal integration attempt using reflection is non-trivial and brittle. Documented as follow-up.
-                // For now, throw to indicate presence but unimplemented integration.
-                throw new NotImplementedException("QuestPDF detected but integration is not implemented in this M1 stub. Enable QuestPDF integration as a follow-up.");
+                // Lightweight, reliable QuestPDF integration: embed SVG as raw text in a PDF page (first-pass).
+                // This avoids adding heavy rasterization dependencies in M1 while still producing a PDF.
+                try
+                {
+                    var doc = QuestPDF.Fluent.Document.Create(container =>
+                    {
+                        container.Page(page =>
+                        {
+                            page.Size(QuestPDF.Helpers.PageSizes.A4);
+                            page.Margin(20);
+                            page.PageColor(QuestPDF.Helpers.Colors.White);
+                            page.DefaultTextStyle(x => x.FontSize(10));
+
+                            page.Content().Column(col =>
+                            {
+                                col.Item().Text("Cut-sheet SVG (raw):").SemiBold().FontSize(12);
+                                col.Item().Text(svg).FontSize(8);
+                            });
+                        });
+                    });
+
+                    Directory.CreateDirectory(Path.GetDirectoryName(outputPath) ?? ".");
+                    doc.GeneratePdf(outputPath);
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    // If QuestPDF fails for any reason, fall back to HTML writer below and surface the exception in logs.
+                    Console.Error.WriteLine("QuestPDF integration failed: " + ex.Message);
+                }
             }
 
             // Fallback: write an HTML file that embeds the SVG so users can open in a browser.
