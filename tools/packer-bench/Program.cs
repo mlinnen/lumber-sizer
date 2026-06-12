@@ -186,8 +186,30 @@ class Program
         inv.Add(new Board(96, 48, quantity: 4));
         inv.Add(new Board(48, 24, quantity: 6));
 
-        IPacker packer = new GuillotinePacker();
-        var req = new PackingRequest { CutList = cl, Inventory = inv, Constraints = new Constraints(), Seed = 12345 };
+        var packers = new (string name, IPacker packer)[]
+                        {
+                            ("Guillotine", new GuillotinePacker()),
+                            ("MaxRects", new MaxRectsPacker())
+                        };
+
+                        foreach (var (name, packer) in packers)
+                        {
+                            var req = new PackingRequest { CutList = cl, Inventory = inv, Constraints = new Constraints(), Seed = 12345 };
+
+                            var sw = Stopwatch.StartNew();
+                            var res = await packer.PackAsync(req);
+                            sw.Stop();
+
+                            var info = $"{name} Run completed. Items: {cutItems.Count}, Allocations: {res.Allocations.Count}, Unplaced: {res.UnplacedItems.Count}, TimeMs: {sw.ElapsedMilliseconds}";
+                            Console.WriteLine(info);
+                            File.AppendAllText(outFile, DateTime.UtcNow.ToString("o") + "\t" + info + Environment.NewLine);
+                            if (res.Counters != null && res.Counters.Count > 0)
+                            {
+                                var metrics = string.Join(", ", res.Counters.Select(kv => $"{kv.Key}={kv.Value}"));
+                                Console.WriteLine("Metrics: " + metrics);
+                                File.AppendAllText(outFile, DateTime.UtcNow.ToString("o") + "\tMetrics: " + metrics + Environment.NewLine);
+                            }
+                        }
 
         var sw = Stopwatch.StartNew();
         var res = await packer.PackAsync(req);
