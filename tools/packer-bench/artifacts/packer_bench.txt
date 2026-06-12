@@ -1,0 +1,12 @@
+2026-06-12T18:53:58.5121512Z	Run completed. Items: 200, Allocations: 2, Unplaced: 136, TimeMs: 9
+2026-06-12T18:53:58.5234366Z	Iter 1/10: TimeMs=10, Alloc=2, Unplaced=136
+2026-06-12T18:53:58.5241151Z	Iter 2/10: TimeMs=0, Alloc=2, Unplaced=135
+2026-06-12T18:53:58.5245769Z	Iter 3/10: TimeMs=0, Alloc=2, Unplaced=130
+2026-06-12T18:53:58.5327439Z	Iter 4/10: TimeMs=8, Alloc=2, Unplaced=141
+2026-06-12T18:53:58.5332117Z	Iter 5/10: TimeMs=0, Alloc=2, Unplaced=135
+2026-06-12T18:53:58.5335686Z	Iter 6/10: TimeMs=0, Alloc=2, Unplaced=132
+2026-06-12T18:53:58.5338989Z	Iter 7/10: TimeMs=0, Alloc=2, Unplaced=142
+2026-06-12T18:53:58.5342411Z	Iter 8/10: TimeMs=0, Alloc=2, Unplaced=134
+2026-06-12T18:53:58.5345819Z	Iter 9/10: TimeMs=0, Alloc=2, Unplaced=130
+2026-06-12T18:53:58.5349189Z	Iter 10/10: TimeMs=0, Alloc=2, Unplaced=135
+2026-06-12T18:53:58.5349650Z	AverageTimeMs=1
