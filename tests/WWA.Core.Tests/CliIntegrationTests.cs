@@ -23,7 +23,7 @@ namespace WWA.Core.Tests
         public async Task ExportPdf_Command_Produces_Output_File()
         {
             var repoRoot = FindRepoRoot();
-            var sample = Path.Combine(repoRoot, "tests", "WWA.Core.Tests", $"cli_sample_cutlist_{Guid.NewGuid()}.txt");
+            var sample = Path.Combine(Path.GetTempPath(), $"cli_sample_cutlist_{Guid.NewGuid()}.txt");
             File.WriteAllText(sample, "12in x 2in # leg\r\n24in x 6in # shelf\r\n");
 
             var artifacts = Path.Combine(repoRoot, "artifacts");

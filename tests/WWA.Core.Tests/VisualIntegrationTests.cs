@@ -28,7 +28,7 @@ public class VisualIntegrationTests
     public async Task Generates_Svg_Artifact_For_Sample_Cutlist()
     {
         var repoRoot = FindRepoRoot();
-        var sample = Path.Combine(repoRoot, "tests", "WWA.Core.Tests", $"runtime_simple_cutlist_{Guid.NewGuid()}.txt");
+        var sample = Path.Combine(Path.GetTempPath(), $"runtime_simple_cutlist_{Guid.NewGuid()}.txt");
         File.WriteAllText(sample, "12in x 2in # leg\r\n24in x 6in # shelf\r\n");
 
         var cutList = CutListParser.Parse(sample);
