@@ -129,7 +129,7 @@ namespace WWA.Core.Reporting
             {
                 double scaleY = 8; // px from top margin
                 double barX = margin;
-                double barY = 6;
+                double barY = scaleY;
                 double barHeight = 10;
                 double inchesPerTick = 12.0;
                 int ticks = (int)Math.Ceiling(maxBoardLengthIn / inchesPerTick);
@@ -148,16 +148,18 @@ namespace WWA.Core.Reporting
             // Legend box
             try
             {
-                double legendX = Math.Max(margin + (maxBoardLengthIn * pxPerInch) + 10, margin + 300);
-                double legendY = margin;
+                double legendWidth = svgWidth - margin * 2;
+                double legendHeight = 70;
+                double legendX = margin;
+                double legendY = svgHeight - legendHeight - margin;
                 sb.AppendLine($"  <g id=\"legend\">\n");
-                sb.AppendLine($"    <rect x=\"{margin}\" y=\"{svgHeight - 80}\" width=\"{svgWidth - margin * 2}\" height=\"70\" fill=\"#FAFAFA\" stroke=\"#CCC\" stroke-width=1 />");
-                sb.AppendLine($"    <text x=\"{margin + 6}\" y=\"{svgHeight - 64}\" font-family=\"Arial,Helvetica,sans-serif\" font-size=12 fill=\"#222\">Legend</text>");
+                sb.AppendLine($"    <rect x=\"{legendX}\" y=\"{legendY}\" width=\"{legendWidth}\" height=\"{legendHeight}\" fill=\"#FAFAFA\" stroke=\"#CCC\" stroke-width=1 />");
+                sb.AppendLine($"    <text x=\"{legendX + 6}\" y=\"{legendY + 16}\" font-family=\"Arial,Helvetica,sans-serif\" font-size=12 fill=\"#222\">Legend</text>");
                 int li = 0;
                 foreach (var kv in labelColor)
                 {
-                    double lx = margin + 8 + (li % 4) * 240;
-                    double ly = svgHeight - 48 + (li / 4) * 18;
+                    double lx = legendX + 8 + (li % 4) * 240;
+                    double ly = legendY + 34 + (li / 4) * 18;
                     sb.AppendLine($"    <rect x=\"{lx}\" y=\"{ly - 10}\" width=\"12\" height=\"12\" fill=\"{kv.Value}\" />");
                     sb.AppendLine($"    <text x=\"{lx + 18}\" y=\"{ly}\" font-family=\"Arial,Helvetica,sans-serif\" font-size=11 fill=\"#333\">{System.Security.SecurityElement.Escape(kv.Key)}</text>");
                     li++;
