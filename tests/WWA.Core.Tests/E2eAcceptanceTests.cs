@@ -27,7 +27,11 @@ namespace WWA.Core.Tests
         {
             var repoRoot = FindRepoRoot();
             var sample = Path.Combine(Path.GetTempPath(), $"e2e_cutlist_{Guid.NewGuid()}.txt");
-            File.WriteAllText(sample, cutlistContent);
+            using (var fs = new System.IO.FileStream(sample, System.IO.FileMode.Create, System.IO.FileAccess.Write, System.IO.FileShare.ReadWrite))
+            using (var sw = new System.IO.StreamWriter(fs))
+            {
+                sw.Write(cutlistContent);
+            }
 
             var artifacts = Path.Combine(repoRoot, "artifacts");
             Directory.CreateDirectory(artifacts);

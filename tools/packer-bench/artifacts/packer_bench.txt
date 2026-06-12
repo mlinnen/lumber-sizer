@@ -10,3 +10,202 @@
 2026-06-12T18:53:58.5345819Z	Iter 9/10: TimeMs=0, Alloc=2, Unplaced=130
 2026-06-12T18:53:58.5349189Z	Iter 10/10: TimeMs=0, Alloc=2, Unplaced=135
 2026-06-12T18:53:58.5349650Z	AverageTimeMs=1
+2026-06-12T18:55:18.2457402Z	Run completed. Items: 200, Allocations: 2, Unplaced: 136, TimeMs: 10
+2026-06-12T18:55:18.2577011Z	Iter 1/10: TimeMs=10, Alloc=2, Unplaced=136
+2026-06-12T18:55:18.2583886Z	Iter 2/10: TimeMs=0, Alloc=2, Unplaced=135
+2026-06-12T18:55:18.2588477Z	Iter 3/10: TimeMs=0, Alloc=2, Unplaced=130
+2026-06-12T18:55:18.2661091Z	Iter 4/10: TimeMs=7, Alloc=2, Unplaced=141
+2026-06-12T18:55:18.2665325Z	Iter 5/10: TimeMs=0, Alloc=2, Unplaced=135
+2026-06-12T18:55:18.2668841Z	Iter 6/10: TimeMs=0, Alloc=2, Unplaced=132
+2026-06-12T18:55:18.2672084Z	Iter 7/10: TimeMs=0, Alloc=2, Unplaced=142
+2026-06-12T18:55:18.2675317Z	Iter 8/10: TimeMs=0, Alloc=2, Unplaced=134
+2026-06-12T18:55:18.2678685Z	Iter 9/10: TimeMs=0, Alloc=2, Unplaced=130
+2026-06-12T18:55:18.2681917Z	Iter 10/10: TimeMs=0, Alloc=2, Unplaced=135
+2026-06-12T18:55:18.2682325Z	AverageTimeMs=1
+2026-06-12T18:55:42.4743889Z	Run completed. Items: 200, Allocations: 2, Unplaced: 136, TimeMs: 10
+2026-06-12T18:55:42.4876406Z	Iter 1/10: TimeMs=12, Alloc=2, Unplaced=136
+2026-06-12T18:55:42.4882130Z	Iter 2/10: TimeMs=0, Alloc=2, Unplaced=135
+2026-06-12T18:55:42.4886549Z	Iter 3/10: TimeMs=0, Alloc=2, Unplaced=130
+2026-06-12T18:55:42.4983430Z	Iter 4/10: TimeMs=7, Alloc=2, Unplaced=141
+2026-06-12T18:55:42.4987867Z	Iter 5/10: TimeMs=0, Alloc=2, Unplaced=135
+2026-06-12T18:55:42.4991072Z	Iter 6/10: TimeMs=0, Alloc=2, Unplaced=132
+2026-06-12T18:55:42.4994124Z	Iter 7/10: TimeMs=0, Alloc=2, Unplaced=142
+2026-06-12T18:55:42.4997220Z	Iter 8/10: TimeMs=0, Alloc=2, Unplaced=134
+2026-06-12T18:55:42.5000566Z	Iter 9/10: TimeMs=0, Alloc=2, Unplaced=130
+2026-06-12T18:55:42.5003710Z	Iter 10/10: TimeMs=0, Alloc=2, Unplaced=135
+2026-06-12T18:55:42.5003961Z	AverageTimeMs=1
+2026-06-12T18:55:54.9914213Z	Run completed. Items: 200, Allocations: 2, Unplaced: 136, TimeMs: 9
+2026-06-12T18:55:55.0037343Z	Iter 1/10: TimeMs=11, Alloc=2, Unplaced=136
+2026-06-12T18:55:55.0043764Z	Iter 2/10: TimeMs=0, Alloc=2, Unplaced=135
+2026-06-12T18:55:55.0048240Z	Iter 3/10: TimeMs=0, Alloc=2, Unplaced=130
+2026-06-12T18:55:55.0120741Z	Iter 4/10: TimeMs=7, Alloc=2, Unplaced=141
+2026-06-12T18:55:55.0125856Z	Iter 5/10: TimeMs=0, Alloc=2, Unplaced=135
+2026-06-12T18:55:55.0141256Z	Iter 6/10: TimeMs=1, Alloc=2, Unplaced=132
+2026-06-12T18:55:55.0145825Z	Iter 7/10: TimeMs=0, Alloc=2, Unplaced=142
+2026-06-12T18:55:55.0149797Z	Iter 8/10: TimeMs=0, Alloc=2, Unplaced=134
+2026-06-12T18:55:55.0153833Z	Iter 9/10: TimeMs=0, Alloc=2, Unplaced=130
+2026-06-12T18:55:55.0157803Z	Iter 10/10: TimeMs=0, Alloc=2, Unplaced=135
+2026-06-12T18:55:55.0158118Z	AverageTimeMs=1
+2026-06-12T18:56:54.2480855Z	Run completed. Items: 200, Allocations: 2, Unplaced: 136, TimeMs: 9
+2026-06-12T18:56:54.2591817Z	Iter 1/10: TimeMs=10, Alloc=2, Unplaced=136
+2026-06-12T18:56:54.2597896Z	Iter 2/10: TimeMs=0, Alloc=2, Unplaced=135
+2026-06-12T18:56:54.2602397Z	Iter 3/10: TimeMs=0, Alloc=2, Unplaced=130
+2026-06-12T18:56:54.2673844Z	Iter 4/10: TimeMs=7, Alloc=2, Unplaced=141
+2026-06-12T18:56:54.2677855Z	Iter 5/10: TimeMs=0, Alloc=2, Unplaced=135
+2026-06-12T18:56:54.2681177Z	Iter 6/10: TimeMs=0, Alloc=2, Unplaced=132
+2026-06-12T18:56:54.2684352Z	Iter 7/10: TimeMs=0, Alloc=2, Unplaced=142
+2026-06-12T18:56:54.2689053Z	Iter 8/10: TimeMs=0, Alloc=2, Unplaced=134
+2026-06-12T18:56:54.2692340Z	Iter 9/10: TimeMs=0, Alloc=2, Unplaced=130
+2026-06-12T18:56:54.2695941Z	Iter 10/10: TimeMs=0, Alloc=2, Unplaced=135
+2026-06-12T18:56:54.2696397Z	AverageTimeMs=1
+2026-06-12T18:57:11.6479280Z	Run completed. Items: 200, Allocations: 2, Unplaced: 136, TimeMs: 10
+2026-06-12T18:57:11.6591678Z	Iter 1/10: TimeMs=10, Alloc=2, Unplaced=136
+2026-06-12T18:57:11.6597738Z	Iter 2/10: TimeMs=0, Alloc=2, Unplaced=135
+2026-06-12T18:57:11.6602075Z	Iter 3/10: TimeMs=0, Alloc=2, Unplaced=130
+2026-06-12T18:57:11.6685412Z	Iter 4/10: TimeMs=8, Alloc=2, Unplaced=141
+2026-06-12T18:57:11.6690517Z	Iter 5/10: TimeMs=0, Alloc=2, Unplaced=135
+2026-06-12T18:57:11.6694010Z	Iter 6/10: TimeMs=0, Alloc=2, Unplaced=132
+2026-06-12T18:57:11.6697122Z	Iter 7/10: TimeMs=0, Alloc=2, Unplaced=142
+2026-06-12T18:57:11.6700156Z	Iter 8/10: TimeMs=0, Alloc=2, Unplaced=134
+2026-06-12T18:57:11.6703214Z	Iter 9/10: TimeMs=0, Alloc=2, Unplaced=130
+2026-06-12T18:57:11.6706264Z	Iter 10/10: TimeMs=0, Alloc=2, Unplaced=135
+2026-06-12T18:57:11.6706541Z	AverageTimeMs=1
+2026-06-12T18:57:43.6209396Z	Run completed. Items: 200, Allocations: 2, Unplaced: 136, TimeMs: 10
+2026-06-12T18:57:43.6315294Z	Iter 1/10: TimeMs=9, Alloc=2, Unplaced=136
+2026-06-12T18:57:43.6321088Z	Iter 2/10: TimeMs=0, Alloc=2, Unplaced=135
+2026-06-12T18:57:43.6325281Z	Iter 3/10: TimeMs=0, Alloc=2, Unplaced=130
+2026-06-12T18:57:43.6399549Z	Iter 4/10: TimeMs=7, Alloc=2, Unplaced=141
+2026-06-12T18:57:43.6403871Z	Iter 5/10: TimeMs=0, Alloc=2, Unplaced=135
+2026-06-12T18:57:43.6407119Z	Iter 6/10: TimeMs=0, Alloc=2, Unplaced=132
+2026-06-12T18:57:43.6410177Z	Iter 7/10: TimeMs=0, Alloc=2, Unplaced=142
+2026-06-12T18:57:43.6413185Z	Iter 8/10: TimeMs=0, Alloc=2, Unplaced=134
+2026-06-12T18:57:43.6416249Z	Iter 9/10: TimeMs=0, Alloc=2, Unplaced=130
+2026-06-12T18:57:43.6419227Z	Iter 10/10: TimeMs=0, Alloc=2, Unplaced=135
+2026-06-12T18:57:43.6419492Z	AverageTimeMs=1
+2026-06-12T18:58:08.6393369Z	Run completed. Items: 200, Allocations: 2, Unplaced: 136, TimeMs: 12
+2026-06-12T18:58:08.6520527Z	Iter 1/10: TimeMs=11, Alloc=2, Unplaced=136
+2026-06-12T18:58:08.6527353Z	Iter 2/10: TimeMs=0, Alloc=2, Unplaced=135
+2026-06-12T18:58:08.6533417Z	Iter 3/10: TimeMs=0, Alloc=2, Unplaced=130
+2026-06-12T18:58:08.6609380Z	Iter 4/10: TimeMs=7, Alloc=2, Unplaced=141
+2026-06-12T18:58:08.6614042Z	Iter 5/10: TimeMs=0, Alloc=2, Unplaced=135
+2026-06-12T18:58:08.6617463Z	Iter 6/10: TimeMs=0, Alloc=2, Unplaced=132
+2026-06-12T18:58:08.6622025Z	Iter 7/10: TimeMs=0, Alloc=2, Unplaced=142
+2026-06-12T18:58:08.6625351Z	Iter 8/10: TimeMs=0, Alloc=2, Unplaced=134
+2026-06-12T18:58:08.6628504Z	Iter 9/10: TimeMs=0, Alloc=2, Unplaced=130
+2026-06-12T18:58:08.6631600Z	Iter 10/10: TimeMs=0, Alloc=2, Unplaced=135
+2026-06-12T18:58:08.6631890Z	AverageTimeMs=1
+2026-06-12T18:58:33.9924949Z	Run completed. Items: 200, Allocations: 2, Unplaced: 153, TimeMs: 9
+2026-06-12T18:58:33.9953656Z	Metrics: sortMs=5, placeMs=1, boardChecks=2000, shelfChecks=2115, orientationChecks=1910, newShelves=14, placements=47
+2026-06-12T18:58:33.9961306Z	Iter 1/10: TimeMs=0, Alloc=2, Unplaced=153
+2026-06-12T18:58:33.9963385Z	Metrics: sortMs=0, placeMs=0, boardChecks=2000, shelfChecks=2115, orientationChecks=1910, newShelves=14, placements=47
+2026-06-12T18:58:34.0112425Z	Iter 2/10: TimeMs=14, Alloc=2, Unplaced=153
+2026-06-12T18:58:34.0114147Z	Metrics: sortMs=0, placeMs=14, boardChecks=2000, shelfChecks=2113, orientationChecks=1910, newShelves=14, placements=47
+2026-06-12T18:58:34.0117647Z	Iter 3/10: TimeMs=0, Alloc=2, Unplaced=153
+2026-06-12T18:58:34.0118035Z	Metrics: sortMs=0, placeMs=0, boardChecks=2000, shelfChecks=2113, orientationChecks=1910, newShelves=14, placements=47
+2026-06-12T18:58:34.0120956Z	Iter 4/10: TimeMs=0, Alloc=2, Unplaced=153
+2026-06-12T18:58:34.0121311Z	Metrics: sortMs=0, placeMs=0, boardChecks=2000, shelfChecks=2115, orientationChecks=1910, newShelves=14, placements=47
+2026-06-12T18:58:34.0124181Z	Iter 5/10: TimeMs=0, Alloc=2, Unplaced=153
+2026-06-12T18:58:34.0124945Z	Metrics: sortMs=0, placeMs=0, boardChecks=2000, shelfChecks=2116, orientationChecks=1910, newShelves=14, placements=47
+2026-06-12T18:58:34.0127846Z	Iter 6/10: TimeMs=0, Alloc=2, Unplaced=153
+2026-06-12T18:58:34.0128161Z	Metrics: sortMs=0, placeMs=0, boardChecks=2000, shelfChecks=2115, orientationChecks=1910, newShelves=14, placements=47
+2026-06-12T18:58:34.0131011Z	Iter 7/10: TimeMs=0, Alloc=2, Unplaced=153
+2026-06-12T18:58:34.0131343Z	Metrics: sortMs=0, placeMs=0, boardChecks=2000, shelfChecks=2118, orientationChecks=1910, newShelves=14, placements=47
+2026-06-12T18:58:34.0134184Z	Iter 8/10: TimeMs=0, Alloc=2, Unplaced=153
+2026-06-12T18:58:34.0134461Z	Metrics: sortMs=0, placeMs=0, boardChecks=2000, shelfChecks=2113, orientationChecks=1910, newShelves=14, placements=47
+2026-06-12T18:58:34.0137322Z	Iter 9/10: TimeMs=0, Alloc=2, Unplaced=153
+2026-06-12T18:58:34.0137611Z	Metrics: sortMs=0, placeMs=0, boardChecks=2000, shelfChecks=2114, orientationChecks=1910, newShelves=14, placements=47
+2026-06-12T18:58:34.0140466Z	Iter 10/10: TimeMs=0, Alloc=2, Unplaced=153
+2026-06-12T18:58:34.0140731Z	Metrics: sortMs=0, placeMs=0, boardChecks=2000, shelfChecks=2115, orientationChecks=1910, newShelves=14, placements=47
+2026-06-12T18:58:34.0140939Z	AverageTimeMs=1
+2026-06-12T18:59:01.5169358Z	Run completed. Items: 200, Allocations: 2, Unplaced: 153, TimeMs: 8
+2026-06-12T18:59:01.5195548Z	Metrics: sortMs=4, placeMs=1, boardChecks=2000, shelfChecks=2115, orientationChecks=1910, newShelves=14, placements=47
+2026-06-12T18:59:01.5201889Z	Iter 1/10: TimeMs=0, Alloc=2, Unplaced=153
+2026-06-12T18:59:01.5202926Z	Metrics: sortMs=0, placeMs=0, boardChecks=2000, shelfChecks=2115, orientationChecks=1910, newShelves=14, placements=47
+2026-06-12T18:59:01.5326924Z	Iter 2/10: TimeMs=12, Alloc=2, Unplaced=153
+2026-06-12T18:59:01.5328122Z	Metrics: sortMs=0, placeMs=12, boardChecks=2000, shelfChecks=2113, orientationChecks=1910, newShelves=14, placements=47
+2026-06-12T18:59:01.5331428Z	Iter 3/10: TimeMs=0, Alloc=2, Unplaced=153
+2026-06-12T18:59:01.5331778Z	Metrics: sortMs=0, placeMs=0, boardChecks=2000, shelfChecks=2113, orientationChecks=1910, newShelves=14, placements=47
+2026-06-12T18:59:01.5334787Z	Iter 4/10: TimeMs=0, Alloc=2, Unplaced=153
+2026-06-12T18:59:01.5335077Z	Metrics: sortMs=0, placeMs=0, boardChecks=2000, shelfChecks=2115, orientationChecks=1910, newShelves=14, placements=47
+2026-06-12T18:59:01.5338052Z	Iter 5/10: TimeMs=0, Alloc=2, Unplaced=153
+2026-06-12T18:59:01.5338323Z	Metrics: sortMs=0, placeMs=0, boardChecks=2000, shelfChecks=2116, orientationChecks=1910, newShelves=14, placements=47
+2026-06-12T18:59:01.5341306Z	Iter 6/10: TimeMs=0, Alloc=2, Unplaced=153
+2026-06-12T18:59:01.5341606Z	Metrics: sortMs=0, placeMs=0, boardChecks=2000, shelfChecks=2115, orientationChecks=1910, newShelves=14, placements=47
+2026-06-12T18:59:01.5344627Z	Iter 7/10: TimeMs=0, Alloc=2, Unplaced=153
+2026-06-12T18:59:01.5344926Z	Metrics: sortMs=0, placeMs=0, boardChecks=2000, shelfChecks=2118, orientationChecks=1910, newShelves=14, placements=47
+2026-06-12T18:59:01.5347990Z	Iter 8/10: TimeMs=0, Alloc=2, Unplaced=153
+2026-06-12T18:59:01.5348254Z	Metrics: sortMs=0, placeMs=0, boardChecks=2000, shelfChecks=2113, orientationChecks=1910, newShelves=14, placements=47
+2026-06-12T18:59:01.5351296Z	Iter 9/10: TimeMs=0, Alloc=2, Unplaced=153
+2026-06-12T18:59:01.5351592Z	Metrics: sortMs=0, placeMs=0, boardChecks=2000, shelfChecks=2114, orientationChecks=1910, newShelves=14, placements=47
+2026-06-12T18:59:01.5359780Z	Iter 10/10: TimeMs=0, Alloc=2, Unplaced=153
+2026-06-12T18:59:01.5361564Z	Metrics: sortMs=0, placeMs=0, boardChecks=2000, shelfChecks=2115, orientationChecks=1910, newShelves=14, placements=47
+2026-06-12T18:59:01.5362490Z	AverageTimeMs=1
+2026-06-12T19:00:17.2914994Z	Run completed. Items: 200, Allocations: 2, Unplaced: 154, TimeMs: 10
+2026-06-12T19:00:17.2941303Z	Metrics: sortMs=5, placeMs=2, boardChecks=1800, shelfChecks=1915, orientationChecks=1734, newShelves=14, placements=46
+2026-06-12T19:00:17.2949566Z	Iter 1/10: TimeMs=0, Alloc=2, Unplaced=154
+2026-06-12T19:00:17.2950975Z	Metrics: sortMs=0, placeMs=0, boardChecks=1800, shelfChecks=1915, orientationChecks=1734, newShelves=14, placements=46
+2026-06-12T19:00:17.2957361Z	Iter 2/10: TimeMs=0, Alloc=2, Unplaced=154
+2026-06-12T19:00:17.2957741Z	Metrics: sortMs=0, placeMs=0, boardChecks=1800, shelfChecks=1912, orientationChecks=1734, newShelves=14, placements=46
+2026-06-12T19:00:17.2963924Z	Iter 3/10: TimeMs=0, Alloc=2, Unplaced=154
+2026-06-12T19:00:17.2964272Z	Metrics: sortMs=0, placeMs=0, boardChecks=1800, shelfChecks=1913, orientationChecks=1734, newShelves=14, placements=46
+2026-06-12T19:00:17.2971926Z	Iter 4/10: TimeMs=0, Alloc=2, Unplaced=154
+2026-06-12T19:00:17.2974778Z	Metrics: sortMs=0, placeMs=0, boardChecks=1800, shelfChecks=1914, orientationChecks=1734, newShelves=14, placements=46
+2026-06-12T19:00:17.2985316Z	Iter 5/10: TimeMs=0, Alloc=2, Unplaced=154
+2026-06-12T19:00:17.2986834Z	Metrics: sortMs=0, placeMs=0, boardChecks=1800, shelfChecks=1916, orientationChecks=1734, newShelves=14, placements=46
+2026-06-12T19:00:17.2994204Z	Iter 6/10: TimeMs=0, Alloc=2, Unplaced=154
+2026-06-12T19:00:17.2994777Z	Metrics: sortMs=0, placeMs=0, boardChecks=1800, shelfChecks=1912, orientationChecks=1734, newShelves=14, placements=46
+2026-06-12T19:00:17.3004613Z	Iter 7/10: TimeMs=0, Alloc=2, Unplaced=154
+2026-06-12T19:00:17.3005350Z	Metrics: sortMs=0, placeMs=0, boardChecks=1800, shelfChecks=1916, orientationChecks=1734, newShelves=14, placements=46
+2026-06-12T19:00:17.3013481Z	Iter 8/10: TimeMs=0, Alloc=2, Unplaced=154
+2026-06-12T19:00:17.3014243Z	Metrics: sortMs=0, placeMs=0, boardChecks=1800, shelfChecks=1913, orientationChecks=1734, newShelves=14, placements=46
+2026-06-12T19:00:17.3023775Z	Iter 9/10: TimeMs=0, Alloc=2, Unplaced=154
+2026-06-12T19:00:17.3024222Z	Metrics: sortMs=0, placeMs=0, boardChecks=1800, shelfChecks=1912, orientationChecks=1734, newShelves=14, placements=46
+2026-06-12T19:00:17.3034806Z	Iter 10/10: TimeMs=1, Alloc=2, Unplaced=154
+2026-06-12T19:00:17.3035492Z	Metrics: sortMs=0, placeMs=0, boardChecks=1800, shelfChecks=1915, orientationChecks=1734, newShelves=14, placements=46
+2026-06-12T19:00:17.3035703Z	AverageTimeMs=0
+2026-06-12T19:00:55.5444296Z	Run completed. Items: 200, Allocations: 2, Unplaced: 154, TimeMs: 11
+2026-06-12T19:00:55.5469156Z	Metrics: sortMs=4, placeMs=2, boardChecks=1800, shelfChecks=1915, orientationChecks=1734, newShelves=14, placements=46
+2026-06-12T19:00:55.5476516Z	Iter 1/10: TimeMs=0, Alloc=2, Unplaced=154
+2026-06-12T19:00:55.5477699Z	Metrics: sortMs=0, placeMs=0, boardChecks=1800, shelfChecks=1915, orientationChecks=1734, newShelves=14, placements=46
+2026-06-12T19:00:55.5483691Z	Iter 2/10: TimeMs=0, Alloc=2, Unplaced=154
+2026-06-12T19:00:55.5483983Z	Metrics: sortMs=0, placeMs=0, boardChecks=1800, shelfChecks=1912, orientationChecks=1734, newShelves=14, placements=46
+2026-06-12T19:00:55.5489969Z	Iter 3/10: TimeMs=0, Alloc=2, Unplaced=154
+2026-06-12T19:00:55.5490278Z	Metrics: sortMs=0, placeMs=0, boardChecks=1800, shelfChecks=1913, orientationChecks=1734, newShelves=14, placements=46
+2026-06-12T19:00:55.5496141Z	Iter 4/10: TimeMs=0, Alloc=2, Unplaced=154
+2026-06-12T19:00:55.5496412Z	Metrics: sortMs=0, placeMs=0, boardChecks=1800, shelfChecks=1914, orientationChecks=1734, newShelves=14, placements=46
+2026-06-12T19:00:55.5502569Z	Iter 5/10: TimeMs=0, Alloc=2, Unplaced=154
+2026-06-12T19:00:55.5502847Z	Metrics: sortMs=0, placeMs=0, boardChecks=1800, shelfChecks=1916, orientationChecks=1734, newShelves=14, placements=46
+2026-06-12T19:00:55.5508899Z	Iter 6/10: TimeMs=0, Alloc=2, Unplaced=154
+2026-06-12T19:00:55.5509153Z	Metrics: sortMs=0, placeMs=0, boardChecks=1800, shelfChecks=1912, orientationChecks=1734, newShelves=14, placements=46
+2026-06-12T19:00:55.5515150Z	Iter 7/10: TimeMs=0, Alloc=2, Unplaced=154
+2026-06-12T19:00:55.5515456Z	Metrics: sortMs=0, placeMs=0, boardChecks=1800, shelfChecks=1916, orientationChecks=1734, newShelves=14, placements=46
+2026-06-12T19:00:55.5523611Z	Iter 8/10: TimeMs=0, Alloc=2, Unplaced=154
+2026-06-12T19:00:55.5525719Z	Metrics: sortMs=0, placeMs=0, boardChecks=1800, shelfChecks=1913, orientationChecks=1734, newShelves=14, placements=46
+2026-06-12T19:00:55.5532219Z	Iter 9/10: TimeMs=0, Alloc=2, Unplaced=154
+2026-06-12T19:00:55.5532523Z	Metrics: sortMs=0, placeMs=0, boardChecks=1800, shelfChecks=1912, orientationChecks=1734, newShelves=14, placements=46
+2026-06-12T19:00:55.5542783Z	Iter 10/10: TimeMs=1, Alloc=2, Unplaced=154
+2026-06-12T19:00:55.5543353Z	Metrics: sortMs=0, placeMs=0, boardChecks=1800, shelfChecks=1915, orientationChecks=1734, newShelves=14, placements=46
+2026-06-12T19:00:55.5543564Z	AverageTimeMs=0
+2026-06-12T19:02:12.6196348Z	Run completed. Items: 200, Allocations: 2, Unplaced: 74, TimeMs: 10
+2026-06-12T19:02:12.6220113Z	Metrics: placeMs=7, boardChecks=2000, rectChecks=14112, placements=126
+2026-06-12T19:02:12.6253206Z	Iter 1/10: TimeMs=3, Alloc=2, Unplaced=74
+2026-06-12T19:02:12.6254517Z	Metrics: placeMs=3, boardChecks=2000, rectChecks=14112, placements=126
+2026-06-12T19:02:12.6276575Z	Iter 2/10: TimeMs=2, Alloc=2, Unplaced=72
+2026-06-12T19:02:12.6276881Z	Metrics: placeMs=2, boardChecks=2000, rectChecks=14714, placements=128
+2026-06-12T19:02:12.6303849Z	Iter 3/10: TimeMs=2, Alloc=2, Unplaced=85
+2026-06-12T19:02:12.6304212Z	Metrics: placeMs=2, boardChecks=2000, rectChecks=16568, placements=115
+2026-06-12T19:02:12.6326192Z	Iter 4/10: TimeMs=2, Alloc=2, Unplaced=85
+2026-06-12T19:02:12.6326455Z	Metrics: placeMs=2, boardChecks=2000, rectChecks=14610, placements=115
+2026-06-12T19:02:12.6359783Z	Iter 5/10: TimeMs=3, Alloc=2, Unplaced=70
+2026-06-12T19:02:12.6361224Z	Metrics: placeMs=3, boardChecks=2000, rectChecks=17202, placements=130
+2026-06-12T19:02:12.6386614Z	Iter 6/10: TimeMs=2, Alloc=2, Unplaced=72
+2026-06-12T19:02:12.6387714Z	Metrics: placeMs=2, boardChecks=2000, rectChecks=14303, placements=128
+2026-06-12T19:02:12.6410565Z	Iter 7/10: TimeMs=2, Alloc=2, Unplaced=87
+2026-06-12T19:02:12.6411279Z	Metrics: placeMs=2, boardChecks=2000, rectChecks=15000, placements=113
+2026-06-12T19:02:12.6436856Z	Iter 8/10: TimeMs=2, Alloc=2, Unplaced=88
+2026-06-12T19:02:12.6437197Z	Metrics: placeMs=2, boardChecks=2000, rectChecks=15040, placements=112
+2026-06-12T19:02:12.6455246Z	Iter 9/10: TimeMs=1, Alloc=2, Unplaced=99
+2026-06-12T19:02:12.6455529Z	Metrics: placeMs=1, boardChecks=2000, rectChecks=12817, placements=101
+2026-06-12T19:02:12.6478781Z	Iter 10/10: TimeMs=2, Alloc=2, Unplaced=78
+2026-06-12T19:02:12.6479081Z	Metrics: placeMs=2, boardChecks=2000, rectChecks=14293, placements=122
+2026-06-12T19:02:12.6479296Z	AverageTimeMs=2
