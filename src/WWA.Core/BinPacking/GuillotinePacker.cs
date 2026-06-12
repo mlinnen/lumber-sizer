@@ -237,6 +237,7 @@ namespace WWA.Core.BinPacking
         {
             // remove rectangles that are contained by others and coalesce obvious overlaps
             var list = bs.FreeRects;
+            // remove contained rects
             for (int i = list.Count - 1; i >= 0; i--)
             {
                 var a = list[i];
@@ -251,6 +252,69 @@ namespace WWA.Core.BinPacking
                     }
                 }
             }
+
+            // try simple merges of adjacent rectangles (horizontal and vertical)
+            const double eps = 1e-9;
+            bool mergedAny;
+            do
+            {
+                mergedAny = false;
+                for (int i = 0; i < list.Count; i++)
+                {
+                    var a = list[i];
+                    if (a == null) continue;
+                    for (int j = i + 1; j < list.Count; j++)
+                    {
+                        var b = list[j];
+                        if (b == null) continue;
+
+                        // horizontal merge: same Y and H, adjacent in X
+                        if (Math.Abs(a.Y - b.Y) < eps && Math.Abs(a.H - b.H) < eps)
+                        {
+                            if (Math.Abs(a.X + a.W - b.X) < eps)
+                            {
+                                // a left of b
+                                a.W = a.W + b.W;
+                                list.RemoveAt(j);
+                                mergedAny = true;
+                                break;
+                            }
+                            if (Math.Abs(b.X + b.W - a.X) < eps)
+                            {
+                                // b left of a
+                                b.W = b.W + a.W;
+                                list[i] = b;
+                                list.RemoveAt(j);
+                                mergedAny = true;
+                                break;
+                            }
+                        }
+
+                        // vertical merge: same X and W, adjacent in Y
+                        if (Math.Abs(a.X - b.X) < eps && Math.Abs(a.W - b.W) < eps)
+                        {
+                            if (Math.Abs(a.Y + a.H - b.Y) < eps)
+                            {
+                                // a above b
+                                a.H = a.H + b.H;
+                                list.RemoveAt(j);
+                                mergedAny = true;
+                                break;
+                            }
+                            if (Math.Abs(b.Y + b.H - a.Y) < eps)
+                            {
+                                // b above a
+                                b.H = b.H + a.H;
+                                list[i] = b;
+                                list.RemoveAt(j);
+                                mergedAny = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (mergedAny) break; // restart outer loop
+                }
+            } while (mergedAny);
         }
 
         private bool RectContains(Rect a, Rect b)
