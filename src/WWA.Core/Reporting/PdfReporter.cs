@@ -61,11 +61,11 @@ namespace WWA.Core.Reporting
                     var pageWidth = img.Width;
                     var pageHeight = img.Height;
 
-                    var canvas = pdf.BeginPage(pageWidth, pageHeight);
-                    canvas.Clear(SKColors.White);
+                    var pdfCanvas = pdf.BeginPage(pageWidth, pageHeight);
+                    pdfCanvas.Clear(SKColors.White);
 
                     using var paint = new SKPaint();
-                    canvas.DrawImage(img, 0, 0, paint);
+                    pdfCanvas.DrawImage(img, 0, 0, paint);
 
                     pdf.EndPage();
                     pdf.Close();
