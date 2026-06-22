@@ -31,3 +31,6 @@ artifacts/e2e_export_*.html
 
 # Runtime test output files (GUID-named, produced during test runs)
 tests/**/runtime_simple_cutlist_*.txt
+
+# Packer bench generated output
+tools/packer-bench/artifacts/
