@@ -2,7 +2,94 @@
 
 ## Active Decisions
 
-No decisions recorded yet.
+### [2026-06-10] Initial Project Plan — Ripley
+**Author:** Ripley  
+**Summary:** Map PRD sections to 4 milestones; establish Milestone 1 scope and ownership.
+
+**Details:**
+- Map PRD sections to 4 milestones: CLI/bin-packing; PDF generation; LLM/agent reasoning; Cross-platform GUI.
+- Milestone 1 scope: CLI app, deterministic bin-packing engine, text input format, unit tests, CI, sample datasets.
+- Ownership: keaton (core bin-packing + tests), hockney (CLI/infra + CI), dallas (ONNX/inference integration later milestones).
+- Branch naming: `feature/m1-cli-<short>`, `fix/m1-<short>`, `chore/docs-<short>`.
+
+**Rationale:** Aligns with PRD Roadmap, emphasizes privacy (local-first), deterministic reproducibility, and incremental delivery.
+
+---
+
+### [2026-06-21] PackingStrategy Enum Added to FullPacker — Keaton
+**Author:** Keaton  
+**Summary:** Added `PackingStrategy` enum and wired it into `PackingRequest`; refactored `FullPacker` to dispatch on the chosen strategy.
+
+**Details:**
+- Added `PackingStrategy` enum (`BestFitDecreasing`, `FirstFitDecreasing`, `FirstFit`) to `PackingModels.cs` and `PackingRequest.Strategy` property.
+- Refactored `FullPacker` to support all three strategies; BFD remains the default — no callers break.
+- Determinism contract: without seed, identical inputs → identical outputs on every run and platform; with seed, tie-groups shuffled via seeded Fisher-Yates, board ties resolved by same RNG instance.
+- Files changed: `src/WWA.Core/Models/PackingModels.cs`, `src/WWA.Core/BinPacking/FullPacker.cs`, `tests/WWA.Core.Tests/FullPackerTests.cs` (9 new tests).
+- Future: a `--strategy` CLI flag could expose `PackingStrategy` variants on the `full` packer without new classes.
+
+**Rationale:** Issue #3 explicitly requests strategies alongside seedable RNG. A single enum in the request is the lightest integration point; avoids parallel class hierarchies; consistent with existing project patterns.
+
+---
+
+### [2026-06-21] Determinism Test Coverage for 1D Bin-Packer — Hockney
+**Author:** Hockney  
+**Summary:** Established test conventions for reproducibility coverage of both `FullPacker` and `DeterministicPackerStub`; all 45 tests pass.
+
+**Details:**
+- Shared input objects per test: `CutList` and `Inventory` created once per test, shared across all `PackingRequest` instances; keeps item/board GUIDs stable for byte-for-byte JSON comparisons.
+- `PackingSignature()` helper serialises only allocations, placements, totals, and seed echo — excludes leftover board IDs — so determinism tests remain valid for both packers without production changes.
+- Ten-run loop per reproducibility test surfaces accidental non-determinism (e.g., `DateTime.Now`, thread-local state, `Dictionary` ordering) that a two-shot test could miss.
+- Seed-sensitivity test uses 6-item tie group; seeds 1 and 9999 empirically verified to produce different permutations.
+- File added: `tests/WWA.Core.Tests/BinPackerDeterminismTests.cs` (17 new tests). Test suite: 45 passed, 0 failed, 0 skipped.
+- Known gaps (non-blocking): `DeterministicPackerStub` leftover boards do not copy source `Board.Id` into remnants; stub silently drops unplaced items. Documented in `PackingSignature()`.
+
+**Rationale:** Broad 10-run loops catch the class of accidental non-determinism that pair comparisons miss; shared input objects keep GUIDs stable across runs without synthetic fixed-ID helpers.
+
+---
+
+### [2026-06-21] Issue #3 Correctness Revision — Ripley
+**Author:** Ripley (Lead)  
+**Summary:** Fixed four reviewer-blocking bugs in the 1D bin-packing implementation via deterministic Id derivation.
+
+**Details:**
+- **Critical bug:** Board.Quantity > 1 expansion reused the same Board instance (same Id) for every physical copy; all copies shared one BoardAllocation, collapsing offsets and remnant lengths.
+- **Medium bug:** `DeterministicPackerStub` never assigned `result.TotalWasteLength` (always 0).
+- **Medium bug:** Expanded CutItem copies all received the template's Id, making multi-quantity placements indistinguishable.
+- **Tests:** Determinism tests validated reproducibility but could pass on consistently wrong output (no structural assertions).
+- Fix: Introduced `DeriveId(Guid templateId, int copyIndex)` in both `FullPacker` and `DeterministicPackerStub`. copyIndex == 0 returns templateId unchanged; copyIndex > 0 XORs the copy index into the last 4 bytes of the Guid byte array — collision-resistant, deterministic, backward-compatible.
+- Added 8 new regression tests; all 66 tests pass.
+
+**Rationale:** Guid.NewGuid() would break determinism tests (different BoardIds each run). XOR derivation is bit-exact across runs and collision-resistant for practical inventory sizes.
+
+---
+
+### [2026-06-21] Fix Remnant Test Gap in Issue #3 Slice — Dallas
+**Author:** Dallas (reviewer-lockout revision)  
+**Summary:** Replaced a geometrically ambiguous remnant test scenario with one that guarantees two allocations by board geometry.
+
+**Details:**
+- Previous scenario (30in + 10in on two 48in qty-2 boards): BFD placed both cuts on Board 0 — only one allocation produced; remnant loop never exercised independent per-board accounting.
+- New scenario: two 40in cuts on two 48in boards. 40in[0] → Board 0 (8in left); 40in[1] cannot fit on Board 0 → forced to Board 1 (8in left). Exactly 2 allocations guaranteed by geometry.
+- Added `Assert.Equal(2, res.Allocations.Count)` hard gate before remnant loop; concrete `Assert.Equal(8.0, a.RemnantLength)` inside loop.
+- No production code changed; all 66 tests pass.
+
+**Rationale:** Geometry-enforced allocation count removes test flakiness risk from BFD's tie-breaking behavior; concrete assertions replace trivially-passing empty loops.
+
+---
+
+### [2026-06-21] Issue #3 Slice Finalization — Ripley
+**Author:** Ripley (Lead)  
+**Summary:** Defined precise in-scope and excluded files for the issue #3 commit; reverted rendering-pipeline artifacts.
+
+**Details:**
+- Reverted `artifacts/test_output.html` and `artifacts/visual_sample.svg` to HEAD before staging — belong to the rendering pipeline, not the determinism engine.
+- In-scope files: `src/WWA.Core/BinPacking/FullPacker.cs`, `src/WWA.Core/Models/PackingModels.cs`, `tests/WWA.Core.Tests/FullPackerTests.cs`, `tests/WWA.Core.Tests/BinPackerDeterminismTests.cs`, `.gitignore` (pre-existing formatting fix + test artifact exclusions).
+- Excluded: `artifacts/test_output.html`, `artifacts/visual_sample.svg`, `tools/packer-bench/artifacts/packer_bench.txt`, `.squad/` mutable state files.
+- Verification: `dotnet test tests/WWA.Core.Tests/` → **58 tests passed, 0 failed**.
+
+**Rationale:** Clean slice boundaries prevent rendering-pipeline changes from polluting the determinism engine commit history.
+
+---
 
 ## Governance
 

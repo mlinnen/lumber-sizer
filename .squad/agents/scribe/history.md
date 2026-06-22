@@ -14,3 +14,41 @@ Agent Scribe initialized and ready for work.
 ## Learnings
 
 Initial setup complete.
+
+
+## 2026-06-21 — Issue #3 Session
+- Scribe processed spawn manifest for issue #3 session on branch `feat/maxrects-packer`.
+- Merged inbox entry `ripley-initial-plan-2026-06-10.md` into decisions.md.
+- Wrote orchestration logs for Keaton and Hockney.
+- Wrote session log for issue #3 maxrects-packer work.
+- Updated history for Keaton, Hockney, and Scribe.
+
+
+## 2026-06-21 — Post-Issue-#3 Cleanup Pass (Scribe session)
+- Ran pre-checks: state backend healthy (FSStorageProvider), decisions.md ~3KB (no archiving needed), inbox empty.
+- No inbox entries to merge.
+- Wrote orchestration log for Ripley: `orchestration-log/2026-06-21T22-10-54.801-04-00-ripley.md`.
+- Wrote session log: `log/2026-06-21T22-10-54.801-04-00-cleanup-pass.md`.
+- Appended cleanup summary to Ripley and Scribe history.md.
+- No history files exceeded 15KB threshold; no summarization needed.
+- Non-state repo file changed by Ripley: `.gitignore` — flagged for coordinator handling.
+
+
+## 2026-06-21 — Issue #3 Final Approval (Scribe session)
+- Ran pre-checks: state backend healthy (FSStorageProvider), decisions.md well under 20KB (no archiving needed).
+- Processed 3 inbox entries: `dallas-remnant-test-gap-fix.md`, `ripley-issue3-artifact-exclusion.md`, `ripley-issue3-correctness-revision.md`.
+- Merged all 3 inbox entries into decisions.md; deduplicated (no pre-existing duplicates found); deleted inbox entries.
+- Wrote orchestration log: `orchestration-log/2026-06-21T22-20-37.302-04-00-scribe.md`.
+- Wrote session log: `log/2026-06-21T22-20-37.302-04-00-issue3-final-approval.md`.
+- Appended updates to history.md for: Ripley, Dallas, Keaton, Hockney, Scribe.
+- No history files exceeded 15KB threshold; no summarization needed.
+- No non-state repo files introduced by this session; coordinator handles git commit.
+
+## 2026-06-21 — Issue #3 Committed (Scribe session)
+- Ran pre-checks: state backend healthy (FSStorageProvider), decisions.md 6,950 bytes (no archiving needed), inbox empty.
+- No inbox entries to merge (inbox was empty).
+- Wrote orchestration log: `orchestration-log/2026-06-21T23-05-04.697-04-00-scribe.md`.
+- Wrote session log: `log/2026-06-21T23-05-04.697-04-00-issue3-committed.md`.
+- Appended commit confirmation to history.md for: Keaton, Hockney, Dallas, Ripley, Scribe.
+- No history files exceeded 15KB threshold; no summarization needed.
+- No non-state repo files modified by Scribe in this session; git commit was already done by coordinator at hash 9535995.
