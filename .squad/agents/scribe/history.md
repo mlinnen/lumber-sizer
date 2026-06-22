@@ -61,3 +61,12 @@ Initial setup complete.
 - Appended PR #14 merge confirmation to history.md for: keaton, hockney, dallas, ripley, scribe.
 - No history files exceeded 15KB threshold; no summarization needed.
 - No non-state repo files modified by Scribe in this session; nothing to flag for coordinator.
+
+## 2026-06-21 — Post-PR-#14-Merge Cleanup Finalization (Scribe session)
+- Ran pre-checks: state backend healthy (FSStorageProvider), decisions.md 7,048 bytes (no archiving needed), inbox empty.
+- No inbox entries to merge (inbox was empty).
+- Wrote orchestration log: orchestration-log/2026-06-21T23-34-16.876-04-00-ripley.md.
+- Wrote session log: log/2026-06-21T23-34-16.876-04-00-squad-cleanup.md.
+- Appended Ripley cleanup summary to ripley/history.md and scribe/history.md.
+- No history files exceeded 15KB threshold; no summarization needed.
+- No non-state repo files modified by Scribe in this session; Ripley's commit f9c9b93 already covers git state.
