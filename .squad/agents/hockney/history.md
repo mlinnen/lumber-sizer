@@ -25,3 +25,10 @@ Seed: Assigned to Woodworking Agent project on 2026-06-10 by Mike Linnen. Initia
 - Issue #3 approved slice committed to `feat/maxrects-packer` at commit `9535995`.
 - Hockney's `BinPackerDeterminismTests.cs` (17 determinism tests) is in the committed set.
 - Final: 66 tests passed, 0 failed.
+
+## 2026-06-21 — PR #14 Merged into master (Scribe record)
+- PR #14 (feat/maxrects-packer) merged into master as squash commit ecf3715.
+- Branch feat/maxrects-packer deleted after merge.
+- Issue #3 auto-closed by GitHub via PR closing reference.
+- All 7 CI checks green at merge time.
+- Hockney's BinPackerDeterminismTests.cs (17 determinism tests) is now on master.

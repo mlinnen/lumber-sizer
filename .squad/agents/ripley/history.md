@@ -27,3 +27,10 @@ Seed: Assigned to Woodworking Agent project on 2026-06-10 by Mike Linnen. Initia
 - Removed `tools/packer-bench/artifacts/packer_bench.txt` from git index; file retained locally.
 - Committed as `chore: ignore packer-bench generated artifacts`.
 - No source or test files modified.
+
+## 2026-06-21 — PR #14 Merged into master (Scribe record)
+- PR #14 (feat/maxrects-packer) merged into master as squash commit ecf3715.
+- Branch feat/maxrects-packer deleted after merge.
+- Issue #3 auto-closed by GitHub via PR closing reference.
+- All 7 CI checks green at merge time.
+- Ripley's DeriveId() XOR correctness revision, slice finalization, and .gitignore update are now on master.

@@ -25,3 +25,10 @@ Seed: Assigned to Woodworking Agent project on 2026-06-10 by Mike Linnen. Initia
 - Keaton's `PackingModels.cs` (PackingStrategy enum) and `FullPacker.cs` (strategy dispatch + seeded Fisher-Yates) are in the committed set.
 - `FullPackerTests.cs` with 9 new strategy/determinism tests also committed.
 - Final: 66 tests passed, 0 failed.
+
+## 2026-06-21 — PR #14 Merged into master (Scribe record)
+- PR #14 (feat/maxrects-packer) merged into master as squash commit ecf3715.
+- Branch feat/maxrects-packer deleted after merge.
+- Issue #3 auto-closed by GitHub via PR closing reference.
+- All 7 CI checks green at merge time.
+- Keaton's PackingStrategy enum, FullPacker refactor, and determinism tests are now on master.
