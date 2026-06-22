@@ -19,19 +19,32 @@ namespace WWA.Core.BinPacking
         {
             if (request == null) throw new ArgumentNullException(nameof(request));
 
-            // Clone inventory boards into mutable states
-            var boardStates = request.Inventory.EnumerateAvailable()
-                .SelectMany(b => Enumerable.Repeat(b, b.Quantity))
-                .Select(b => new BoardState { Board = b, Remaining = b.Length, OriginalLength = b.Length })
-                .ToList();
+            // Expand inventory boards: each physical copy gets a deterministic unique Id so
+            // that allocations never collapse across quantity-expanded copies of the same board.
+            var boardStates = new List<BoardState>();
+            foreach (var b in request.Inventory.EnumerateAvailable())
+            {
+                int copyCount = Math.Max(1, b.Quantity);
+                for (int q = 0; q < copyCount; q++)
+                {
+                    boardStates.Add(new BoardState
+                    {
+                        Board = b,
+                        PhysicalBoardId = DeriveId(b.Id, q),
+                        Remaining = b.Length,
+                        OriginalLength = b.Length
+                    });
+                }
+            }
 
-            // Expand cut items by quantity
+            // Expand cut items by quantity; each copy gets a deterministic unique Id so that
+            // multi-quantity placements are distinguishable in the result.
             var expanded = new List<CutItem>();
             foreach (var it in request.CutList.Items)
             {
                 for (int i = 0; i < Math.Max(1, it.Quantity); i++)
                 {
-                    expanded.Add(new CutItem(it.Length, it.Width, 1, it.AllowRotated, it.Description) { Id = it.Id });
+                    expanded.Add(new CutItem(it.Length, it.Width, 1, it.AllowRotated, it.Description) { Id = DeriveId(it.Id, i) });
                 }
             }
 
@@ -57,10 +70,10 @@ namespace WWA.Core.BinPacking
                 if (idx >= 0)
                 {
                     var bs = boardStates[idx];
-                    var allocation = result.Allocations.FirstOrDefault(a => a.BoardId == bs.Board.Id);
+                    var allocation = result.Allocations.FirstOrDefault(a => a.BoardId == bs.PhysicalBoardId);
                     if (allocation == null)
                     {
-                        allocation = new BoardAllocation { BoardId = bs.Board.Id, OriginalBoardLength = bs.OriginalLength };
+                        allocation = new BoardAllocation { BoardId = bs.PhysicalBoardId, OriginalBoardLength = bs.OriginalLength };
                         result.Allocations.Add(allocation);
                     }
 
@@ -85,18 +98,20 @@ namespace WWA.Core.BinPacking
                 {
                     var rem = bs.Remaining;
                     totalLeftover += rem;
-                    var leftoverBoard = new Board(rem, bs.Board.Width, bs.Board.Thickness, bs.Board.Grade, 1);
+                    var leftoverBoard = new Board(rem, bs.Board.Width, bs.Board.Thickness, bs.Board.Grade, 1)
+                        { Id = bs.PhysicalBoardId };
                     result.Leftovers.Add(leftoverBoard);
                 }
             }
 
             result.TotalUsedLength = totalOriginal - totalLeftover;
+            result.TotalWasteLength = totalLeftover;
             result.WastePercent = totalOriginal <= 0 ? 0 : (totalLeftover / totalOriginal) * 100.0;
 
             // Fill remnant lengths into allocations
             foreach (var a in result.Allocations)
             {
-                var bs = boardStates.FirstOrDefault(b => b.Board.Id == a.BoardId);
+                var bs = boardStates.FirstOrDefault(b => b.PhysicalBoardId == a.BoardId);
                 if (bs != null) a.RemnantLength = Math.Max(0, bs.Remaining);
             }
 
@@ -106,8 +121,24 @@ namespace WWA.Core.BinPacking
         private class BoardState
         {
             public Board Board { get; set; } = null!;
+            public Guid PhysicalBoardId { get; set; }
             public double Remaining { get; set; }
             public double OriginalLength { get; set; }
+        }
+
+        /// <summary>
+        /// Derives a deterministic, unique Guid for the nth physical copy of a template entity.
+        /// copyIndex=0 returns the template Id unchanged (preserving single-instance identity).
+        /// </summary>
+        private static Guid DeriveId(Guid templateId, int copyIndex)
+        {
+            if (copyIndex == 0) return templateId;
+            var bytes = templateId.ToByteArray();
+            bytes[12] ^= (byte)(copyIndex & 0xFF);
+            bytes[13] ^= (byte)((copyIndex >> 8) & 0xFF);
+            bytes[14] ^= (byte)((copyIndex >> 16) & 0xFF);
+            bytes[15] ^= (byte)((copyIndex >> 24) & 0xFF);
+            return new Guid(bytes);
         }
     }
 }

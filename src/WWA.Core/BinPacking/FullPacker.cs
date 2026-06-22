@@ -8,11 +8,19 @@ using WWA.Core.Models;
 namespace WWA.Core.BinPacking
 {
     /// <summary>
-    /// Deterministic 1D Best-Fit Decreasing (BFD) packer.
-    /// - Sorts items by length descending (ties deterministically broken by seed when provided).
-    /// - For each item, places it on the board with the smallest remaining length that still fits (best-fit).
-    /// - If PreserveLongRemnants is true, prefers placements that leave a remnant >= MinRemnantLength.
-    /// - Deterministic when request.Seed is provided.
+    /// Deterministic 1D packer supporting multiple strategies via <see cref="PackingStrategy"/>.
+    ///
+    /// <list type="bullet">
+    ///   <item><term>BestFitDecreasing (default)</term><description>Sort items longest-first; place each on the board with the smallest remaining space that still fits.</description></item>
+    ///   <item><term>FirstFitDecreasing</term><description>Sort items longest-first; place each on the first board with enough remaining space.</description></item>
+    ///   <item><term>FirstFit</term><description>Preserve original item order; place each on the first board with enough remaining space.</description></item>
+    /// </list>
+    ///
+    /// Determinism guarantees:
+    /// <list type="bullet">
+    ///   <item>Without a seed: order is fully determined by input order and stable sorts — identical inputs always produce identical outputs.</item>
+    ///   <item>With a seed: tie-groups are shuffled with a seeded <see cref="Random"/> (Fisher-Yates), and board ties are resolved via the seeded RNG. Results are bit-exact across runs and platforms for the same seed and inputs.</item>
+    /// </list>
     /// </summary>
     public class FullPacker : IPacker
     {
@@ -22,131 +30,183 @@ namespace WWA.Core.BinPacking
             request.Constraints ??= new Constraints();
             request.Constraints.Validate();
 
-            // Prepare RNG for any tie-breaking only when seed provided
-            Random? rng = null;
-            if (request.Seed.HasValue) rng = new Random(request.Seed.Value);
+            Random? rng = request.Seed.HasValue ? new Random(request.Seed.Value) : null;
 
-            // Expand inventory into board states (one entry per physical board)
+            // Expand inventory into one board state per physical board.
+            // Each physical copy gets a deterministic unique Id derived from the template Id
+            // and copy index so that allocations, remnants, and leftovers are never collapsed
+            // across boards that share the same template.
             var boardStates = new List<BoardState>();
             int boardIndex = 0;
             foreach (var b in request.Inventory.EnumerateAvailable())
             {
-                for (int q = 0; q < Math.Max(1, b.Quantity); q++)
+                int copyCount = Math.Max(1, b.Quantity);
+                for (int q = 0; q < copyCount; q++)
                 {
-                    boardStates.Add(new BoardState { Board = b, Remaining = b.Length, OriginalLength = b.Length, Index = boardIndex++ });
+                    boardStates.Add(new BoardState
+                    {
+                        Board = b,
+                        PhysicalBoardId = DeriveId(b.Id, q),
+                        Remaining = b.Length,
+                        OriginalLength = b.Length,
+                        Index = boardIndex++
+                    });
                 }
             }
 
-            // Expand cut items by quantity
+            // Expand cut items by quantity, preserving original order for determinism.
+            // Each physical copy gets a deterministic unique Id so that placements are
+            // distinguishable even when multiple copies come from the same template item.
             var expanded = new List<ExpandedItem>();
             int itemIndex = 0;
             foreach (var it in request.CutList.Items)
             {
                 for (int i = 0; i < Math.Max(1, it.Quantity); i++)
                 {
-                    var copy = new CutItem(it.Length, it.Width, 1, it.AllowRotated, it.Description) { Id = it.Id };
+                    var copy = new CutItem(it.Length, it.Width, 1, it.AllowRotated, it.Description) { Id = DeriveId(it.Id, i) };
                     expanded.Add(new ExpandedItem { Item = copy, OriginalIndex = itemIndex++ });
                 }
             }
 
-            // Sort items: Best-Fit Decreasing -> length desc. Ties: stable by OriginalIndex, but if seed provided, shuffle ties deterministically.
-            var groups = expanded.GroupBy(e => Math.Round(e.Item.Length, 6)).OrderByDescending(g => g.Key);
-            var sorted = new List<ExpandedItem>();
-            foreach (var g in groups)
-            {
-                var list = g.ToList();
-                if (rng != null && list.Count > 1)
-                {
-                    // deterministic shuffle within tie-group
-                    for (int i = list.Count - 1; i > 0; i--)
-                    {
-                        int j = rng.Next(i + 1);
-                        var tmp = list[i]; list[i] = list[j]; list[j] = tmp;
-                    }
-                }
-                else
-                {
-                    // preserve original order
-                    list = list.OrderBy(x => x.OriginalIndex).ToList();
-                }
-
-                sorted.AddRange(list);
-            }
+            // Order items according to the requested strategy.
+            var ordered = request.Strategy == PackingStrategy.FirstFit
+                ? OrderByOriginalIndex(expanded)
+                : OrderByDecreasingLength(expanded, rng);
 
             var result = new PackingResult();
             result.DeterministicSeedUsed = request.Seed;
 
-            foreach (var exp in sorted)
+            foreach (var exp in ordered)
             {
                 var item = exp.Item;
-                // Find candidate boards that can host this item
-                var candidates = boardStates.Where(bs => bs.Remaining + 1e-9 >= item.Length && bs.Board.IsUsableFor(item)).ToList();
+
+                var candidates = boardStates
+                    .Where(bs => bs.Remaining + 1e-9 >= item.Length && bs.Board.IsUsableFor(item))
+                    .ToList();
+
                 if (!candidates.Any())
                 {
                     result.UnplacedItems.Add(item);
                     continue;
                 }
 
-                // If PreserveLongRemnants is requested, prefer candidates that leave remnant >= MinRemnantLength
-                List<BoardState> preferred = candidates;
-                if (request.Constraints.PreserveLongRemnants)
-                {
-                    // Prefer placements that consume boards below MinRemnantLength (avoid creating long preserved remnants)
-                    var pref = candidates.Where(bs => (bs.Remaining - item.Length) < request.Constraints.MinRemnantLength).ToList();
-                    if (pref.Any()) preferred = pref;
-                }
+                // Apply remnant-preservation preference when requested.
+                List<BoardState> preferred = ApplyRemnantPreference(candidates, item.Length, request.Constraints);
 
-                // Best-fit: choose candidate with minimal remaining after placement
-                double bestRemAfter = double.MaxValue;
-                var bestList = new List<BoardState>();
-                foreach (var bs in preferred)
-                {
-                    double remAfter = bs.Remaining - item.Length;
-                    if (remAfter < bestRemAfter - 1e-9)
-                    {
-                        bestRemAfter = remAfter;
-                        bestList.Clear();
-                        bestList.Add(bs);
-                    }
-                    else if (Math.Abs(remAfter - bestRemAfter) <= 1e-9)
-                    {
-                        bestList.Add(bs);
-                    }
-                }
+                BoardState chosen = request.Strategy == PackingStrategy.BestFitDecreasing
+                    ? SelectBestFit(preferred, item.Length, rng)
+                    : SelectFirstFit(preferred);
 
-                BoardState chosen;
-                if (bestList.Count == 1)
+                PlaceItem(result, boardStates, chosen, item);
+            }
+
+            FinalizeResult(result, boardStates);
+            return Task.FromResult(result);
+        }
+
+        // ── Ordering helpers ──────────────────────────────────────────────────────
+
+        private static IEnumerable<ExpandedItem> OrderByOriginalIndex(List<ExpandedItem> items)
+            => items.OrderBy(e => e.OriginalIndex);
+
+        private static IEnumerable<ExpandedItem> OrderByDecreasingLength(List<ExpandedItem> items, Random? rng)
+        {
+            var groups = items
+                .GroupBy(e => Math.Round(e.Item.Length, 6))
+                .OrderByDescending(g => g.Key);
+
+            var sorted = new List<ExpandedItem>();
+            foreach (var g in groups)
+            {
+                var list = g.ToList();
+                if (rng != null && list.Count > 1)
                 {
-                    chosen = bestList[0];
+                    // Deterministic Fisher-Yates shuffle within tie-group using seeded RNG.
+                    for (int i = list.Count - 1; i > 0; i--)
+                    {
+                        int j = rng.Next(i + 1);
+                        (list[i], list[j]) = (list[j], list[i]);
+                    }
                 }
                 else
                 {
-                    // deterministic tie-break: use board Index order unless rng provided, then randomly choose among equals using rng
-                    if (rng != null)
-                    {
-                        int pick = rng.Next(bestList.Count);
-                        chosen = bestList[pick];
-                    }
-                    else
-                    {
-                        chosen = bestList.OrderBy(b => b.Index).First();
-                    }
+                    list = list.OrderBy(x => x.OriginalIndex).ToList();
                 }
+                sorted.AddRange(list);
+            }
+            return sorted;
+        }
 
-                // Place on chosen board
-                var allocation = result.Allocations.FirstOrDefault(a => a.BoardId == chosen.Board.Id);
-                if (allocation == null)
+        // ── Candidate selection ───────────────────────────────────────────────────
+
+        private static List<BoardState> ApplyRemnantPreference(List<BoardState> candidates, double itemLength, Constraints constraints)
+        {
+            if (!constraints.PreserveLongRemnants) return candidates;
+
+            // Prefer boards where the cut would leave a remnant shorter than MinRemnantLength
+            // (i.e., don't create a large remnant by cutting into a long board).
+            var pref = candidates
+                .Where(bs => (bs.Remaining - itemLength) < constraints.MinRemnantLength)
+                .ToList();
+            return pref.Any() ? pref : candidates;
+        }
+
+        private static BoardState SelectFirstFit(List<BoardState> candidates)
+            => candidates.OrderBy(b => b.Index).First();
+
+        private static BoardState SelectBestFit(List<BoardState> candidates, double itemLength, Random? rng)
+        {
+            double bestRemAfter = double.MaxValue;
+            var bestList = new List<BoardState>();
+
+            foreach (var bs in candidates)
+            {
+                double remAfter = bs.Remaining - itemLength;
+                if (remAfter < bestRemAfter - 1e-9)
                 {
-                    allocation = new BoardAllocation { BoardId = chosen.Board.Id, OriginalBoardLength = chosen.OriginalLength };
-                    result.Allocations.Add(allocation);
+                    bestRemAfter = remAfter;
+                    bestList.Clear();
+                    bestList.Add(bs);
                 }
-
-                var offset = chosen.OriginalLength - chosen.Remaining;
-                allocation.Placements.Add(new Placement { CutItemId = item.Id, CutItem = item, Offset = offset, Rotated = false, Length = item.Length });
-                chosen.Remaining -= item.Length;
+                else if (Math.Abs(remAfter - bestRemAfter) <= 1e-9)
+                {
+                    bestList.Add(bs);
+                }
             }
 
-            // Build leftovers/remnants
+            if (bestList.Count == 1) return bestList[0];
+
+            // Deterministic tie-break: seed-driven random when available, otherwise lowest board index.
+            return rng != null
+                ? bestList[rng.Next(bestList.Count)]
+                : bestList.OrderBy(b => b.Index).First();
+        }
+
+        // ── Placement ─────────────────────────────────────────────────────────────
+
+        private static void PlaceItem(PackingResult result, List<BoardState> allBoardStates, BoardState chosen, CutItem item)
+        {
+            var allocation = result.Allocations.FirstOrDefault(a => a.BoardId == chosen.PhysicalBoardId);
+            if (allocation == null)
+            {
+                allocation = new BoardAllocation { BoardId = chosen.PhysicalBoardId, OriginalBoardLength = chosen.OriginalLength };
+                result.Allocations.Add(allocation);
+            }
+
+            var offset = chosen.OriginalLength - chosen.Remaining;
+            allocation.Placements.Add(new Placement
+            {
+                CutItemId = item.Id,
+                CutItem = item,
+                Offset = offset,
+                Rotated = false,
+                Length = item.Length
+            });
+            chosen.Remaining -= item.Length;
+        }
+
+        private static void FinalizeResult(PackingResult result, List<BoardState> boardStates)
+        {
             double totalOriginal = 0;
             double totalLeftover = 0;
             foreach (var bs in boardStates)
@@ -155,8 +215,7 @@ namespace WWA.Core.BinPacking
                 if (bs.Remaining > 0)
                 {
                     totalLeftover += bs.Remaining;
-                    var remBoard = new Board(bs.Remaining, bs.Board.Width, bs.Board.Thickness, bs.Board.Grade, 1) { Id = bs.Board.Id };
-                    result.Leftovers.Add(remBoard);
+                    result.Leftovers.Add(new Board(bs.Remaining, bs.Board.Width, bs.Board.Thickness, bs.Board.Grade, 1) { Id = bs.PhysicalBoardId });
                 }
             }
 
@@ -164,19 +223,17 @@ namespace WWA.Core.BinPacking
             result.TotalWasteLength = totalLeftover;
             result.WastePercent = totalOriginal <= 0 ? 0 : (totalLeftover / totalOriginal) * 100.0;
 
-            // Fill remnant lengths into allocations
             foreach (var a in result.Allocations)
             {
-                var bs = boardStates.FirstOrDefault(b => b.Board.Id == a.BoardId);
+                var bs = boardStates.FirstOrDefault(b => b.PhysicalBoardId == a.BoardId);
                 if (bs != null) a.RemnantLength = Math.Max(0, bs.Remaining);
             }
-
-            return Task.FromResult(result);
         }
 
         private class BoardState
         {
             public Board Board { get; set; } = null!;
+            public Guid PhysicalBoardId { get; set; }
             public double Remaining { get; set; }
             public double OriginalLength { get; set; }
             public int Index { get; set; }
@@ -186,6 +243,21 @@ namespace WWA.Core.BinPacking
         {
             public CutItem Item { get; set; } = null!;
             public int OriginalIndex { get; set; }
+        }
+
+        /// <summary>
+        /// Derives a deterministic, unique Guid for the nth physical copy of a template entity.
+        /// copyIndex=0 returns the template Id unchanged (preserving single-instance identity).
+        /// </summary>
+        private static Guid DeriveId(Guid templateId, int copyIndex)
+        {
+            if (copyIndex == 0) return templateId;
+            var bytes = templateId.ToByteArray();
+            bytes[12] ^= (byte)(copyIndex & 0xFF);
+            bytes[13] ^= (byte)((copyIndex >> 8) & 0xFF);
+            bytes[14] ^= (byte)((copyIndex >> 16) & 0xFF);
+            bytes[15] ^= (byte)((copyIndex >> 24) & 0xFF);
+            return new Guid(bytes);
         }
     }
 }

@@ -20,4 +20,21 @@ obj/
 *.user
 *.suo
 *.DS_Store
-# Test result artifacts\n**/TestResults/\n*.trx
+
+# Test result artifacts
+**/TestResults/
+*.trx
+
+# Generated export artifacts (GUID-named, produced by CLI/e2e runs)
+artifacts/cli_export_*.html
+artifacts/e2e_export_*.html
+
+# Test-generated visual/report artifacts (produced by integration tests)
+artifacts/test_output.html
+artifacts/visual_sample.svg
+
+# Runtime test output files (GUID-named, produced during test runs)
+tests/**/runtime_simple_cutlist_*.txt
+
+# Packer bench generated output
+tools/packer-bench/artifacts/

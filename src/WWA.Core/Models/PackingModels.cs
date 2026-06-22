@@ -14,6 +14,31 @@ namespace WWA.Core.Models
     }
 
     /// <summary>
+    /// 1D bin-packing algorithm strategy.
+    /// </summary>
+    public enum PackingStrategy
+    {
+        /// <summary>
+        /// Best-Fit Decreasing: sort items longest-first, then place each on the board with the
+        /// least remaining space that still accommodates the piece. Produces the tightest packing
+        /// and is the default strategy.
+        /// </summary>
+        BestFitDecreasing = 0,
+
+        /// <summary>
+        /// First-Fit Decreasing: sort items longest-first, then place each on the first board
+        /// that has enough remaining space. Faster than BFD and often yields comparable yield.
+        /// </summary>
+        FirstFitDecreasing = 1,
+
+        /// <summary>
+        /// First-Fit: preserve the original item order and place each on the first board that has
+        /// enough remaining space. Predictable ordering; useful when input order carries meaning.
+        /// </summary>
+        FirstFit = 2,
+    }
+
+    /// <summary>
     /// Request object for the packer. Contains the cutlist, a snapshot of inventory and packing constraints.
     /// Example:
     /// var req = new PackingRequest { CutList = cutList, Inventory = inventory, Constraints = constraints, Seed = 42 };
@@ -25,6 +50,11 @@ namespace WWA.Core.Models
         public Constraints Constraints { get; set; } = new Constraints();
         public int? Seed { get; set; }
         public PackerOptions Options { get; set; } = PackerOptions.None;
+
+        /// <summary>
+        /// Algorithm strategy to use. Defaults to <see cref="PackingStrategy.BestFitDecreasing"/>.
+        /// </summary>
+        public PackingStrategy Strategy { get; set; } = PackingStrategy.BestFitDecreasing;
     }
 
     /// <summary>
