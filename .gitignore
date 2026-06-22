@@ -29,6 +29,10 @@ obj/
 artifacts/cli_export_*.html
 artifacts/e2e_export_*.html
 
+# Test-generated visual/report artifacts (produced by integration tests)
+artifacts/test_output.html
+artifacts/visual_sample.svg
+
 # Runtime test output files (GUID-named, produced during test runs)
 tests/**/runtime_simple_cutlist_*.txt
 
