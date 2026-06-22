@@ -192,64 +192,49 @@ class Program
                             ("MaxRects", new MaxRectsPacker())
                         };
 
-                        foreach (var (name, packer) in packers)
-                        {
-                            var req = new PackingRequest { CutList = cl, Inventory = inv, Constraints = new Constraints(), Seed = 12345 };
-
-                            var sw = Stopwatch.StartNew();
-                            var res = await packer.PackAsync(req);
-                            sw.Stop();
-
-                            var info = $"{name} Run completed. Items: {cutItems.Count}, Allocations: {res.Allocations.Count}, Unplaced: {res.UnplacedItems.Count}, TimeMs: {sw.ElapsedMilliseconds}";
-                            Console.WriteLine(info);
-                            File.AppendAllText(outFile, DateTime.UtcNow.ToString("o") + "\t" + info + Environment.NewLine);
-                            if (res.Counters != null && res.Counters.Count > 0)
-                            {
-                                var metrics = string.Join(", ", res.Counters.Select(kv => $"{kv.Key}={kv.Value}"));
-                                Console.WriteLine("Metrics: " + metrics);
-                                File.AppendAllText(outFile, DateTime.UtcNow.ToString("o") + "\tMetrics: " + metrics + Environment.NewLine);
-                            }
-                        }
-
-        var sw = Stopwatch.StartNew();
-        var res = await packer.PackAsync(req);
-        sw.Stop();
-
-        var info = $"Run completed. Items: {cutItems.Count}, Allocations: {res.Allocations.Count}, Unplaced: {res.UnplacedItems.Count}, TimeMs: {sw.ElapsedMilliseconds}";
-        Console.WriteLine(info);
-        File.AppendAllText(outFile, DateTime.UtcNow.ToString("o") + "\t" + info + Environment.NewLine);
-        if (res.Counters != null && res.Counters.Count > 0)
+        foreach (var (name, packer) in packers)
         {
-            var metrics = string.Join(", ", res.Counters.Select(kv => $"{kv.Key}={kv.Value}"));
-            Console.WriteLine("Metrics: " + metrics);
-            File.AppendAllText(outFile, DateTime.UtcNow.ToString("o") + "\tMetrics: " + metrics + Environment.NewLine);
-        }
+            var req = new PackingRequest { CutList = cl, Inventory = inv, Constraints = new Constraints(), Seed = 12345 };
 
-        // Run multiple iterations to average
-        int runs = 10;
-        long total = 0;
-        for (int i = 0; i < runs; i++)
-        {
-            var rreq = new PackingRequest { CutList = cl, Inventory = inv, Constraints = new Constraints(), Seed = 12345 + i };
-            var sw2 = Stopwatch.StartNew();
-            var rres = await packer.PackAsync(rreq);
-            sw2.Stop();
-            var line = $"Iter {i+1}/{runs}: TimeMs={sw2.ElapsedMilliseconds}, Alloc={rres.Allocations.Count}, Unplaced={rres.UnplacedItems.Count}";
-            Console.WriteLine(line);
-            File.AppendAllText(outFile, DateTime.UtcNow.ToString("o") + "\t" + line + Environment.NewLine);
-            if (rres.Counters != null && rres.Counters.Count > 0)
+            var sw = Stopwatch.StartNew();
+            var res = await packer.PackAsync(req);
+            sw.Stop();
+
+            var info = $"{name} Run completed. Items: {cutItems.Count}, Allocations: {res.Allocations.Count}, Unplaced: {res.UnplacedItems.Count}, TimeMs: {sw.ElapsedMilliseconds}";
+            Console.WriteLine(info);
+            File.AppendAllText(outFile, DateTime.UtcNow.ToString("o") + "\t" + info + Environment.NewLine);
+            if (res.Counters != null && res.Counters.Count > 0)
             {
-                var metrics = string.Join(", ", rres.Counters.Select(kv => $"{kv.Key}={kv.Value}"));
+                var metrics = string.Join(", ", res.Counters.Select(kv => $"{kv.Key}={kv.Value}"));
                 Console.WriteLine("Metrics: " + metrics);
                 File.AppendAllText(outFile, DateTime.UtcNow.ToString("o") + "\tMetrics: " + metrics + Environment.NewLine);
             }
-            total += sw2.ElapsedMilliseconds;
-        }
 
-        var avg = total / runs;
-        var summary = $"AverageTimeMs={avg}";
-        Console.WriteLine(summary);
-        File.AppendAllText(outFile, DateTime.UtcNow.ToString("o") + "\t" + summary + Environment.NewLine);
+            int runs = 10;
+            long total = 0;
+            for (int i = 0; i < runs; i++)
+            {
+                var rreq = new PackingRequest { CutList = cl, Inventory = inv, Constraints = new Constraints(), Seed = 12345 + i };
+                var sw2 = Stopwatch.StartNew();
+                var rres = await packer.PackAsync(rreq);
+                sw2.Stop();
+                var iterLine = $"{name} Iter {i+1}/{runs}: TimeMs={sw2.ElapsedMilliseconds}, Alloc={rres.Allocations.Count}, Unplaced={rres.UnplacedItems.Count}";
+                Console.WriteLine(iterLine);
+                File.AppendAllText(outFile, DateTime.UtcNow.ToString("o") + "\t" + iterLine + Environment.NewLine);
+                if (rres.Counters != null && rres.Counters.Count > 0)
+                {
+                    var metrics = string.Join(", ", rres.Counters.Select(kv => $"{kv.Key}={kv.Value}"));
+                    Console.WriteLine("Metrics: " + metrics);
+                    File.AppendAllText(outFile, DateTime.UtcNow.ToString("o") + "\tMetrics: " + metrics + Environment.NewLine);
+                }
+                total += sw2.ElapsedMilliseconds;
+            }
+
+            var avg = total / runs;
+            var summary = $"{name} AverageTimeMs={avg}";
+            Console.WriteLine(summary);
+            File.AppendAllText(outFile, DateTime.UtcNow.ToString("o") + "\t" + summary + Environment.NewLine);
+        }
 
         Console.WriteLine($"Benchmark results written to {outFile}");
         return 0;
