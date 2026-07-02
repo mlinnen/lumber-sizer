@@ -177,6 +177,65 @@
 
 ---
 
+### [2026-07-02] Fix Skia rasterization by emitting well-formed invariant SVG attributes — Keaton
+**Author:** Keaton  
+**Summary:** Fix Skia rasterization by emitting well-formed invariant SVG attributes.
+
+**Details:**
+- Updated `src\WWA.Core\Reporting\SvgRenderer.cs` to quote all generated SVG attribute values and format numeric output invariantly.
+- Root cause: unquoted numeric attributes such as `font-size=12` and `stroke-width=0.5` were tolerated by the HTML fallback path but rejected by Svg.Skia's XML parser during rasterization.
+- Added focused coverage in `tests\WWA.Core.Tests\SvgRendererTests.cs` for XML well-formedness and invariant numeric attribute output.
+- Validation: Skia-enabled targeted tests passed; Skia-enabled build passed; the `export-pdf` repro command now produces a PDF instead of the HTML fallback artifact.
+
+**Rationale:** Generated SVG must be well-formed XML with culture-invariant numeric attributes so Svg.Skia can parse and rasterize it reliably during PDF export.
+
+---
+
+### [2026-07-02] Normalize PDF export output paths before Skia writes files — Keaton
+**Author:** Keaton  
+**Summary:** Normalize PDF export output paths before Skia writes files.
+
+**Details:**
+- Normalized `outputPath` to a full path before directory creation and output selection in `src\WWA.Core\Reporting\PdfReporter.cs`.
+- Only create a directory when the directory component is non-blank, so bare relative filenames such as `report.pdf` no longer trigger `ArgumentException` in the HAS_SKIA path.
+- Added focused HAS_SKIA regression coverage in `tests\WWA.Core.Tests\PdfReporterQuestPdfTests.cs` to verify a relative output filename now emits a PDF instead of forcing the HTML fallback.
+- Validation: Skia-enabled targeted `PdfReporter` tests passed; Skia-enabled CLI build passed; `export-pdf` using a bare relative filename passed.
+- Files changed: `src\WWA.Core\Reporting\PdfReporter.cs`, `tests\WWA.Core.Tests\PdfReporterQuestPdfTests.cs`.
+
+**Rationale:** Skia PDF export must tolerate bare relative output filenames by resolving them before directory creation/output setup, while skipping directory creation for empty directory components.
+
+---
+
+### [2026-07-02] Approved Skia PDF rendering-path fix — Keaton
+**Author:** Keaton  
+**Summary:** Approved the rendering-path fix for the missing board/cut-list diagram in Skia PDF export.
+
+**Details:**
+- Investigation confirmed the missing board/cut-list diagram originated in the SVG stage rather than in PDF embedding.
+- `src\WWA.Core\Reporting\SvgRenderer.cs` was updated to emit well-formed, quoted, culture-invariant SVG that browsers and `Svg.Skia` both accept reliably.
+- `src\WWA.Core\Reporting\PdfReporter.cs` retained the related output-path normalization so bare relative PDF filenames still succeed in the HAS_SKIA path.
+- Files changed: `src\WWA.Core\Reporting\SvgRenderer.cs`, `src\WWA.Core\Reporting\PdfReporter.cs`, `tests\WWA.Core.Tests\SvgRendererTests.cs`, `tests\WWA.Core.Tests\PdfReporterQuestPdfTests.cs`.
+- Validation: Skia-enabled targeted rendering tests passed, and a Skia-enabled `export-pdf` run produced a PDF without falling back to HTML.
+
+**Rationale:** Records the approved root cause and fix path so future PDF-export regressions start at SVG well-formedness and invariant numeric output before investigating downstream PDF composition.
+
+---
+
+### [2026-07-02] Restore visible board layout in Skia-generated PDFs — Keaton
+**Author:** Keaton  
+**Summary:** Fix the missing visible board layout in Skia-generated PDFs by rendering 1D placements in the SVG output.
+
+**Details:**
+- Investigation found `src\WWA.Core\Reporting\SvgRenderer.cs` only drew `BoardAllocation.Placements2D`, while the default `FullPacker` and related 1D packers populate `BoardAllocation.Placements`.
+- When `Placements2D` is empty, the renderer now projects 1D placements into visible cut rectangles and labels so the generated SVG contains the board layout that the Skia PDF path rasterizes.
+- Focused regression coverage in `tests\WWA.Core.Tests\SvgRendererTests.cs` verifies 1D placements are rendered in the SVG output.
+- Validation: Skia-enabled rendering tests passed; a Skia-enabled `export-pdf` run with the full packer produced a PDF probe before cleanup.
+- Files changed: `src\WWA.Core\Reporting\SvgRenderer.cs`, `tests\WWA.Core.Tests\SvgRendererTests.cs`.
+
+**Rationale:** The Skia PDF pipeline was faithfully rendering the source SVG; the missing visible layout came from the SVG stage not drawing the default packer’s 1D placements.
+
+---
+
 ## Governance
 
 - All meaningful changes require team consensus

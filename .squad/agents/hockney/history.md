@@ -43,3 +43,24 @@ Seed: Assigned to Woodworking Agent project on 2026-06-10 by Mike Linnen. Initia
 - Tests cover default BFD behavior, explicit `first-fit` selection, and invalid strategy values.
 - Strategy support is documented as `full`-packer-only and keeps existing behavior unchanged when the flag is omitted.
 - Non-state repo files pending coordinator handling: `src\WWA.Cli\Program.cs`, `tests\WWA.Core.Tests\CliIntegrationTests.cs`, `README.md`.
+
+## 2026-07-02 — Skia SVG Regression Coverage Approved
+- Approved targeted `SvgRendererTests.cs` coverage for XML well-formedness and invariant numeric SVG attribute output.
+- Validation chain for the Skia export fix recorded as passing: Skia-enabled targeted tests, Skia-enabled build, and `export-pdf` repro.
+- Non-state repo files pending coordinator handling: `tests\WWA.Core.Tests\SvgRendererTests.cs`, `src\WWA.Core\Reporting\SvgRenderer.cs`.
+
+## 2026-07-02 — Skia Empty-Path Regression Coverage Approved
+- Approved the targeted HAS_SKIA `PdfReporter` regression coverage for bare relative output filenames in `tests\WWA.Core.Tests\PdfReporterQuestPdfTests.cs`.
+- Recorded the empty-directory guard decision in `src\WWA.Core\Reporting\PdfReporter.cs`: normalize to a full path first, then create a directory only when the directory component is non-blank.
+- Validation chain recorded as passing: Skia-enabled targeted `PdfReporter` tests, Skia-enabled CLI build, and bare-relative-filename `export-pdf` repro.
+- Non-state repo files pending coordinator handling: `src\WWA.Core\Reporting\PdfReporter.cs`, `tests\WWA.Core.Tests\PdfReporterQuestPdfTests.cs`.
+
+## 2026-07-02T19:09:26.337-04:00 — Team update on Skia PDF rendering fix
+- Approved outcome archived for the missing board/cut-list diagram in Skia PDF export.
+- Decision record now points future debugging at SVG well-formedness/invariant formatting before PDF composition.
+- Validation captured: Skia-enabled targeted rendering tests passed; Skia-enabled `export-pdf` produced a PDF without HTML fallback.
+
+## 2026-07-02T19:28:47.206-04:00 — Visible layout regression coverage archived
+- Team archived the approved visible-layout fix for the Skia PDF path.
+- Regression coverage now records that 1D `BoardAllocation.Placements` must render when `Placements2D` is empty.
+- Validation chain captured: Skia-enabled rendering tests passed; Skia-enabled `export-pdf` with the full packer produced a PDF probe before cleanup.

@@ -60,3 +60,24 @@ Seed: Assigned to Woodworking Agent project on 2026-06-10 by Mike Linnen. Initia
 - Reviewer rejection required tightening `export-pdf` parsing so bare or blank `--inventory` is a usage error instead of silently falling back to default stock.
 - Preserved backward compatibility by keeping the default stock inventory only when `--inventory` is omitted entirely.
 - Revision covered `src\WWA.Cli\Program.cs` and `tests\WWA.Core.Tests\CliIntegrationTests.cs`; final approval followed Dallas's parser-hardening pass.
+
+## 2026-07-02 — Skia Export Fix Final Approval
+- Approved the PDF export fix after confirming the key decision to quote generated SVG attributes and emit numeric values with invariant formatting so Svg.Skia can parse the SVG as XML.
+- Repo files in the approved slice: `src\WWA.Core\Reporting\SvgRenderer.cs`, `tests\WWA.Core.Tests\SvgRendererTests.cs`.
+- Validation recorded: Skia-enabled targeted tests passed, Skia-enabled build passed, and the `export-pdf` repro command passed.
+
+## 2026-07-02 — Skia Empty-Path Export Fix Final Approval
+- Approved the PDF export fix after confirming the path-handling decision in `src\WWA.Core\Reporting\PdfReporter.cs`: normalize `outputPath` to a full path before directory creation/output selection and skip directory creation when the directory component is blank.
+- Approved the focused HAS_SKIA regression coverage in `tests\WWA.Core.Tests\PdfReporterQuestPdfTests.cs` for bare relative output filenames.
+- Validation recorded: Skia-enabled targeted `PdfReporter` tests passed, Skia-enabled CLI build passed, and `export-pdf` using a bare relative filename passed.
+- Non-state repo files pending coordinator handling: `src\WWA.Core\Reporting\PdfReporter.cs`, `tests\WWA.Core.Tests\PdfReporterQuestPdfTests.cs`.
+
+## 2026-07-02T19:09:26.337-04:00 — Approved Skia PDF rendering-path resolution
+- Team archived the approved resolution for the missing board/cut-list diagram in Skia PDF export.
+- Decision record consolidates the SVG root cause, the related output-path normalization, and the validated files changed.
+- Validation captured: Skia-enabled targeted rendering tests passed; Skia-enabled `export-pdf` produced a PDF without HTML fallback.
+
+## 2026-07-02T19:28:47.206-04:00 — Visible layout root cause archived
+- Team archived the approved resolution for the missing visible board layout in Skia-generated PDFs.
+- Decision record now points future investigation at `SvgRenderer` coverage for 1D `Placements` before revisiting downstream PDF composition.
+- Non-state repo files pending coordinator handling: `src\WWA.Core\Reporting\SvgRenderer.cs`, `tests\WWA.Core.Tests\SvgRendererTests.cs`.

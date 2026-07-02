@@ -114,3 +114,25 @@ Initial setup complete.
 - Non-state repo files pending coordinator handling: `README.md`, `src\WWA.Cli\Program.cs`, `tests\WWA.Core.Tests\CliIntegrationTests.cs`.
 - Health report pending final after-size measurement.
 - Health report: `decisions.md` 12,211 bytes before / 13,224 bytes after; inbox processed 1; history summaries 0.
+
+## 2026-07-02 — Skia Export Fix Logging (Scribe session)
+- Ran pre-checks: state backend healthy (`FSStorageProvider`), `decisions.md` 13,224 bytes before merge, inbox contained 1 entry.
+- No decisions archiving needed (`decisions.md` below 20KB threshold); merged Keaton's Skia-fix inbox entry into `decisions.md` and deleted the processed inbox item.
+- Wrote orchestration log: `orchestration-log/2026-07-02T18-36-29.256-04-00-skia-fix.md`.
+- Wrote session log: `log/2026-07-02T18-36-29.256-04-00-skia-fix.md`.
+- Appended updates to `agents\keaton\history.md`, `agents\hockney\history.md`, `agents\ripley\history.md`, and `agents\scribe\history.md`.
+- No history files exceeded 15KB threshold; no summarization needed.
+- Non-state repo files pending coordinator handling: `src\WWA.Core\Reporting\SvgRenderer.cs`, `tests\WWA.Core.Tests\SvgRendererTests.cs`.
+- Health report pending final after-size measurement.
+- Health report: `decisions.md` 13,224 bytes before / 14,251 bytes after; inbox processed 1; history summaries 0.
+
+## 2026-07-02 — Visible Layout Logging (Scribe session)
+- Ran pre-checks: state backend healthy (`FSStorageProvider`), `decisions.md` 16,617 bytes before merge, inbox contained 1 entry.
+- No decisions archiving needed (`decisions.md` below 20,480 bytes); merged Keaton's visible-layout inbox entry into `decisions.md` and deleted the processed inbox item.
+- Wrote orchestration log: `orchestration-log/2026-07-02T19-28-47.206-04-00-visible-layout.md`.
+- Wrote session log: `log/2026-07-02T19-28-47.206-04-00-visible-layout.md`.
+- Appended updates to `agents\keaton\history.md`, `agents\hockney\history.md`, `agents\ripley\history.md`, and `agents\scribe\history.md`.
+- No history files exceeded 15KB before appends; summarization pending final size check.
+- Non-state repo files pending coordinator handling: `src\WWA.Core\Reporting\SvgRenderer.cs`, `tests\WWA.Core.Tests\SvgRendererTests.cs`; existing working-tree changes also include `src\WWA.Core\Reporting\PdfReporter.cs`, `tests\WWA.Core.Tests\PdfReporterQuestPdfTests.cs`, and untracked `artifacts\test_output.pdf`.
+- Health report pending final after-size measurement.
+- Health report: `decisions.md` 16,617 bytes before / 17,816 bytes after; inbox processed 1; history files summarized 0.

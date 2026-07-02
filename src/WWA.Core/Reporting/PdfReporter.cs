@@ -15,6 +15,18 @@ namespace WWA.Core.Reporting
     /// </summary>
     public static class PdfReporter
     {
+        private static string GetFullOutputPath(string outputPath)
+        {
+            var fullOutputPath = Path.GetFullPath(outputPath);
+            var outputDirectory = Path.GetDirectoryName(fullOutputPath);
+            if (!string.IsNullOrWhiteSpace(outputDirectory))
+            {
+                Directory.CreateDirectory(outputDirectory);
+            }
+
+            return fullOutputPath;
+        }
+
         /// <summary>
         /// Generate a PDF (or fallback HTML) containing the provided SVG. If QuestPDF + SkiaSharp are available at runtime
         /// the method will rasterize the SVG and embed it as a PNG image into the PDF. Otherwise a .html file will be written.
@@ -27,6 +39,7 @@ namespace WWA.Core.Reporting
 #if HAS_SKIA
             try
             {
+                var fullOutputPath = GetFullOutputPath(outputPath);
                 using var svgStream = new MemoryStream(Encoding.UTF8.GetBytes(svg));
                 var svgRenderer = new SKSvg();
                 svgRenderer.Load(svgStream);
@@ -50,8 +63,7 @@ namespace WWA.Core.Reporting
                 using var image = SKImage.FromBitmap(bitmap);
                 using var data = image.Encode(SKEncodedImageFormat.Png, 100);
 
-                Directory.CreateDirectory(Path.GetDirectoryName(outputPath) ?? ".");
-                using var pdf = SKDocument.CreatePdf(outputPath);
+                using var pdf = SKDocument.CreatePdf(fullOutputPath);
                 using var img = SKImage.FromEncodedData(data);
                 var pageWidth = img.Width;
                 var pageHeight = img.Height;
@@ -76,8 +88,9 @@ namespace WWA.Core.Reporting
 #endif
 
             // Fallback: write an HTML file embedding the original SVG
-            var outDir = Path.GetDirectoryName(Path.GetFullPath(outputPath)) ?? Directory.GetCurrentDirectory();
-            var baseName = Path.GetFileNameWithoutExtension(outputPath);
+            var fullFallbackPath = GetFullOutputPath(outputPath);
+            var outDir = Path.GetDirectoryName(fullFallbackPath) ?? Directory.GetCurrentDirectory();
+            var baseName = Path.GetFileNameWithoutExtension(fullFallbackPath);
             var htmlPath = Path.Combine(outDir, baseName + ".html");
 
             using var sw = new StreamWriter(htmlPath, false);

@@ -44,3 +44,28 @@ Seed: Assigned to Woodworking Agent project on 2026-06-10 by Mike Linnen. Initia
 - Omitting `--strategy` preserves the existing `BestFitDecreasing` default behavior.
 - Strategy selection remains limited to the `full` packer.
 - Non-state repo files pending coordinator handling: `src\WWA.Cli\Program.cs`, `tests\WWA.Core.Tests\CliIntegrationTests.cs`, `README.md`.
+
+## 2026-07-02 — Skia PDF Export Fix Approved
+- Approved fix for the HAS_SKIA PDF export failure by quoting all generated SVG attribute values and formatting numeric output invariantly in `src\WWA.Core\Reporting\SvgRenderer.cs`.
+- Added focused regression coverage in `tests\WWA.Core.Tests\SvgRendererTests.cs` for XML well-formedness and invariant numeric attributes.
+- Validation recorded: Skia-enabled targeted tests passed, Skia-enabled build passed, and the `export-pdf` repro now emits a PDF instead of falling back to HTML.
+- Non-state repo files pending coordinator handling: `src\WWA.Core\Reporting\SvgRenderer.cs`, `tests\WWA.Core.Tests\SvgRendererTests.cs`.
+
+## 2026-07-02 — Skia Empty-Path Export Fix Approved
+- Approved fix for the HAS_SKIA PDF export failure caused by bare relative output filenames in `src\WWA.Core\Reporting\PdfReporter.cs`.
+- Key decision: normalize `outputPath` to a full path before directory creation/output selection, and only create a directory when the directory component is non-blank.
+- Added focused HAS_SKIA regression coverage in `tests\WWA.Core.Tests\PdfReporterQuestPdfTests.cs`.
+- Validation recorded: Skia-enabled targeted `PdfReporter` tests passed, Skia-enabled CLI build passed, and `export-pdf` with a bare relative filename passed.
+- Non-state repo files pending coordinator handling: `src\WWA.Core\Reporting\PdfReporter.cs`, `tests\WWA.Core.Tests\PdfReporterQuestPdfTests.cs`.
+
+## 2026-07-02T19:09:26.337-04:00 — Approved Skia PDF rendering-path fix
+- Team archived the approved outcome for the missing board/cut-list diagram in Skia PDF export.
+- Root cause was malformed/culture-sensitive SVG generation, not downstream PDF embedding.
+- Recorded files: `src\WWA.Core\Reporting\SvgRenderer.cs`, `src\WWA.Core\Reporting\PdfReporter.cs`, `tests\WWA.Core.Tests\SvgRendererTests.cs`, `tests\WWA.Core.Tests\PdfReporterQuestPdfTests.cs`.
+- Validation captured: Skia-enabled targeted rendering tests passed; Skia-enabled `export-pdf` produced a PDF without HTML fallback.
+
+## 2026-07-02T19:28:47.206-04:00 — Visible layout fix approved
+- Team archived the approved fix for missing board/cut rectangles in Skia-generated PDFs.
+- Key finding recorded: `SvgRenderer` only rendered `Placements2D`, while the default `FullPacker` supplies 1D `Placements`.
+- Approved slice tracked in `src\WWA.Core\Reporting\SvgRenderer.cs` and `tests\WWA.Core.Tests\SvgRendererTests.cs`.
+- Validation captured: Skia-enabled rendering tests passed; Skia-enabled `export-pdf` with the full packer produced a PDF probe before cleanup.

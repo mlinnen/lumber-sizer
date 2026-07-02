@@ -21,5 +21,32 @@ namespace WWA.Core.Tests
             var htmlPath = Path.ChangeExtension(outPdf, ".html");
             Assert.True(File.Exists(outPdf) || File.Exists(htmlPath));
         }
+
+#if HAS_SKIA
+        [Fact]
+        public void GeneratesPdfFileFromRelativeOutputPath()
+        {
+            var svg = "<svg xmlns='http://www.w3.org/2000/svg' width='200' height='100'><rect width='200' height='100' fill='lightgray'/><text x='10' y='20'>test</text></svg>";
+            var relativePdf = $"relative_svg_output_{System.Guid.NewGuid():N}.pdf";
+            var fullPdfPath = Path.Combine(Directory.GetCurrentDirectory(), relativePdf);
+            var htmlPath = Path.ChangeExtension(fullPdfPath, ".html");
+
+            try
+            {
+                if (File.Exists(fullPdfPath)) File.Delete(fullPdfPath);
+                if (File.Exists(htmlPath)) File.Delete(htmlPath);
+
+                PdfReporter.GenerateFromSvg(svg, relativePdf);
+
+                Assert.True(File.Exists(fullPdfPath));
+                Assert.False(File.Exists(htmlPath));
+            }
+            finally
+            {
+                if (File.Exists(fullPdfPath)) File.Delete(fullPdfPath);
+                if (File.Exists(htmlPath)) File.Delete(htmlPath);
+            }
+        }
+#endif
     }
 }
