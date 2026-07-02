@@ -7,13 +7,33 @@ using WWA.Core.BinPacking;
 using WWA.Core.Reporting;
 using WWA.Core.Interfaces;
 
-const string ExportPdfUsage = "export-pdf <input-cutlist> <output-pdf-or-html> [--inventory path] [--packer deterministic|full|two-d] [--seed N]";
+const string PackingStrategyUsage = "best-fit-decreasing|first-fit-decreasing|first-fit";
+const string ExportPdfUsage = $"export-pdf <input-cutlist> <output-pdf-or-html> [--inventory path] [--packer deterministic|full|two-d] [--strategy {PackingStrategyUsage}] [--seed N]";
 
 Inventory CreateDefaultInventory()
 {
     var inventory = new Inventory();
     inventory.Add(new Board(96, 48, null, "A", 5));
     return inventory;
+}
+
+bool TryParsePackingStrategy(string value, out PackingStrategy strategy)
+{
+    switch (value.Trim().ToLowerInvariant())
+    {
+        case "best-fit-decreasing":
+            strategy = PackingStrategy.BestFitDecreasing;
+            return true;
+        case "first-fit-decreasing":
+            strategy = PackingStrategy.FirstFitDecreasing;
+            return true;
+        case "first-fit":
+            strategy = PackingStrategy.FirstFit;
+            return true;
+        default:
+            strategy = default;
+            return false;
+    }
 }
 
 async Task<int> Main(string[] args)
@@ -37,6 +57,7 @@ async Task<int> Main(string[] args)
         var output = args[2];
         string? inventoryPath = null;
         string packerName = "full";
+        PackingStrategy? strategy = null;
         int? seed = null;
 
         for (int i = 3; i < args.Length; i++)
@@ -59,10 +80,40 @@ async Task<int> Main(string[] args)
 
                 inventoryPath = args[++i];
             }
+            else if (a == "--strategy")
+            {
+                if (i + 1 >= args.Length
+                    || string.IsNullOrWhiteSpace(args[i + 1])
+                    || args[i + 1].StartsWith("--", StringComparison.Ordinal))
+                {
+                    Console.Error.WriteLine("Error: --strategy requires a strategy value.");
+                    Console.Error.WriteLine($"Usage: {ExportPdfUsage}");
+                    return 2;
+                }
+
+                var strategyValue = args[++i];
+                if (!TryParsePackingStrategy(strategyValue, out var parsedStrategy))
+                {
+                    Console.Error.WriteLine($"Error: --strategy must be one of: {PackingStrategyUsage}.");
+                    Console.Error.WriteLine($"Usage: {ExportPdfUsage}");
+                    return 2;
+                }
+
+                strategy = parsedStrategy;
+            }
             else if (a == "--seed" && i + 1 < args.Length)
             {
                 if (int.TryParse(args[++i], out var s)) seed = s;
             }
+        }
+
+        if (strategy.HasValue
+            && (string.Equals(packerName, "deterministic", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(packerName, "two-d", StringComparison.OrdinalIgnoreCase)))
+        {
+            Console.Error.WriteLine("Error: --strategy is only supported with --packer full.");
+            Console.Error.WriteLine($"Usage: {ExportPdfUsage}");
+            return 2;
         }
 
         try
@@ -73,6 +124,10 @@ async Task<int> Main(string[] args)
                 : InventoryParser.Parse(inventoryPath);
 
             var request = new PackingRequest { CutList = cutlist, Inventory = inventory, Seed = seed };
+            if (strategy.HasValue)
+            {
+                request.Strategy = strategy.Value;
+            }
 
             IPacker packer = packerName switch
             {

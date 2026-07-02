@@ -37,3 +37,9 @@ Seed: Assigned to Woodworking Agent project on 2026-06-10 by Mike Linnen. Initia
 - Rejected Keaton's initial inventory-input slice because `--inventory` accepted missing or blank values without a usage error.
 - Rejected Ripley's follow-up because signed inventory dimensions were still accepted by parser token handling.
 - Approved Dallas's final revision after whole-token dimension validation rejected signed dimensions and preserved the intended optional-flag behavior.
+
+## 2026-07-02 — CLI Strategy Coverage Approved
+- Approved CLI integration coverage for `export-pdf --strategy`.
+- Tests cover default BFD behavior, explicit `first-fit` selection, and invalid strategy values.
+- Strategy support is documented as `full`-packer-only and keeps existing behavior unchanged when the flag is omitted.
+- Non-state repo files pending coordinator handling: `src\WWA.Cli\Program.cs`, `tests\WWA.Core.Tests\CliIntegrationTests.cs`, `README.md`.

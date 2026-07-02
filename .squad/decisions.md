@@ -161,6 +161,22 @@
 
 ---
 
+### [2026-07-02] Expose PackingStrategy on the CLI — Keaton
+**Author:** Keaton  
+**Summary:** Expose PackingStrategy on the CLI.
+
+**Details:**
+- Added optional `--strategy <best-fit-decreasing|first-fit-decreasing|first-fit>` to `export-pdf` in `src\WWA.Cli\Program.cs`.
+- The flag maps lower-case hyphenated CLI values directly to `PackingRequest.Strategy`.
+- Omitting `--strategy` preserves the existing `BestFitDecreasing` behavior by leaving `PackingRequest.Strategy` at its default.
+- Strategy selection support is limited to the `full` packer.
+- Added CLI integration coverage for default behavior, explicit `first-fit` selection, and invalid strategy values in `tests\WWA.Core.Tests\CliIntegrationTests.cs`.
+- Updated `README.md` usage and behavior documentation.
+
+**Rationale:** Exposes the existing `PackingStrategy` variants on the CLI without breaking existing behavior, while keeping the new flag constrained to the only packer implementation that supports strategy selection.
+
+---
+
 ## Governance
 
 - All meaningful changes require team consensus

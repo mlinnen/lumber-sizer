@@ -38,3 +38,9 @@ Seed: Assigned to Woodworking Agent project on 2026-06-10 by Mike Linnen. Initia
 - Chosen inventory format: `<length> x <width> [x <quantity>] # optional grade`.
 - Reviewer follow-up found bare `--inventory` needed explicit value validation; final approval came after downstream revisions.
 - Non-state repo files pending coordinator handling include `README.md`, `samples\sample_cutlists\README.txt`, `samples\sample_cutlists\simple_inventory.txt`, `src\WWA.Cli\Program.cs`, `src\WWA.Core\IO\InventoryParser.cs`, `tests\WWA.Core.Tests\CliIntegrationTests.cs`, and `tests\WWA.Core.Tests\InventoryParserTests.cs`.
+
+## 2026-07-02 — CLI Strategy Flag Approved
+- Approved `export-pdf --strategy <best-fit-decreasing|first-fit-decreasing|first-fit>` wiring to `PackingRequest.Strategy`.
+- Omitting `--strategy` preserves the existing `BestFitDecreasing` default behavior.
+- Strategy selection remains limited to the `full` packer.
+- Non-state repo files pending coordinator handling: `src\WWA.Cli\Program.cs`, `tests\WWA.Core.Tests\CliIntegrationTests.cs`, `README.md`.

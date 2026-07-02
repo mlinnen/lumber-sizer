@@ -102,3 +102,15 @@ Initial setup complete.
 - No history files exceeded 15KB threshold; no summarization needed.
 - Non-state repo files pending coordinator handling: `README.md`, `samples\sample_cutlists\README.txt`, `samples\sample_cutlists\simple_inventory.txt`, `src\WWA.Cli\Program.cs`, `src\WWA.Core\IO\InventoryParser.cs`, `tests\WWA.Core.Tests\CliIntegrationTests.cs`, `tests\WWA.Core.Tests\InventoryParserTests.cs`.
 - Health report: `decisions.md` 9,110 bytes before / 12,211 bytes after; inbox processed 3; history summaries 0.
+
+## 2026-07-02 — Strategy CLI Logging (Scribe session)
+- Ran pre-checks: state backend healthy (`FSStorageProvider`), `decisions.md` 12,211 bytes before merge, inbox contained 1 entry.
+- No decisions archiving needed (`decisions.md` below 20KB threshold).
+- Merged Keaton's strategy-CLI inbox entry into `decisions.md`; deleted the processed inbox entry.
+- Wrote orchestration log: `orchestration-log/2026-07-02T14-20-14.777-04-00-strategy-cli.md`.
+- Wrote session log: `log/2026-07-02T14-20-14.777-04-00-strategy-cli.md`.
+- Appended updates to `agents\keaton\history.md`, `agents\hockney\history.md`, and `agents\scribe\history.md`.
+- No history files exceeded 15KB threshold; no summarization needed.
+- Non-state repo files pending coordinator handling: `README.md`, `src\WWA.Cli\Program.cs`, `tests\WWA.Core.Tests\CliIntegrationTests.cs`.
+- Health report pending final after-size measurement.
+- Health report: `decisions.md` 12,211 bytes before / 13,224 bytes after; inbox processed 1; history summaries 0.

@@ -22,17 +22,22 @@ If you run the CLI with no arguments, it prints the current command help and exi
 Entrypoint: `src\WWA.Cli\Program.cs`
 
 ```text
-dotnet run --project .\src\WWA.Cli\WWA.Cli.csproj -- export-pdf <input-cutlist> <output-pdf-or-html> [--inventory path] [--packer deterministic|full|two-d] [--seed N]
+dotnet run --project .\src\WWA.Cli\WWA.Cli.csproj -- export-pdf <input-cutlist> <output-pdf-or-html> [--inventory path] [--packer deterministic|full|two-d] [--strategy best-fit-decreasing|first-fit-decreasing|first-fit] [--seed N]
 ```
 
 Current behavior notes:
 
 - `export-pdf` is the only implemented command.
 - `--inventory` is optional; when omitted, the CLI keeps using one default inventory entry of `96in x 48in x 5` with grade `A`.
-- `--packer full` uses `FullPacker` with its default `PackingStrategy.BestFitDecreasing`.
+- `--packer full` uses `FullPacker`.
+- `--strategy` is optional and only applies to the `full` packer:
+  - `best-fit-decreasing` -> `PackingStrategy.BestFitDecreasing` (default)
+  - `first-fit-decreasing` -> `PackingStrategy.FirstFitDecreasing`
+  - `first-fit` -> `PackingStrategy.FirstFit`
+- Omitting `--strategy` preserves the existing `FullPacker` default of `PackingStrategy.BestFitDecreasing`.
 - `--seed` is optional and is passed into the selected packer for deterministic tie-breaking.
 - Unknown packer values fall back to `full`.
-- The CLI still does **not** accept remnant-preservation flags or a CLI flag for `PackingStrategy`.
+- The CLI still does **not** accept remnant-preservation flags.
 
 ## Cut-list input format
 
@@ -77,7 +82,7 @@ Core code lives under `src\WWA.Core`.
 
 ### Wired to the CLI
 
-- `FullPacker`: deterministic 1D packer. Its API supports `BestFitDecreasing`, `FirstFitDecreasing`, and `FirstFit`, but the CLI currently uses the default strategy only.
+- `FullPacker`: deterministic 1D packer. The CLI can select `BestFitDecreasing`, `FirstFitDecreasing`, or `FirstFit` through `--strategy`; omitting the flag keeps the default `BestFitDecreasing`.
 - `DeterministicPackerStub`: simple deterministic baseline packer.
 - `TwoDPacker`: deterministic shelf-based 2D packer.
 
@@ -97,13 +102,13 @@ Reporting code lives under `src\WWA.Core\Reporting`.
 Example run against the sample input:
 
 ```powershell
-dotnet run --project .\src\WWA.Cli\WWA.Cli.csproj -- export-pdf .\samples\sample_cutlists\simple_cutlist.txt .\artifacts\cli_export_sample.html --packer full --seed 12345
+dotnet run --project .\src\WWA.Cli\WWA.Cli.csproj -- export-pdf .\samples\sample_cutlists\simple_cutlist.txt .\artifacts\cli_export_sample.html --packer full --strategy best-fit-decreasing --seed 12345
 ```
 
 With an explicit inventory file:
 
 ```powershell
-dotnet run --project .\src\WWA.Cli\WWA.Cli.csproj -- export-pdf .\samples\sample_cutlists\simple_cutlist.txt .\artifacts\cli_export_sample.html --inventory .\samples\sample_cutlists\simple_inventory.txt --packer full --seed 12345
+dotnet run --project .\src\WWA.Cli\WWA.Cli.csproj -- export-pdf .\samples\sample_cutlists\simple_cutlist.txt .\artifacts\cli_export_sample.html --inventory .\samples\sample_cutlists\simple_inventory.txt --packer full --strategy first-fit-decreasing --seed 12345
 ```
 
 ## Repository structure
