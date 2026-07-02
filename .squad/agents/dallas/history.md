@@ -19,3 +19,8 @@ Seed: Assigned to Woodworking Agent project on 2026-06-10 by Mike Linnen. Initia
 - Issue #3 auto-closed by GitHub via PR closing reference.
 - All 7 CI checks green at merge time.
 - Dallas's geometry-enforced remnant test fix (FullPackerTests.cs) is now on master.
+
+## 2026-07-02 — Inventory Parser Hardening Revision
+- Final reviewer-driven revision tightened `InventoryParser` so dimensions must match the whole token and malformed signed or garbage-prefixed values fail fast.
+- Negative inventory dimensions now raise `FormatException`; regression coverage added in `tests\WWA.Core.Tests\InventoryParserTests.cs`.
+- This revision cleared the final approval for the inventory-input slice.

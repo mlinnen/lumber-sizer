@@ -32,3 +32,9 @@ Seed: Assigned to Woodworking Agent project on 2026-06-10 by Mike Linnen. Initia
 - Issue #3 auto-closed by GitHub via PR closing reference.
 - All 7 CI checks green at merge time.
 - Keaton's PackingStrategy enum, FullPacker refactor, and determinism tests are now on master.
+
+## 2026-07-02 — Inventory File Input Added
+- Added optional `--inventory <path>` support on `export-pdf` plus `InventoryParser` for simple text inventory files alongside the cut list.
+- Chosen inventory format: `<length> x <width> [x <quantity>] # optional grade`.
+- Reviewer follow-up found bare `--inventory` needed explicit value validation; final approval came after downstream revisions.
+- Non-state repo files pending coordinator handling include `README.md`, `samples\sample_cutlists\README.txt`, `samples\sample_cutlists\simple_inventory.txt`, `src\WWA.Cli\Program.cs`, `src\WWA.Core\IO\InventoryParser.cs`, `tests\WWA.Core.Tests\CliIntegrationTests.cs`, and `tests\WWA.Core.Tests\InventoryParserTests.cs`.

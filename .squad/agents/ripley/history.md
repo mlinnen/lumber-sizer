@@ -55,3 +55,8 @@ Seed: Assigned to Woodworking Agent project on 2026-06-10 by Mike Linnen. Initia
 - Reverted the uncommitted edits in `docs\packer.md` and `docs\Woodworking_Agent_PRD.md` to abandon the in-progress doc rewrite.
 - Added root `README.md` documenting current CLI execution, packer wiring, repository layout, input/output behavior, and verified restore/build/test commands.
 - Non-state repo file pending coordinator handling: `README.md`.
+
+## 2026-07-02 — Inventory Flag Validation Revision
+- Reviewer rejection required tightening `export-pdf` parsing so bare or blank `--inventory` is a usage error instead of silently falling back to default stock.
+- Preserved backward compatibility by keeping the default stock inventory only when `--inventory` is omitted entirely.
+- Revision covered `src\WWA.Cli\Program.cs` and `tests\WWA.Core.Tests\CliIntegrationTests.cs`; final approval followed Dallas's parser-hardening pass.

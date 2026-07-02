@@ -32,3 +32,8 @@ Seed: Assigned to Woodworking Agent project on 2026-06-10 by Mike Linnen. Initia
 - Issue #3 auto-closed by GitHub via PR closing reference.
 - All 7 CI checks green at merge time.
 - Hockney's BinPackerDeterminismTests.cs (17 determinism tests) is now on master.
+
+## 2026-07-02 — Inventory Input Review Chain
+- Rejected Keaton's initial inventory-input slice because `--inventory` accepted missing or blank values without a usage error.
+- Rejected Ripley's follow-up because signed inventory dimensions were still accepted by parser token handling.
+- Approved Dallas's final revision after whole-token dimension validation rejected signed dimensions and preserved the intended optional-flag behavior.

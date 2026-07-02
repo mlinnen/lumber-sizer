@@ -119,6 +119,48 @@
 
 ---
 
+### [2026-07-02] Add optional text inventory file input to export-pdf — Keaton
+**Author:** Keaton  
+**Summary:** Add optional text inventory file input to export-pdf.
+
+**Details:**
+- Introduced optional `--inventory <path>` on `export-pdf` and added `src\WWA.Core\IO\InventoryParser.cs` to parse a simple text inventory file alongside the cut list.
+- Inventory format is `<length> x <width> [x <quantity>] # optional grade`, matching the cut-list parser's line-oriented comment-friendly conventions while tolerating simple unit suffixes.
+- Omitting `--inventory` preserves the default stock inventory of five `96in x 48in` grade `A` boards for backward-compatible CLI behavior.
+- Files changed: `src\WWA.Cli\Program.cs`, `src\WWA.Core\IO\InventoryParser.cs`, `README.md`, `tests\WWA.Core.Tests\CliIntegrationTests.cs`, `tests\WWA.Core.Tests\InventoryParserTests.cs`.
+
+**Rationale:** Adds real inventory input with minimal workflow overhead by reusing the existing plain-text cut-list style, while preserving current behavior for users who do not supply an inventory file.
+
+---
+
+### [2026-07-02] Reject bare --inventory and preserve default stock only when flag is omitted — Ripley
+**Author:** Ripley  
+**Summary:** Reject bare `--inventory` and preserve default stock only when the flag is omitted.
+
+**Details:**
+- Tightened `export-pdf` argument parsing so `--inventory` must be followed by a non-blank, non-option path token; bare or blank usage is now a usage error.
+- On invalid `--inventory` usage, the CLI emits an explicit error plus usage text and exits with code 2 instead of silently falling back to default stock.
+- The existing default inventory fallback remains only when `--inventory` is omitted entirely, preserving backward compatibility for older invocations.
+- Files changed: `src\WWA.Cli\Program.cs`, `tests\WWA.Core.Tests\CliIntegrationTests.cs`.
+
+**Rationale:** Reviewer-driven validation closes the silent-fallback bug and makes the new optional inventory flag behave predictably without changing legacy CLI behavior when the flag is absent.
+
+---
+
+### [2026-07-02] InventoryParser now requires whole-token dimensions so signed or garbage-prefixed values fail fast — Dallas
+**Author:** Dallas  
+**Summary:** InventoryParser now requires whole-token dimensions so signed or garbage-prefixed values fail fast.
+
+**Details:**
+- Tightened `InventoryParser` dimension parsing to require the entire trimmed token to match a valid unsigned dimension instead of extracting any numeric substring.
+- Signed or garbage-prefixed values such as `-96in` now raise `FormatException` rather than being normalized or partially accepted.
+- Added regression coverage for negative length and width inventory lines in `tests\WWA.Core.Tests\InventoryParserTests.cs`.
+- Files changed: `src\WWA.Core\IO\InventoryParser.cs`, `tests\WWA.Core.Tests\InventoryParserTests.cs`.
+
+**Rationale:** Reviewer-driven input hardening keeps the inventory file format explicit and rejects malformed signed dimensions instead of silently accepting invalid stock data.
+
+---
+
 ## Governance
 
 - All meaningful changes require team consensus

@@ -7,11 +7,20 @@ using WWA.Core.BinPacking;
 using WWA.Core.Reporting;
 using WWA.Core.Interfaces;
 
+const string ExportPdfUsage = "export-pdf <input-cutlist> <output-pdf-or-html> [--inventory path] [--packer deterministic|full|two-d] [--seed N]";
+
+Inventory CreateDefaultInventory()
+{
+    var inventory = new Inventory();
+    inventory.Add(new Board(96, 48, null, "A", 5));
+    return inventory;
+}
+
 async Task<int> Main(string[] args)
 {
     if (args.Length == 0)
     {
-        Console.WriteLine("WWA CLI\nCommands:\n  export-pdf <input-cutlist> <output-pdf-or-html> [--packer deterministic|full|two-d] [--seed N]");
+        Console.WriteLine($"WWA CLI\nCommands:\n  {ExportPdfUsage}");
         return 0;
     }
 
@@ -20,12 +29,13 @@ async Task<int> Main(string[] args)
     {
         if (args.Length < 3)
         {
-            Console.Error.WriteLine("Usage: export-pdf <input-cutlist> <output-pdf-or-html> [--packer deterministic|full|two-d] [--seed N]");
+            Console.Error.WriteLine($"Usage: {ExportPdfUsage}");
             return 2;
         }
 
         var input = args[1];
         var output = args[2];
+        string? inventoryPath = null;
         string packerName = "full";
         int? seed = null;
 
@@ -36,6 +46,19 @@ async Task<int> Main(string[] args)
             {
                 packerName = args[++i].ToLowerInvariant();
             }
+            else if (a == "--inventory")
+            {
+                if (i + 1 >= args.Length
+                    || string.IsNullOrWhiteSpace(args[i + 1])
+                    || args[i + 1].StartsWith("--", StringComparison.Ordinal))
+                {
+                    Console.Error.WriteLine("Error: --inventory requires a file path.");
+                    Console.Error.WriteLine($"Usage: {ExportPdfUsage}");
+                    return 2;
+                }
+
+                inventoryPath = args[++i];
+            }
             else if (a == "--seed" && i + 1 < args.Length)
             {
                 if (int.TryParse(args[++i], out var s)) seed = s;
@@ -45,10 +68,9 @@ async Task<int> Main(string[] args)
         try
         {
             var cutlist = CutListParser.Parse(input);
-
-            // Prepare a simple default inventory if none provided: 5 boards 96in x 48in
-            var inventory = new Inventory();
-            inventory.Add(new Board(96, 48, null, "A", 5));
+            var inventory = string.IsNullOrWhiteSpace(inventoryPath)
+                ? CreateDefaultInventory()
+                : InventoryParser.Parse(inventoryPath);
 
             var request = new PackingRequest { CutList = cutlist, Inventory = inventory, Seed = seed };
 

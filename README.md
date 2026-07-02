@@ -5,7 +5,7 @@ This repository currently ships a CLI-first .NET application for parsing simple 
 ## What the application does today
 
 - Reads a text cut list from disk.
-- Builds a default inventory of five `96in x 48in` boards.
+- Reads an optional text inventory file from disk, or falls back to five default `96in x 48in` boards.
 - Runs one of three CLI-selectable packers:
   - `full` -> `FullPacker` (1D, default)
   - `deterministic` -> `DeterministicPackerStub`
@@ -22,16 +22,17 @@ If you run the CLI with no arguments, it prints the current command help and exi
 Entrypoint: `src\WWA.Cli\Program.cs`
 
 ```text
-dotnet run --project .\src\WWA.Cli\WWA.Cli.csproj -- export-pdf <input-cutlist> <output-pdf-or-html> [--packer deterministic|full|two-d] [--seed N]
+dotnet run --project .\src\WWA.Cli\WWA.Cli.csproj -- export-pdf <input-cutlist> <output-pdf-or-html> [--inventory path] [--packer deterministic|full|two-d] [--seed N]
 ```
 
 Current behavior notes:
 
 - `export-pdf` is the only implemented command.
+- `--inventory` is optional; when omitted, the CLI keeps using one default inventory entry of `96in x 48in x 5` with grade `A`.
 - `--packer full` uses `FullPacker` with its default `PackingStrategy.BestFitDecreasing`.
 - `--seed` is optional and is passed into the selected packer for deterministic tie-breaking.
 - Unknown packer values fall back to `full`.
-- The CLI does **not** currently accept an inventory file, remnant-preservation flags, or a CLI flag for `PackingStrategy`.
+- The CLI still does **not** accept remnant-preservation flags or a CLI flag for `PackingStrategy`.
 
 ## Cut-list input format
 
@@ -50,6 +51,25 @@ Example:
 ```
 
 Sample file: `samples\sample_cutlists\simple_cutlist.txt`
+
+## Inventory input format
+
+Parser: `src\WWA.Core\IO\InventoryParser.cs`
+
+- One board spec per line: `<length> x <width> [x <quantity>] # optional grade`
+- Blank lines are ignored.
+- Lines beginning with `#` are ignored.
+- Length and width parsing are unit-tolerant, just like the cut-list parser.
+- Quantity is optional and defaults to `1`.
+
+Example:
+
+```text
+96in x 48in x 5 # A
+120in x 12in
+```
+
+Sample file: `samples\sample_cutlists\simple_inventory.txt`
 
 ## Packers in the repository
 
@@ -78,6 +98,12 @@ Example run against the sample input:
 
 ```powershell
 dotnet run --project .\src\WWA.Cli\WWA.Cli.csproj -- export-pdf .\samples\sample_cutlists\simple_cutlist.txt .\artifacts\cli_export_sample.html --packer full --seed 12345
+```
+
+With an explicit inventory file:
+
+```powershell
+dotnet run --project .\src\WWA.Cli\WWA.Cli.csproj -- export-pdf .\samples\sample_cutlists\simple_cutlist.txt .\artifacts\cli_export_sample.html --inventory .\samples\sample_cutlists\simple_inventory.txt --packer full --seed 12345
 ```
 
 ## Repository structure

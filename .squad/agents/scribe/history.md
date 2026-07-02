@@ -91,3 +91,14 @@ Initial setup complete.
 - Appended updates to `agents\ripley\history.md` and `agents\scribe\history.md`.
 - No history files exceeded 15KB threshold; no summarization needed.
 - Non-state repo file changed by Ripley: `README.md` — coordinator handling required.
+
+## 2026-07-02 — Inventory Input Logging (Scribe session)
+- Ran pre-checks: state backend healthy (FSStorageProvider), `decisions.md` 9,110 bytes before merge, inbox contained 3 entries.
+- No decisions archiving needed (`decisions.md` below 20KB threshold).
+- Merged inbox entries for Keaton, Ripley, and Dallas into `decisions.md`; deleted all 3 processed inbox entries.
+- Wrote orchestration log: `orchestration-log/2026-07-02T08-32-44.886-04-00-inventory-input.md`.
+- Wrote session log: `log/2026-07-02T08-32-44.886-04-00-inventory-input.md`.
+- Appended updates to `agents\keaton\history.md`, `agents\ripley\history.md`, `agents\dallas\history.md`, `agents\hockney\history.md`, and `agents\scribe\history.md`.
+- No history files exceeded 15KB threshold; no summarization needed.
+- Non-state repo files pending coordinator handling: `README.md`, `samples\sample_cutlists\README.txt`, `samples\sample_cutlists\simple_inventory.txt`, `src\WWA.Cli\Program.cs`, `src\WWA.Core\IO\InventoryParser.cs`, `tests\WWA.Core.Tests\CliIntegrationTests.cs`, `tests\WWA.Core.Tests\InventoryParserTests.cs`.
+- Health report: `decisions.md` 9,110 bytes before / 12,211 bytes after; inbox processed 3; history summaries 0.
