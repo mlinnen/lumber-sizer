@@ -39,3 +39,19 @@ Seed: Assigned to Woodworking Agent project on 2026-06-10 by Mike Linnen. Initia
 - Committed remaining `.squad` history updates that were outstanding after the PR #14 merge.
 - Commit `f9c9b93`: `chore: record PR #14 merge in agent histories.`
 - Working tree clean after the cleanup commit.
+
+## [2026-06-21T23:37:39-04:00] Post-merge final logging pass
+
+- Committed final `.squad` history updates after PR #14 push (commit `0973227`).
+- Commit message: `chore: update agent histories after PR #14 push`.
+- Pushed `master` to `origin`; working tree clean, branch matches `origin/master`.
+
+## 2026-07-02 — Documentation Audit Sync
+- Audited repository documentation against current implementation.
+- Updated `docs\packer.md` and `docs\Woodworking_Agent_PRD.md` to separate shipped behavior from roadmap guidance.
+- Clarified supported `FullPacker` strategies, determinism/derived-ID behavior, and current `export-pdf` / PDF fallback limits.
+
+## 2026-07-02 — README Sync / Doc Revert
+- Reverted the uncommitted edits in `docs\packer.md` and `docs\Woodworking_Agent_PRD.md` to abandon the in-progress doc rewrite.
+- Added root `README.md` documenting current CLI execution, packer wiring, repository layout, input/output behavior, and verified restore/build/test commands.
+- Non-state repo file pending coordinator handling: `README.md`.

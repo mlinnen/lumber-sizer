@@ -91,6 +91,34 @@
 
 ---
 
+### [2026-07-02] Clarified implementation-vs-roadmap documentation boundaries — Ripley
+**Author:** Ripley  
+**Summary:** Clarified implementation-vs-roadmap documentation boundaries.
+
+**Details:**
+- Updated repository docs so current implementation details live in `docs\packer.md`, while `docs\Woodworking_Agent_PRD.md` is explicitly labeled as roadmap/vision material.
+- Documented current `FullPacker` strategies, seed/no-seed determinism, derived ID behavior, and current CLI export/PDF limits against `src\WWA.Cli\Program.cs`, `src\WWA.Core\BinPacking\FullPacker.cs`, and `src\WWA.Core\Reporting\PdfReporter.cs`.
+- Replaced outdated PDF guidance with current `HAS_SKIA` / HTML fallback behavior and clarified present `export-pdf` usage.
+- Files changed: `docs\packer.md`, `docs\Woodworking_Agent_PRD.md`.
+
+**Rationale:** Keeps shipped-behavior guidance anchored to the docs that track current implementation while preserving the PRD as forward-looking roadmap material.
+
+---
+
+### [2026-07-02] Root README documents shipped behavior; abandoned doc edits were reverted — Ripley
+**Author:** Ripley  
+**Summary:** Root README documents shipped behavior; abandoned doc edits were reverted.
+
+**Details:**
+- Reverted the uncommitted edits in `docs\packer.md` and `docs\Woodworking_Agent_PRD.md` to abandon the in-progress doc rewrite.
+- Added root `README.md` as the current source of truth for shipped CLI behavior, packer wiring, repository layout, input format, output behavior, and verified build/test commands.
+- Anchored the README to the implementation in `src\WWA.Cli\Program.cs`, `src\WWA.slnx`, `.github\workflows\dotnet-ci.yml`, and the current HTML/PDF export behavior.
+- Documented that tests should be run from `tests\WWA.Core.Tests\WWA.Core.Tests.csproj` because `src\WWA.slnx` only includes the app projects.
+
+**Rationale:** Preserve roadmap docs from partial rewrites while giving contributors a current, implementation-backed top-level reference for executing, building, and testing the shipped application.
+
+---
+
 ## Governance
 
 - All meaningful changes require team consensus

@@ -70,3 +70,24 @@ Initial setup complete.
 - Appended Ripley cleanup summary to ripley/history.md and scribe/history.md.
 - No history files exceeded 15KB threshold; no summarization needed.
 - No non-state repo files modified by Scribe in this session; Ripley's commit f9c9b93 already covers git state.
+
+## 2026-07-02 — Documentation Audit Logging (Scribe session)
+- Ran pre-checks: state backend healthy (FSStorageProvider), `decisions.md` 7,048 bytes before merge, inbox contained 1 entry.
+- No decisions archiving needed (`decisions.md` below 20KB threshold).
+- Merged inbox entry `Ripley-clarified-implementation-vs-roadmap-documentation-.md` into `decisions.md`; deleted processed inbox entry.
+- Wrote orchestration log: `orchestration-log/2026-07-02T07-55-11.251-04-00-ripley.md`.
+- Wrote session log: `log/2026-07-02T07-55-11.251-04-00-doc-sync.md`.
+- Appended updates to `agents/ripley/history.md` and `agents/scribe/history.md`.
+- No history files exceeded 15KB threshold; no summarization needed.
+- Non-state repo files changed by Ripley: `docs\packer.md`, `docs\Woodworking_Agent_PRD.md` — coordinator handling required.
+- Health report: `decisions.md` 7,048 bytes before / 8,045 bytes after; inbox processed 1; history summaries 0.
+
+## 2026-07-02 — README Sync Logging (Scribe session)
+- Ran pre-checks: state backend healthy (FSStorageProvider), `decisions.md` 8,045 bytes before merge, inbox contained 1 entry.
+- No decisions archiving needed (`decisions.md` below 20KB threshold).
+- Merged inbox entry `Ripley-root-readme-now-documents-shipped-behavior-abandon.md` into `decisions.md`; deleted the processed inbox entry.
+- Wrote orchestration log: `orchestration-log/2026-07-02T08-12-22.212-04-00-ripley.md`.
+- Wrote session log: `log/2026-07-02T08-12-22.212-04-00-readme-sync.md`.
+- Appended updates to `agents\ripley\history.md` and `agents\scribe\history.md`.
+- No history files exceeded 15KB threshold; no summarization needed.
+- Non-state repo file changed by Ripley: `README.md` — coordinator handling required.
