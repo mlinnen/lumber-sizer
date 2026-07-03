@@ -115,6 +115,7 @@ namespace WWA.Core.Models
     {
         public Guid BoardId { get; set; }
         public double OriginalBoardLength { get; set; }
+        public double OriginalBoardWidth { get; set; }
         public List<Placement> Placements { get; } = new List<Placement>();
 
         /// <summary>

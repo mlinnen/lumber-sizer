@@ -10,6 +10,10 @@ namespace WWA.Core.Reporting
     public class SvgRenderer
     {
         private const double DefaultBoardHeightInches = 6.0;
+        private const double ScaleSectionHeightPx = 32.0;
+        private const double LegendHeightPx = 70.0;
+        private const double UnplacedHeaderHeightPx = 32.0;
+        private const double UnplacedLineHeightPx = 14.0;
 
         private static void AppendSvgLine(StringBuilder sb, FormattableString line) => sb.AppendLine(Invariant(line));
 
@@ -18,8 +22,27 @@ namespace WWA.Core.Reporting
         private static string GetPlacementLabel(Guid cutItemId, CutItem? cutItem)
             => (cutItem?.Description ?? cutItemId.ToString()) ?? "Unknown";
 
-        private static double GetPlacementWidth(CutItem? cutItem)
-            => Math.Max(1.0, cutItem?.Width ?? DefaultBoardHeightInches);
+        private static double GetPlacementWidth(CutItem? cutItem, double fallbackWidthInches)
+            => Math.Max(1.0, cutItem?.Width ?? fallbackWidthInches);
+
+        private static double GetBoardHeight(BoardAllocation allocation, IEnumerable<(double xOffset, double yOffset, double length, double width, string label)> placements)
+        {
+            if (allocation.OriginalBoardWidth > 0.0)
+            {
+                return allocation.OriginalBoardWidth;
+            }
+
+            var usedHeight = placements.Any()
+                ? placements.Max(p => p.yOffset + p.width)
+                : 0.0;
+
+            if (allocation.Placements2D.Any())
+            {
+                return usedHeight > 0.0 ? usedHeight : DefaultBoardHeightInches;
+            }
+
+            return Math.Max(DefaultBoardHeightInches, usedHeight);
+        }
 
         /// <summary>
         /// Render the packing result to a single SVG string. Units are pixels; default scale is 10 px per inch.
@@ -35,13 +58,14 @@ namespace WWA.Core.Reporting
             // Compute overall width as max board length in inches * scale
             var boards = result.Allocations;
             double maxBoardLengthIn = 0;
-            double totalHeightPx = margin;
+            double contentHeightPx = 0.0;
 
             var boardPlacements = new List<List<(double xOffset, double yOffset, double length, double width, string label)>>();
             var boardSizes = new List<(double lengthIn, double heightIn)>();
 
             foreach (var b in boards)
             {
+                var fallbackBoardHeightIn = b.OriginalBoardWidth > 0.0 ? b.OriginalBoardWidth : DefaultBoardHeightInches;
                 var renderPlacements = b.Placements2D.Any()
                     ? b.Placements2D
                         .Select(p => (
@@ -56,35 +80,27 @@ namespace WWA.Core.Reporting
                             xOffset: p.Offset,
                             yOffset: 0.0,
                             length: p.Length,
-                            width: GetPlacementWidth(p.CutItem),
+                            width: GetPlacementWidth(p.CutItem, fallbackBoardHeightIn),
                             label: GetPlacementLabel(p.CutItemId, p.CutItem)))
                         .ToList();
 
                 double lengthIn = b.OriginalBoardLength;
-                double heightIn = 0.0;
-                if (renderPlacements.Any())
-                {
-                    heightIn = renderPlacements.Max(p => p.yOffset + p.width);
-                    if (!b.Placements2D.Any())
-                    {
-                        heightIn = Math.Max(DefaultBoardHeightInches, heightIn);
-                    }
-                }
-                else
-                {
-                    // fallback: if no placements, assume a small height
-                    heightIn = DefaultBoardHeightInches;
-                }
+                double heightIn = GetBoardHeight(b, renderPlacements);
 
                 boardPlacements.Add(renderPlacements);
                 boardSizes.Add((lengthIn, heightIn));
                 if (lengthIn > maxBoardLengthIn) maxBoardLengthIn = lengthIn;
 
-                totalHeightPx += (heightIn * pxPerInch) + margin;
+                contentHeightPx += (heightIn * pxPerInch) + margin;
             }
 
+            var contentTopPx = margin + ScaleSectionHeightPx;
+            var unplacedHeightPx = result.UnplacedItems.Any()
+                ? UnplacedHeaderHeightPx + (result.UnplacedItems.Count * UnplacedLineHeightPx)
+                : 0.0;
+            var legendY = contentTopPx + contentHeightPx + unplacedHeightPx;
             int svgWidth = (int)Math.Ceiling(maxBoardLengthIn * pxPerInch) + margin * 2;
-            int svgHeight = (int)Math.Ceiling(totalHeightPx) + 20;
+            int svgHeight = (int)Math.Ceiling(legendY + LegendHeightPx + margin);
 
             AppendSvgLine(sb, $"<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"{svgWidth}\" height=\"{svgHeight}\">");
 
@@ -101,7 +117,7 @@ namespace WWA.Core.Reporting
             for (int i = 0; i < labels.Count; i++) labelColor[labels[i]] = palette[i % palette.Length];
 
             int boardIndex = 0;
-            double yOffsetPx = margin;
+            double yOffsetPx = contentTopPx;
  
             foreach (var b in boards)
             {
@@ -162,6 +178,7 @@ namespace WWA.Core.Reporting
                 }
 
                 sb.AppendLine("  </g>");
+                yOffsetPx += unplacedHeightPx;
             }
 
             // Add a simple scale bar at the top
@@ -189,11 +206,9 @@ namespace WWA.Core.Reporting
             try
             {
                 double legendWidth = svgWidth - margin * 2;
-                double legendHeight = 70;
                 double legendX = margin;
-                double legendY = svgHeight - legendHeight - margin;
                 AppendSvgLine(sb, $"  <g id=\"legend\">");
-                AppendSvgLine(sb, $"    <rect x=\"{legendX}\" y=\"{legendY}\" width=\"{legendWidth}\" height=\"{legendHeight}\" fill=\"#FAFAFA\" stroke=\"#CCC\" stroke-width=\"1\" />");
+                AppendSvgLine(sb, $"    <rect x=\"{legendX}\" y=\"{legendY}\" width=\"{legendWidth}\" height=\"{LegendHeightPx}\" fill=\"#FAFAFA\" stroke=\"#CCC\" stroke-width=\"1\" />");
                 AppendSvgLine(sb, $"    <text x=\"{legendX + 6}\" y=\"{legendY + 16}\" font-family=\"Arial,Helvetica,sans-serif\" font-size=\"12\" fill=\"#222\">Legend</text>");
                 int li = 0;
                 foreach (var kv in labelColor)

@@ -69,3 +69,18 @@ Seed: Assigned to Woodworking Agent project on 2026-06-10 by Mike Linnen. Initia
 - Key finding recorded: `SvgRenderer` only rendered `Placements2D`, while the default `FullPacker` supplies 1D `Placements`.
 - Approved slice tracked in `src\WWA.Core\Reporting\SvgRenderer.cs` and `tests\WWA.Core.Tests\SvgRendererTests.cs`.
 - Validation captured: Skia-enabled rendering tests passed; Skia-enabled `export-pdf` with the full packer produced a PDF probe before cleanup.
+
+
+## 2026-07-02T19:48:41.878-04:00 — Board canvas verification confirmed
+- Scribe verified Keaton's investigation outcome for the PDF legend-without-canvas report.
+- Current HEAD already contains the approved fix in `src\WWA.Core\Reporting\SvgRenderer.cs` with regression coverage in `tests\WWA.Core.Tests\SvgRendererTests.cs`.
+- Confirmed root cause: SVG generation for 1D placements depended on `Placements2D` only; the missing board canvas was not caused by rasterization or PDF embedding.
+- Validation remained green: HAS_SKIA targeted rendering tests passed, and HAS_SKIA `export-pdf` produced a real PDF.
+- No further code changes were required.
+
+
+## 2026-07-02T19:58:15.216-04:00 — Inventory-board cut-sheet layout fix approved
+- Team archived Keaton's approved fix for restoring usable inventory-board layout in PDF/SVG output.
+- Key implementation recorded: `OriginalBoardWidth` now flows through `BoardAllocation` from all packers, and `SvgRenderer` reserves non-overlapping space for the board scale, legend, and unplaced sections.
+- Validation captured: HAS_SKIA targeted tests passed; Skia repro export passed; Hockney additionally verified targeted and full suites with and without `HAS_SKIA`.
+- Non-state repo files pending coordinator handling: `src\WWA.Core\Models\PackingModels.cs`, `src\WWA.Core\BinPacking\FullPacker.cs`, `src\WWA.Core\BinPacking\DeterministicPackerStub.cs`, `src\WWA.Core\BinPacking\TwoDPacker.cs`, `src\WWA.Core\BinPacking\MaxRectsPacker.cs`, `src\WWA.Core\BinPacking\GuillotinePacker.cs`, `src\WWA.Core\Reporting\SvgRenderer.cs`, `tests\WWA.Core.Tests\FullPackerTests.cs`, `tests\WWA.Core.Tests\SvgRendererTests.cs`.

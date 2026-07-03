@@ -189,7 +189,12 @@ namespace WWA.Core.BinPacking
             var allocation = result.Allocations.FirstOrDefault(a => a.BoardId == chosen.PhysicalBoardId);
             if (allocation == null)
             {
-                allocation = new BoardAllocation { BoardId = chosen.PhysicalBoardId, OriginalBoardLength = chosen.OriginalLength };
+                allocation = new BoardAllocation
+                {
+                    BoardId = chosen.PhysicalBoardId,
+                    OriginalBoardLength = chosen.OriginalLength,
+                    OriginalBoardWidth = chosen.Board.Width
+                };
                 result.Allocations.Add(allocation);
             }
 

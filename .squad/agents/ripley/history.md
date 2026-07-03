@@ -81,3 +81,9 @@ Seed: Assigned to Woodworking Agent project on 2026-06-10 by Mike Linnen. Initia
 - Team archived the approved resolution for the missing visible board layout in Skia-generated PDFs.
 - Decision record now points future investigation at `SvgRenderer` coverage for 1D `Placements` before revisiting downstream PDF composition.
 - Non-state repo files pending coordinator handling: `src\WWA.Core\Reporting\SvgRenderer.cs`, `tests\WWA.Core.Tests\SvgRendererTests.cs`.
+
+
+## 2026-07-02T19:58:15.216-04:00 — Approved inventory-board layout decision archived
+- Team archived the approved cut-sheet decision for restoring real inventory-board layout in PDF/SVG output.
+- Decision record captures the root cause: the renderer lacked source board width and let scale/legend layout overlap the drawing, collapsing usable boards into thin bands.
+- Non-state repo files pending coordinator handling: `src\WWA.Core\Models\PackingModels.cs`, `src\WWA.Core\BinPacking\FullPacker.cs`, `src\WWA.Core\BinPacking\DeterministicPackerStub.cs`, `src\WWA.Core\BinPacking\TwoDPacker.cs`, `src\WWA.Core\BinPacking\MaxRectsPacker.cs`, `src\WWA.Core\BinPacking\GuillotinePacker.cs`, `src\WWA.Core\Reporting\SvgRenderer.cs`, `tests\WWA.Core.Tests\FullPackerTests.cs`, `tests\WWA.Core.Tests\SvgRendererTests.cs`.

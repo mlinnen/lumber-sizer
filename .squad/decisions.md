@@ -236,6 +236,20 @@
 
 ---
 
+### [2026-07-02] Restore actual inventory-board cut-sheet layout in PDF/SVG output — Keaton
+**Author:** Keaton  
+**Summary:** Restore actual inventory-board cut-sheet layout in PDF/SVG output.
+
+**Details:**
+- Added `OriginalBoardWidth` to `BoardAllocation` in `src\WWA.Core\Models\PackingModels.cs` and populated it in `src\WWA.Core\BinPacking\FullPacker.cs`, `src\WWA.Core\BinPacking\DeterministicPackerStub.cs`, `src\WWA.Core\BinPacking\TwoDPacker.cs`, `src\WWA.Core\BinPacking\MaxRectsPacker.cs`, and `src\WWA.Core\BinPacking\GuillotinePacker.cs` so renderers can use source inventory dimensions instead of placement extents or fallback bands.
+- Updated `src\WWA.Core\Reporting\SvgRenderer.cs` to size each board canvas from the source inventory board width and reserve dedicated vertical space for the top scale, bottom legend, and unplaced-items sections so the layout no longer overlaps itself.
+- Added focused regressions in `tests\WWA.Core.Tests\FullPackerTests.cs` and `tests\WWA.Core.Tests\SvgRendererTests.cs` covering board-width propagation and non-overlapping cut-sheet layout for the default PDF/SVG path.
+- Validation: HAS_SKIA targeted tests passed; Skia repro export passed; Hockney also verified targeted and full test suites with and without `HAS_SKIA`.
+- Outcome: Approved.
+- Files changed: `src\WWA.Core\Models\PackingModels.cs`, `src\WWA.Core\BinPacking\FullPacker.cs`, `src\WWA.Core\BinPacking\DeterministicPackerStub.cs`, `src\WWA.Core\BinPacking\TwoDPacker.cs`, `src\WWA.Core\BinPacking\MaxRectsPacker.cs`, `src\WWA.Core\BinPacking\GuillotinePacker.cs`, `src\WWA.Core\Reporting\SvgRenderer.cs`, `tests\WWA.Core.Tests\FullPackerTests.cs`, `tests\WWA.Core.Tests\SvgRendererTests.cs`.
+
+**Rationale:** The renderer was collapsing real inventory boards into thin bands because it lacked the source board width and allowed the scale/legend layout to overlap the drawing. Persisting the original width through packing and reserving dedicated layout space restores usable board-by-board cut sheets in PDF/SVG output.
+
 ## Governance
 
 - All meaningful changes require team consensus

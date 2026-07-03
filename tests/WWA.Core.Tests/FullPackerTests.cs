@@ -302,5 +302,26 @@ namespace WWA.Core.Tests
             Assert.Equal(3, cutIds.Count);
             Assert.Equal(3, cutIds.Distinct().Count()); // every placement must have a unique CutItemId
         }
+
+        [Fact]
+        public async Task Allocations_Preserve_Source_Board_Width()
+        {
+            var packer = new FullPacker();
+            var cutList = new CutList();
+            cutList.Add(new CutItem(24, 6, 1, true, "shelf"));
+
+            var inventory = new Inventory();
+            inventory.Add(new Board(96, 48, quantity: 1));
+
+            var result = await packer.PackAsync(new PackingRequest
+            {
+                CutList = cutList,
+                Inventory = inventory,
+                Constraints = new Constraints()
+            });
+
+            var allocation = Assert.Single(result.Allocations);
+            Assert.Equal(48, allocation.OriginalBoardWidth);
+        }
     }
 }

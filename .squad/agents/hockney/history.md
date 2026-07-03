@@ -64,3 +64,9 @@ Seed: Assigned to Woodworking Agent project on 2026-06-10 by Mike Linnen. Initia
 - Team archived the approved visible-layout fix for the Skia PDF path.
 - Regression coverage now records that 1D `BoardAllocation.Placements` must render when `Placements2D` is empty.
 - Validation chain captured: Skia-enabled rendering tests passed; Skia-enabled `export-pdf` with the full packer produced a PDF probe before cleanup.
+
+
+## 2026-07-02T19:58:15.216-04:00 — Cut-sheet layout validation archived
+- Team recorded Hockney's verification for the approved PDF/SVG cut-sheet layout fix.
+- Validation captured: targeted and full test suites passed with and without `HAS_SKIA`, alongside the HAS_SKIA targeted tests and Skia repro export already recorded for the implementation slice.
+- Decision now points future regressions at board-width propagation plus scale/legend spacing in the cut-sheet renderer.

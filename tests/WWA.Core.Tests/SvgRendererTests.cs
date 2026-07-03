@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using System.Linq;
 using System.Xml.Linq;
 #if HAS_SKIA
 using SkiaSharp;
@@ -8,6 +9,7 @@ using Svg.Skia;
 using Xunit;
 using WWA.Core.Reporting;
 using WWA.Core.Models;
+using WWA.Core.BinPacking;
 
 namespace WWA.Core.Tests
 {
@@ -46,6 +48,58 @@ namespace WWA.Core.Tests
 
             Assert.Contains("shelf", svg, StringComparison.OrdinalIgnoreCase);
             Assert.Contains("fill-opacity=\"0.85\"", svg, StringComparison.Ordinal);
+        }
+
+        [Fact]
+        public async System.Threading.Tasks.Task FullPacker_Render_Uses_Inventory_Board_Width_And_Reserves_Space_For_Scale_And_Legend()
+        {
+            var cutList = new CutList();
+            cutList.Add(new CutItem(24, 6, 1, true, "shelf"));
+            cutList.Add(new CutItem(12, 2, 1, true, "leg"));
+
+            var inventory = new Inventory();
+            inventory.Add(new Board(96, 48, quantity: 1));
+
+            var result = await new FullPacker().PackAsync(new PackingRequest
+            {
+                CutList = cutList,
+                Inventory = inventory,
+                Constraints = new Constraints()
+            });
+
+            var renderer = new SvgRenderer();
+            var svg = renderer.Render(result);
+
+            Assert.Contains("Board 0 (96in x 48in)", svg, StringComparison.OrdinalIgnoreCase);
+
+            var document = XDocument.Parse(svg);
+            var svgNs = document.Root!.Name.Namespace;
+
+            var boardRect = document.Root!
+                .Elements(svgNs + "g")
+                .First(e => string.Equals((string?)e.Attribute("id"), "board-0", StringComparison.Ordinal))
+                .Elements(svgNs + "rect")
+                .First();
+            var scaleRect = document.Root!
+                .Elements(svgNs + "g")
+                .First(e => string.Equals((string?)e.Attribute("id"), "scale", StringComparison.Ordinal))
+                .Elements(svgNs + "rect")
+                .First();
+            var legendRect = document.Root!
+                .Elements(svgNs + "g")
+                .First(e => string.Equals((string?)e.Attribute("id"), "legend", StringComparison.Ordinal))
+                .Elements(svgNs + "rect")
+                .First();
+
+            var boardY = double.Parse(boardRect.Attribute("y")!.Value, CultureInfo.InvariantCulture);
+            var boardHeight = double.Parse(boardRect.Attribute("height")!.Value, CultureInfo.InvariantCulture);
+            var scaleY = double.Parse(scaleRect.Attribute("y")!.Value, CultureInfo.InvariantCulture);
+            var scaleHeight = double.Parse(scaleRect.Attribute("height")!.Value, CultureInfo.InvariantCulture);
+            var legendY = double.Parse(legendRect.Attribute("y")!.Value, CultureInfo.InvariantCulture);
+
+            Assert.Equal(480, boardHeight, precision: 6);
+            Assert.True(boardY >= scaleY + scaleHeight + 12);
+            Assert.True(legendY >= boardY + boardHeight);
         }
 
         [Fact]
