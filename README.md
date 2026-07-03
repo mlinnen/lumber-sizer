@@ -12,8 +12,8 @@ This repository currently ships a CLI-first .NET application for parsing simple 
   - `two-d` -> `TwoDPacker`
 - Renders the packing result to SVG.
 - Writes output through `PdfReporter`:
-  - when built with `HAS_SKIA`, writes the requested PDF path
-  - otherwise writes an HTML file with the same base name as the requested output path
+  - when built with `HAS_SKIA` **and** the required native Skia dependencies are available at runtime, writes the requested PDF path
+  - otherwise writes an HTML fallback with the same base name as the requested output path
 
 If you run the CLI with no arguments, it prints the current command help and exits.
 
@@ -96,8 +96,9 @@ Core code lives under `src\WWA.Core`.
 Reporting code lives under `src\WWA.Core\Reporting`.
 
 - `SvgRenderer` produces the cut-sheet SVG.
-- `PdfReporter.GenerateFromSvg(...)` decides whether the final artifact is a real PDF or an HTML fallback.
+- `PdfReporter.GenerateFromSvg(...)` produces a real PDF only when the app is built with `HAS_SKIA` and the required native Skia dependencies load at runtime; otherwise it writes an HTML fallback.
 - On a normal build without `HAS_SKIA`, asking for `report.pdf` produces `report.html` next to the requested path.
+- A published `HAS_SKIA` artifact can still fall back to HTML on a target machine that only has .NET installed but is missing the native Skia prerequisites.
 
 Example run against the sample input:
 
@@ -157,6 +158,20 @@ Optional PDF-enabled build/test lane (matches the repository's Skia-enabled CI p
 dotnet build .\src\WWA.slnx --no-restore --configuration Release -p:DefineConstants=HAS_SKIA
 dotnet test .\tests\WWA.Core.Tests\WWA.Core.Tests.csproj --configuration Release -p:DefineConstants=HAS_SKIA --verbosity normal
 ```
+
+## GitHub Actions publish artifacts
+
+`.github\workflows\dotnet-ci.yml` keeps the existing plain `Release` and `HAS_SKIA` validation lanes, then publishes workflow artifacts only after both lanes pass.
+
+- Publish triggers: pushes to `master`, pushes to `feature/*`, `v*` tag pushes, and manual `workflow_dispatch`
+- Pull requests remain validation-only; they do not upload application artifacts
+- Shipped configuration: `dotnet publish` in `Release` with `HAS_SKIA`, so the downloadable artifacts include the PDF code path instead of the plain HTML-fallback-only build
+- Published runtimes: `win-x64`, `osx-x64`, and `linux-x64`
+- Artifact names follow `wwa-cli-release-has-skia-<rid>`
+- Scope is currently GitHub Actions workflow artifacts only; the workflow does not attach assets to GitHub Releases yet
+- The published outputs are framework-dependent and `--self-contained false`, so the matching .NET 10 runtime must be installed on the target machine
+- PDF export from those artifacts also depends on native platform libraries; the current Skia CI lane installs Linux packages `libfontconfig1`, `libfreetype6`, `libx11-6`, `libxrandr2`, `libxrender1`, and `libxext6`, macOS Homebrew packages `fontconfig`, `freetype`, `cairo`, and `libpng`, and Windows `vcredist140`
+- If those native dependencies are missing, the published app may still start, but `export-pdf` can fall back to writing HTML instead of a PDF
 
 ## Current scope vs roadmap
 

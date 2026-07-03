@@ -148,3 +148,15 @@ Initial setup complete.
 - No history files exceeded 15KB threshold; no summarization needed.
 - No non-state repo files changed; nothing to flag for coordinator handling.
 - Health report: `decisions.md` 17,816 bytes before / 17,816 bytes after; inbox processed 0; history summaries 0.
+
+## 2026-07-02 — Issue #15 Artifact Workflow Logging (Scribe session)
+- Ran pre-checks: state backend healthy (`FSStorageProvider`), `decisions.md` 19,868 bytes before merge, inbox contained 4 entries.
+- No decisions archiving needed (`decisions.md` below 20,480 bytes); deduplicated the issue #15 inbox into one approved final decision entry and deleted all 4 processed inbox items.
+- Wrote orchestration log: `orchestration-log/2026-07-02T20-26-53.292-04-00-issue15.md`.
+- Wrote session log: `log/2026-07-02T20-26-53.292-04-00-issue15.md`.
+- Appended updates to `agents\keaton\history.md`, `agents\ripley\history.md`, `agents\dallas\history.md`, `agents\hockney\history.md`, and `agents\scribe\history.md`.
+- No history files exceeded 15KB threshold before appends; no summarization needed.
+- Non-state repo files pending coordinator handling: `.github\workflows\dotnet-ci.yml`, `README.md`.
+- Health report pending final after-size measurement.
+- Health report: `decisions.md` 19,868 bytes before / 21,744 bytes after; inbox processed 4; history files summarized 0.
+- Post-merge threshold note: `decisions.md` now exceeds 20,480 bytes, but no entries are older than 30 days yet, so no archive candidates were available in this session.

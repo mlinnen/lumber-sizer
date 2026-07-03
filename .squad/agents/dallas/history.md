@@ -24,3 +24,8 @@ Seed: Assigned to Woodworking Agent project on 2026-06-10 by Mike Linnen. Initia
 - Final reviewer-driven revision tightened `InventoryParser` so dimensions must match the whole token and malformed signed or garbage-prefixed values fail fast.
 - Negative inventory dimensions now raise `FormatException`; regression coverage added in `tests\WWA.Core.Tests\InventoryParserTests.cs`.
 - This revision cleared the final approval for the inventory-input slice.
+
+## 2026-07-02T20:26:53.292-04:00 — Issue #15 final approval archived
+- Dallas's final README revision cleared approval for issue #15's downloadable GitHub Actions artifact workflow.
+- Archived final decision records the exact publish scope (`master`, `feature/*`, `v*`, `workflow_dispatch`), the `macos-13` `osx-x64` smoke-test lane, and the framework-dependent `HAS_SKIA` artifact/runtime caveats.
+- Non-state repo files pending coordinator handling: `.github\workflows\dotnet-ci.yml`, `README.md`.

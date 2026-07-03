@@ -70,3 +70,7 @@ Seed: Assigned to Woodworking Agent project on 2026-06-10 by Mike Linnen. Initia
 - Team recorded Hockney's verification for the approved PDF/SVG cut-sheet layout fix.
 - Validation captured: targeted and full test suites passed with and without `HAS_SKIA`, alongside the HAS_SKIA targeted tests and Skia repro export already recorded for the implementation slice.
 - Decision now points future regressions at board-width propagation plus scale/legend spacing in the cut-sheet renderer.
+## 2026-07-02T20:26:53.292-04:00 — Issue #15 review chain archived
+- Team archived Hockney's review chain for the approved issue #15 artifact workflow slice.
+- Recorded substantive review gates: reject Keaton over trigger-scope docs and macOS cross-arch smoke testing; reject Ripley over overstated README runtime requirements; approve Dallas after the runtime caveats were narrowed to native Skia prerequisites plus HTML fallback.
+- Non-state repo files pending coordinator handling: `.github\workflows\dotnet-ci.yml`, `README.md`.

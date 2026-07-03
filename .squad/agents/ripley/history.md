@@ -87,3 +87,8 @@ Seed: Assigned to Woodworking Agent project on 2026-06-10 by Mike Linnen. Initia
 - Team archived the approved cut-sheet decision for restoring real inventory-board layout in PDF/SVG output.
 - Decision record captures the root cause: the renderer lacked source board width and let scale/legend layout overlap the drawing, collapsing usable boards into thin bands.
 - Non-state repo files pending coordinator handling: `src\WWA.Core\Models\PackingModels.cs`, `src\WWA.Core\BinPacking\FullPacker.cs`, `src\WWA.Core\BinPacking\DeterministicPackerStub.cs`, `src\WWA.Core\BinPacking\TwoDPacker.cs`, `src\WWA.Core\BinPacking\MaxRectsPacker.cs`, `src\WWA.Core\BinPacking\GuillotinePacker.cs`, `src\WWA.Core\Reporting\SvgRenderer.cs`, `tests\WWA.Core.Tests\FullPackerTests.cs`, `tests\WWA.Core.Tests\SvgRendererTests.cs`.
+## 2026-07-02T20:26:53.292-04:00 — Issue #15 reviewer revision archived
+- Team archived the approved issue #15 artifact-publish decision after Ripley's reviewer-driven follow-up pass.
+- Ripley's revision tightened the README trigger-scope wording and addressed the macOS `osx-x64` smoke-test stability concern that blocked the first draft.
+- Final approval came after Dallas's last doc correction on HAS_SKIA runtime prerequisites and HTML fallback behavior.
+- Non-state repo files pending coordinator handling: `.github\workflows\dotnet-ci.yml`, `README.md`.
