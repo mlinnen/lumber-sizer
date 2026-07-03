@@ -2,6 +2,7 @@ name: .NET CI
 on:
   push:
     branches: [ master, 'feature/*' ]
+    tags: [ 'v*' ]
   pull_request:
     branches: [ master ]
   workflow_dispatch:
@@ -23,13 +24,15 @@ jobs:
           dotnet-version: ${{ matrix.dotnet }}
 
       - name: Restore
-        run: dotnet restore src/WWA.slnx
+        run: |
+          dotnet restore src/WWA.slnx
+          dotnet restore tests/WWA.Core.Tests/WWA.Core.Tests.csproj
 
       - name: Build
         run: dotnet build src/WWA.slnx --no-restore --configuration Release
 
       - name: Test
-        run: dotnet test tests/WWA.Core.Tests/WWA.Core.Tests.csproj --no-build --verbosity normal
+        run: dotnet test tests/WWA.Core.Tests/WWA.Core.Tests.csproj --no-restore --configuration Release --verbosity normal
 
   skia:
     name: Skia build & tests (HAS_SKIA)
@@ -65,13 +68,67 @@ jobs:
           choco install -y vcredist140
 
       - name: Restore
-        run: dotnet restore src/WWA.slnx
+        run: |
+          dotnet restore src/WWA.slnx
+          dotnet restore tests/WWA.Core.Tests/WWA.Core.Tests.csproj
 
       - name: Build (HAS_SKIA)
         run: dotnet build src/WWA.slnx --no-restore --configuration Release -p:DefineConstants=HAS_SKIA
 
       - name: Test (HAS_SKIA)
-        run: dotnet test tests/WWA.Core.Tests/WWA.Core.Tests.csproj --no-build -p:DefineConstants=HAS_SKIA --verbosity normal
+        run: dotnet test tests/WWA.Core.Tests/WWA.Core.Tests.csproj --no-restore --configuration Release -p:DefineConstants=HAS_SKIA --verbosity normal
+
+  publish:
+    name: Publish CLI artifacts (${{ matrix.rid }})
+    if: github.event_name != 'pull_request'
+    needs: [build, skia]
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            rid: linux-x64
+            artifact_name: wwa-cli-release-has-skia-linux-x64
+          - os: macos-13
+            rid: osx-x64
+            artifact_name: wwa-cli-release-has-skia-osx-x64
+          - os: windows-latest
+            rid: win-x64
+            artifact_name: wwa-cli-release-has-skia-win-x64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0
+
+      - name: Restore
+        run: dotnet restore src/WWA.Cli/WWA.Cli.csproj --runtime ${{ matrix.rid }}
+
+      - name: Publish CLI (Release + HAS_SKIA)
+        run: dotnet publish src/WWA.Cli/WWA.Cli.csproj --no-restore --configuration Release --runtime ${{ matrix.rid }} --self-contained false -p:DefineConstants=HAS_SKIA --output artifacts/publish/${{ matrix.rid }}
+
+      - name: Smoke test published CLI
+        shell: pwsh
+        run: |
+          $publishDir = Resolve-Path "artifacts/publish/${{ matrix.rid }}"
+          if ($IsWindows)
+          {
+            & (Join-Path $publishDir 'WWA.Cli.exe')
+          }
+          else
+          {
+            & (Join-Path $publishDir 'WWA.Cli')
+          }
+
+      - name: Upload published CLI
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: artifacts/publish/${{ matrix.rid }}
+          if-no-files-found: error
 
   packer-bench:
     name: Packer benchmarks
@@ -100,4 +157,3 @@ jobs:
         with:
           name: packer-bench-results
           path: tools/packer-bench/artifacts/packer_bench.txt
-

@@ -84,3 +84,8 @@ Seed: Assigned to Woodworking Agent project on 2026-06-10 by Mike Linnen. Initia
 - Key implementation recorded: `OriginalBoardWidth` now flows through `BoardAllocation` from all packers, and `SvgRenderer` reserves non-overlapping space for the board scale, legend, and unplaced sections.
 - Validation captured: HAS_SKIA targeted tests passed; Skia repro export passed; Hockney additionally verified targeted and full suites with and without `HAS_SKIA`.
 - Non-state repo files pending coordinator handling: `src\WWA.Core\Models\PackingModels.cs`, `src\WWA.Core\BinPacking\FullPacker.cs`, `src\WWA.Core\BinPacking\DeterministicPackerStub.cs`, `src\WWA.Core\BinPacking\TwoDPacker.cs`, `src\WWA.Core\BinPacking\MaxRectsPacker.cs`, `src\WWA.Core\BinPacking\GuillotinePacker.cs`, `src\WWA.Core\Reporting\SvgRenderer.cs`, `tests\WWA.Core.Tests\FullPackerTests.cs`, `tests\WWA.Core.Tests\SvgRendererTests.cs`.
+## 2026-07-02T20:26:53.292-04:00 — Issue #15 artifact publish slice archived
+- Team archived the approved outcome for issue #15's downloadable GitHub Actions artifacts.
+- Keaton's initial publish workflow design remains the base of the slice: gated Release + `HAS_SKIA` publishes for `win-x64`, `osx-x64`, and `linux-x64` in `.github\workflows\dotnet-ci.yml`.
+- Review follow-up narrowed the documented trigger scope and replaced the fragile macOS cross-arch smoke-test assumption before final approval.
+- Non-state repo files pending coordinator handling: `.github\workflows\dotnet-ci.yml`, `README.md`.

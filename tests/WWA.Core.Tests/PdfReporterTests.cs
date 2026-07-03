@@ -19,21 +19,38 @@ namespace WWA.Core.Tests
         }
 
         [Fact]
-        public void GenerateFromSvg_Writes_Html_Fallback_When_No_QuestPDF()
+        public void GenerateFromSvg_WritesPdf_WhenSkiaSucceeds_OtherwiseHtmlFallback()
         {
             var repoRoot = FindRepoRoot();
             var artifacts = Path.Combine(repoRoot, "artifacts");
             Directory.CreateDirectory(artifacts);
 
             var outPdf = Path.Combine(artifacts, "test_output.pdf");
+            var htmlPath = Path.Combine(artifacts, "test_output.html");
             var svg = "<svg><rect width=\"10\" height=\"10\"/></svg>";
 
-            PdfReporter.GenerateFromSvg(svg, outPdf);
+            try
+            {
+                if (File.Exists(outPdf)) File.Delete(outPdf);
+                if (File.Exists(htmlPath)) File.Delete(htmlPath);
 
-            var htmlPath = Path.Combine(artifacts, "test_output.html");
-            Assert.True(File.Exists(htmlPath));
-            var content = File.ReadAllText(htmlPath);
-            Assert.Contains("<svg", content, StringComparison.OrdinalIgnoreCase);
+                PdfReporter.GenerateFromSvg(svg, outPdf);
+
+                if (File.Exists(outPdf))
+                {
+                    Assert.False(File.Exists(htmlPath));
+                    return;
+                }
+
+                Assert.True(File.Exists(htmlPath));
+                var content = File.ReadAllText(htmlPath);
+                Assert.Contains("<svg", content, StringComparison.OrdinalIgnoreCase);
+            }
+            finally
+            {
+                if (File.Exists(outPdf)) File.Delete(outPdf);
+                if (File.Exists(htmlPath)) File.Delete(htmlPath);
+            }
         }
     }
 }

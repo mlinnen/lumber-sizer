@@ -186,6 +186,7 @@
 - Root cause: unquoted numeric attributes such as `font-size=12` and `stroke-width=0.5` were tolerated by the HTML fallback path but rejected by Svg.Skia's XML parser during rasterization.
 - Added focused coverage in `tests\WWA.Core.Tests\SvgRendererTests.cs` for XML well-formedness and invariant numeric attribute output.
 - Validation: Skia-enabled targeted tests passed; Skia-enabled build passed; the `export-pdf` repro command now produces a PDF instead of the HTML fallback artifact.
+- Files changed: `src\WWA.Core\Reporting\SvgRenderer.cs`, `tests\WWA.Core.Tests\SvgRendererTests.cs`.
 
 **Rationale:** Generated SVG must be well-formed XML with culture-invariant numeric attributes so Svg.Skia can parse and rasterize it reliably during PDF export.
 
@@ -249,6 +250,23 @@
 - Files changed: `src\WWA.Core\Models\PackingModels.cs`, `src\WWA.Core\BinPacking\FullPacker.cs`, `src\WWA.Core\BinPacking\DeterministicPackerStub.cs`, `src\WWA.Core\BinPacking\TwoDPacker.cs`, `src\WWA.Core\BinPacking\MaxRectsPacker.cs`, `src\WWA.Core\BinPacking\GuillotinePacker.cs`, `src\WWA.Core\Reporting\SvgRenderer.cs`, `tests\WWA.Core.Tests\FullPackerTests.cs`, `tests\WWA.Core.Tests\SvgRendererTests.cs`.
 
 **Rationale:** The renderer was collapsing real inventory boards into thin bands because it lacked the source board width and allowed the scale/legend layout to overlap the drawing. Persisting the original width through packing and reserving dedicated layout space restores usable board-by-board cut sheets in PDF/SVG output.
+
+---
+
+### [2026-07-02] Issue #15 GitHub artifact publishes approved after reviewer-driven revisions — Dallas
+**Author:** Dallas  
+**Summary:** Approved GitHub Actions artifact publishes for issue #15 after narrowing trigger docs, stabilizing the macOS smoke test, and documenting Skia runtime limits.
+
+**Details:**
+- Added a gated `publish_artifacts` job after the existing Release and `HAS_SKIA` validation jobs in `.github\workflows\dotnet-ci.yml`.
+- Publish outputs are framework-dependent `HAS_SKIA` CLI artifacts for `win-x64`, `osx-x64`, and `linux-x64`, produced from `dotnet publish` in `Release`.
+- Publish scope is intentionally limited to pushes to `master`, pushes to `feature/*`, `v*` tag pushes, and `workflow_dispatch`; PR validation remains build/test-only.
+- The macOS publish leg is pinned to `macos-13` so the `osx-x64` artifact smoke test runs on an Intel runner without Rosetta assumptions.
+- `README.md` now matches the implemented trigger scope and clarifies that these downloadable artifacts are built with `HAS_SKIA`, remain framework-dependent, and still require platform-native Skia prerequisites for PDF export; without those native libraries, `export-pdf` can fall back to HTML.
+- Files changed: `.github\workflows\dotnet-ci.yml`, `README.md`.
+- Review chain: Hockney rejected Keaton's initial workflow/docs slice over trigger-scope wording and the macOS cross-arch smoke test; Hockney rejected Ripley's follow-up over overstated README runtime requirements; Hockney approved Dallas's final revision.
+
+**Rationale:** Keeps artifact publishing gated behind successful validation, documents the exact shipping scope, and avoids a fragile macOS smoke test while preserving the intended PDF-capable `HAS_SKIA` distribution path.
 
 ## Governance
 
