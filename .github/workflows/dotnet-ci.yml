@@ -88,9 +88,6 @@ jobs:
           - os: ubuntu-latest
             rid: linux-x64
             artifact_name: wwa-cli-release-has-skia-linux-x64
-          - os: macos-13
-            rid: osx-x64
-            artifact_name: wwa-cli-release-has-skia-osx-x64
           - os: windows-latest
             rid: win-x64
             artifact_name: wwa-cli-release-has-skia-win-x64
