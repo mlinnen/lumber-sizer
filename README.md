@@ -166,7 +166,7 @@ dotnet test .\tests\WWA.Core.Tests\WWA.Core.Tests.csproj --configuration Release
 - Publish triggers: pushes to `master`, pushes to `feature/*`, `v*` tag pushes, and manual `workflow_dispatch`
 - Pull requests remain validation-only; they do not upload application artifacts
 - Shipped configuration: `dotnet publish` in `Release` with `HAS_SKIA`, so the downloadable artifacts include the PDF code path instead of the plain HTML-fallback-only build
-- Published runtimes: `win-x64`, `osx-x64`, and `linux-x64`
+- Published runtimes: `win-x64` and `linux-x64`
 - Artifact names follow `wwa-cli-release-has-skia-<rid>`
 - Scope is currently GitHub Actions workflow artifacts only; the workflow does not attach assets to GitHub Releases yet
 - The published outputs are framework-dependent and `--self-contained false`, so the matching .NET 10 runtime must be installed on the target machine
