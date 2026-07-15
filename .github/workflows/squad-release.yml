@@ -1,34 +1,91 @@
 name: Squad Release
-# Project type was not detected — configure build, test, and release commands below
 
 on:
-  push:
-    branches: [main]
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag to build and upload assets for
+        required: true
+        type: string
 
 permissions:
   contents: write
 
 jobs:
-  release:
-    runs-on: ubuntu-latest
+  publish-release-assets:
+    name: Publish release asset (${{ matrix.rid }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            rid: linux-x64
+            archive_kind: tar.gz
+          - os: windows-latest
+            rid: win-x64
+            archive_kind: zip
+
+    env:
+      RELEASE_TAG: ${{ github.event_name == 'release' && github.event.release.tag_name || inputs.tag }}
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout release tag
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          ref: ${{ env.RELEASE_TAG }}
 
-      - name: Build and test
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0
+
+      - name: Restore
+        run: dotnet restore src/WWA.Cli/WWA.Cli.csproj --runtime ${{ matrix.rid }}
+
+      - name: Publish CLI (Release + HAS_SKIA)
+        run: dotnet publish src/WWA.Cli/WWA.Cli.csproj --no-restore --configuration Release --runtime ${{ matrix.rid }} --self-contained false -p:DefineConstants=HAS_SKIA --output artifacts/publish/${{ matrix.rid }}
+
+      - name: Smoke test published CLI
+        shell: pwsh
         run: |
-          # TODO: Project type was not detected — add your build/test commands here
-          # Go:            go test ./...
-          # Python:        pip install -r requirements.txt && pytest
-          # .NET:          dotnet test
-          # Java (Maven):  mvn test
-          # Java (Gradle): ./gradlew test
-          echo "No build commands configured — update squad-release.yml"
+          $publishDir = Resolve-Path "artifacts/publish/${{ matrix.rid }}"
+          if ($IsWindows)
+          {
+            $output = & (Join-Path $publishDir 'WWA.Cli.exe')
+          }
+          else
+          {
+            $output = & (Join-Path $publishDir 'WWA.Cli')
+          }
 
-      - name: Create release
+          if (-not ($output -match 'WWA CLI'))
+          {
+            throw "Published CLI did not print expected help text."
+          }
+
+      - name: Package Windows release asset
+        if: matrix.archive_kind == 'zip'
+        shell: pwsh
+        run: Compress-Archive -Path "artifacts/publish/${{ matrix.rid }}\*" -DestinationPath "artifacts/lumber-sizer-$env:RELEASE_TAG-${{ matrix.rid }}.zip" -Force
+
+      - name: Package Linux release asset
+        if: matrix.archive_kind == 'tar.gz'
+        run: tar -czf artifacts/lumber-sizer-$RELEASE_TAG-${{ matrix.rid }}.tar.gz -C artifacts/publish/${{ matrix.rid }} .
+
+      - name: Upload asset to GitHub Release
+        shell: pwsh
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # TODO: Add your release commands here (e.g., git tag, gh release create)
-          echo "No release commands configured — update squad-release.yml"
+          $assetPath = if ('${{ matrix.archive_kind }}' -eq 'zip')
+          {
+            "artifacts/lumber-sizer-$env:RELEASE_TAG-${{ matrix.rid }}.zip"
+          }
+          else
+          {
+            "artifacts/lumber-sizer-$env:RELEASE_TAG-${{ matrix.rid }}.tar.gz"
+          }
+
+          gh release upload $env:RELEASE_TAG $assetPath --clobber --repo $env:GITHUB_REPOSITORY

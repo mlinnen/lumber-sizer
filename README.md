@@ -161,14 +161,14 @@ dotnet test .\tests\WWA.Core.Tests\WWA.Core.Tests.csproj --configuration Release
 
 ## GitHub Actions publish artifacts
 
-`.github\workflows\dotnet-ci.yml` keeps the existing plain `Release` and `HAS_SKIA` validation lanes, then publishes workflow artifacts only after both lanes pass.
+`.github\workflows\dotnet-ci.yml` keeps the existing plain `Release` and `HAS_SKIA` validation lanes, then publishes workflow artifacts only after both lanes pass. `.github\workflows\squad-release.yml` builds the same `HAS_SKIA` publish outputs for GitHub Releases and attaches the Windows and Linux packages to the published release.
 
 - Publish triggers: pushes to `master`, pushes to `feature/*`, `v*` tag pushes, and manual `workflow_dispatch`
 - Pull requests remain validation-only; they do not upload application artifacts
 - Shipped configuration: `dotnet publish` in `Release` with `HAS_SKIA`, so the downloadable artifacts include the PDF code path instead of the plain HTML-fallback-only build
 - Published runtimes: `win-x64` and `linux-x64`
 - Artifact names follow `wwa-cli-release-has-skia-<rid>`
-- Scope is currently GitHub Actions workflow artifacts only; the workflow does not attach assets to GitHub Releases yet
+- GitHub Releases receive `lumber-sizer-<tag>-win-x64.zip` and `lumber-sizer-<tag>-linux-x64.tar.gz` when a release is published, or when `squad-release.yml` is run manually for an existing tag
 - The published outputs are framework-dependent and `--self-contained false`, so the matching .NET 10 runtime must be installed on the target machine
 - PDF export from those artifacts also depends on native platform libraries; the current Skia CI lane installs Linux packages `libfontconfig1`, `libfreetype6`, `libx11-6`, `libxrandr2`, `libxrender1`, and `libxext6`, macOS Homebrew packages `fontconfig`, `freetype`, `cairo`, and `libpng`, and Windows `vcredist140`
 - If those native dependencies are missing, the published app may still start, but `export-pdf` can fall back to writing HTML instead of a PDF
