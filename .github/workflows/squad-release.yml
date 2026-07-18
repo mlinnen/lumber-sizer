@@ -26,6 +26,9 @@ jobs:
           - os: windows-latest
             rid: win-x64
             archive_kind: zip
+          - os: windows-11-arm
+            rid: win-arm64
+            archive_kind: zip
 
     env:
       RELEASE_TAG: ${{ github.event_name == 'release' && github.event.release.tag_name || inputs.tag }}
